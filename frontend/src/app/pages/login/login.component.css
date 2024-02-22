@@ -1,0 +1,79 @@
+:host{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+.login-container{
+    width: 500px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(rgb(41, 40, 40));
+    gap: 20px;
+    color: white
+}
+
+.logo-container{
+    width: 300px;
+    height: 300px;
+    display: flex;
+    justify-content: center;
+    border-style: solid #ff924a;
+    border-radius: 50%;
+    box-shadow: 0 0 20px 10px rgba(255, 136, 0, 0.863);
+    animation: glowAnimation 3s infinite alternate;
+}
+.logo{
+    max-width: 300px;
+    max-height: 300px;
+}
+.form-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 20px;
+}
+.form-group{
+    display: flex;
+    flex-direction: column;
+}
+
+input{
+    width: 100%;
+    height: 2rem;
+}
+
+.button-group{
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+button {
+    width: 7rem;
+    height: 3rem;
+    font-size: 1.3rem;
+    border-radius: 10px;
+}
+.text-description {
+    font-size: 2rem;
+    text-align: center;
+}
+
+@keyframes glowAnimation {
+    from {
+      box-shadow: 0 0 20px 10px rgba(255, 102, 0, 0.349); /* Estado inicial */
+    }
+    to {
+      box-shadow: 0 0 20px 15px rgba(255, 115, 0, 0.747); /* Estado final */
+    }
+  }
