@@ -1,1 +1,13 @@
-/* You can add global styles to this file, and also import other style files */
+/* Tema oscuro */
+.dark-theme {
+    background-color: #1a1a1a;
+    color: #ffffff;
+  }
+  
+  /* Tema claro */
+  .light-theme {
+    background-color: #ffffff;
+    color: #000000;
+  }
+
+  

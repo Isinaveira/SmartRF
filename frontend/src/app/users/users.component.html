@@ -1,0 +1,30 @@
+<app-navbar></app-navbar>
+<div [ngClass]="themeService.getCurrentTheme()">
+    <p>users works!</p>
+
+
+    <div>
+        <form>
+        <!-- <form [formGroup]="formulario" (ngSubmit)="onSubmit()"> -->
+        <div>
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" formControlName="nombre">
+        </div>
+        <div>
+            <label for="apellidos">Apellidos:</label>
+            <input type="text" id="apellidos" formControlName="apellidos">
+        </div>
+        <div>
+            <label for="dni">DNI:</label>
+            <input type="text" id="dni" formControlName="dni">
+        </div>
+        <div>
+            <label for="empresa">Empresa:</label>
+            <input type="text" id="empresa" formControlName="empresa">
+        </div>
+        <button type="submit">Enviar</button>
+        </form>
+    </div>
+</div>
+
+ 
