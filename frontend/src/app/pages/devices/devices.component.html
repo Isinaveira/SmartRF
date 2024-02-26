@@ -1,0 +1,14 @@
+<div class="devices-container">
+    <div class="devices-list">
+        @for ( device of devices; track device){
+            <div class="device-container">
+                <span>ID:{{device.id_dispositivo}}</span>
+                <span>Estado:{{device.estado}}</span>
+                <span>Última lectura: {{generateTime(device.fecha_ultima_lectura)}}</span>
+            </div>
+        }
+    </div>
+    <div class="map-container">
+        
+    </div>
+</div>
