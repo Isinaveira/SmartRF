@@ -22,9 +22,15 @@
     "lib": [
       "ES2022",
       "dom"
-    ]
+    ],
+    "baseUrl": "./",
+    "paths": {
+      "@env/*": ["src/app/environments/*"],
+      "@core/*": ["src/app/@core/*"]
+    },
   },
   "angularCompilerOptions": {
+    "fullTemplateTypeCheck": true,
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,

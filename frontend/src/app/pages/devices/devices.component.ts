@@ -1,15 +1,22 @@
 import { Component, ElementRef, QueryList, ViewChildren, NgZone, AfterViewInit } from '@angular/core';
 import moment from 'moment';
-import * as L from 'leaflet';
+import { MapComponent } from 'src/app/components/shared/map/map.component';
+
 
 @Component({
   selector: 'app-devices',
   standalone: true,
-  imports: [],
+  imports: [MapComponent],
   templateUrl: './devices.component.html',
   styleUrl: './devices.component.css'
 })
 export class DevicesComponent {
+
+  style = 'mapbox://styles/mapbox/streets-v11'; // URL del estilo del mapa
+  lat = 37.75; // Latitud inicial del mapa
+  lng = -122.41; // Longitud inicial del mapa
+  zoom = 12; // Zoom inicial
+
 
   devices = [
     {
@@ -137,29 +144,15 @@ export class DevicesComponent {
     timeZone: 'UTC'
   };
 
-  
-  
+  constructor() {}
 
-  constructor(private zone: NgZone) {}
+  ngOnInit(){
+   
+  }
 
   generateTime(fechaOriginal: string): string {
     // Lógica para formatear la fecha
     const fecha = moment(fechaOriginal);
     return fecha.format('DD/MM/YYYY HH:mm:ss');
   }
-
- /*
-  mapOptions = {
-    layers: [
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18, attribution: 'Map data © OpenStreetMap contributors' })
-    ],
-    zoom: 10,
-    center: L.latLng(this.devices[0].coordenadas.lat, this.devices[0].coordenadas.lng)
-  };
-
-  showDeviceOnMap(device: any) {
-    this.mapOptions.center = L.latLng(device.coordenadas.lat, device.coordenadas.lng);
-  }
-
-  */
-}
+ }
