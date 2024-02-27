@@ -39,6 +39,10 @@ button:hover{
 
 }
 
+span {
+  display: block;
+}
+
 
 /* Tema oscuro */
 .dark-theme {

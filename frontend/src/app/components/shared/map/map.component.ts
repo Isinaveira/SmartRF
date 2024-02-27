@@ -43,8 +43,8 @@ export class MapComponent {
     
       marker.setPopup(new mapboxgl.Popup().setHTML(
         `
-        <h3>ID dispositivo:${properties.nombre}</h3>
-        <h3>estado:${properties.estado}</h3>
+        <span>ID dispositivo:${properties.nombre}</span>
+        <span>estado:${properties.estado}</span>
         
         `));
     });
