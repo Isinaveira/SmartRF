@@ -1,5 +1,7 @@
+<app-navbar></app-navbar>
 <div class="devices-container">
     <div class="devices-list">
+        <h2>Lista de Dispositivos</h2>
         @for ( device of devices; track device){
             <div class="device-container">
                 <span>ID:{{device.id_dispositivo}}</span>
@@ -9,6 +11,6 @@
         }
     </div>
     <div class="map-container">
-        <app-map></app-map>
+        <app-map [devices]="devices"></app-map>
     </div>
 </div>

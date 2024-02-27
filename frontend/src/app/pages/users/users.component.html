@@ -1,29 +1,50 @@
 <app-navbar></app-navbar>
-<div [ngClass]="themeService.getCurrentTheme()">
-    <p>users works!</p>
-
-
-    <div>
+<div class="users-container" [ngClass]="themeService.getCurrentTheme()">
+    <div class="form-container">
         <form>
-        <!-- <form [formGroup]="formulario" (ngSubmit)="onSubmit()"> -->
-        <div>
-            <label for="nombre">Nombre:</label>
-            <input type="text" id="nombre" formControlName="nombre">
-        </div>
-        <div>
-            <label for="apellidos">Apellidos:</label>
-            <input type="text" id="apellidos" formControlName="apellidos">
-        </div>
-        <div>
-            <label for="dni">DNI:</label>
-            <input type="text" id="dni" formControlName="dni">
-        </div>
-        <div>
-            <label for="empresa">Empresa:</label>
-            <input type="text" id="empresa" formControlName="empresa">
-        </div>
-        <button type="submit">Enviar</button>
+            <div class="form-fields">
+                <div class="form-group">
+                    <label for="nombre">Nombre y apellidos</label>
+                    <input type="text" id="nombre" formControlName="nombre">
+                </div>
+                <div class="form-group">
+                    <label for="apellidos">Nombre de usuario</label>
+                    <input type="text" id="apellidos" formControlName="apellidos">
+                </div>
+                <div class="form-group">
+                    <label for="dni">Email</label>
+                    <input type="text" id="dni" formControlName="dni">
+                </div>
+                <div class="form-group">
+                    <label for="empresa">Empresa</label>
+                    <input type="text" id="empresa" formControlName="empresa">
+                </div>
+                <div class="form-group">
+                    <label for="role">Role</label>
+                    <input type="text" id="role" formControlName="role">
+                </div>
+            </div>
+            <div class="form-controllers">
+                <button type="submit">Enviar</button>
+                <button type="clear">Limpiar</button>
+            </div>
         </form>
+    </div>
+    <div class="users-list-container">
+        @for(user of users; track user){
+            <div class="user-card">
+                <div class="profile-image">
+                    <div class="circle"></div>
+                </div>
+                <div class="info-user">
+                    <span>{{user.name}}</span>
+                    <span>{{user.username}}</span>
+                    <span>{{user.email}}</span>
+                    <span>{{user.role}}</span>
+                </div>
+            </div>
+            
+        }
     </div>
 </div>
 

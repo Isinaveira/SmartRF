@@ -1,12 +1,13 @@
 import { Component, ElementRef, QueryList, ViewChildren, NgZone, AfterViewInit } from '@angular/core';
 import moment from 'moment';
 import { MapComponent } from 'src/app/components/shared/map/map.component';
+import { NavbarComponent } from 'src/app/components/shared/navbar/navbar.component';
 
 
 @Component({
   selector: 'app-devices',
   standalone: true,
-  imports: [MapComponent],
+  imports: [MapComponent, NavbarComponent],
   templateUrl: './devices.component.html',
   styleUrl: './devices.component.css'
 })
@@ -21,7 +22,7 @@ export class DevicesComponent {
   devices = [
     {
       id_dispositivo: 1,
-      coordenadas: { lat: 40.416775, lng: -3.703790 },
+      coordenadas: { lng: -8.689038314733466,lat: 42.17065472083152},
       estado: "activo",
       fecha_ultima_lectura: "2024-02-23T10:00:00Z",
       imagen_path: "../../assets/dispositivo1.jpg",
@@ -40,7 +41,7 @@ export class DevicesComponent {
     },
     {
       id_dispositivo: 2,
-      coordenadas: { lat: 41.387917, lng: 2.169919 },
+      coordenadas: { lng: -8.689744429290187, lat: 42.169751113048505 },
       estado: "inactivo",
       fecha_ultima_lectura: "2024-02-22T15:30:00Z",
       imagen_path: "../../assets/dispositivo2.jpg",
@@ -59,7 +60,7 @@ export class DevicesComponent {
     },
     {
       id_dispositivo: 3,
-      coordenadas: { lat: 39.469907, lng: -0.376288 },
+      coordenadas: { lng: -8.687306048086725, lat: 42.17065472083152 },
       estado: "activo",
       fecha_ultima_lectura: "2024-02-24T09:20:00Z",
       imagen_path: "../../assets/dispositivo3.jpg",
@@ -78,7 +79,7 @@ export class DevicesComponent {
     },
     {
       id_dispositivo: 4,
-      coordenadas: { lat: 35.689487, lng: 139.691711 },
+      coordenadas: { lng: -8.686259576153134, lat: 42.16949508849626 },
       estado: "inactivo",
       fecha_ultima_lectura: "2024-02-25T14:45:00Z",
       imagen_path: "../../assets/dispositivo4.jpg",
@@ -97,7 +98,7 @@ export class DevicesComponent {
     },
     {
       id_dispositivo: 5,
-      coordenadas: { lat: -33.868820, lng: 151.209296 },
+      coordenadas: { lng: -8.686955530788651, lat: 42.168855022583045 },
       estado: "activo",
       fecha_ultima_lectura: "2024-02-26T12:10:00Z",
       imagen_path: "../../assets/dispositivo5.jpg",
@@ -116,7 +117,7 @@ export class DevicesComponent {
     },
     {
       id_dispositivo: 6,
-      coordenadas: { lat: 51.509865, lng: -0.118092 },
+      coordenadas: { lng: -8.688469359118926, lat: 42.1688211365599 },
       estado: "inactivo",
       fecha_ultima_lectura: "2024-02-27T08:30:00Z",
       imagen_path: "../../assets/dispositivo6.jpg",
