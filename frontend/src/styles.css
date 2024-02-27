@@ -8,3 +8,18 @@ html, body {
     background-color: rgb(31, 31, 31);
     font-family: "Lato", sans-serif;
 }
+
+
+/* Tema oscuro */
+.dark-theme {
+    background-color: #1a1a1a;
+    color: #ffffff;
+  }
+  
+  /* Tema claro */
+  .light-theme {
+    background-color: #ffffff;
+    color: #000000;
+  }
+
+  
