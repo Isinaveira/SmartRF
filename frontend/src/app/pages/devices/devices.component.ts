@@ -1,12 +1,13 @@
 import { Component, ElementRef, QueryList, ViewChildren, NgZone, AfterViewInit } from '@angular/core';
 import moment from 'moment';
 import { MapComponent } from 'src/app/components/shared/map/map.component';
+import { NavbarComponent } from 'src/app/components/shared/navbar/navbar.component';
 
 
 @Component({
   selector: 'app-devices',
   standalone: true,
-  imports: [MapComponent],
+  imports: [MapComponent, NavbarComponent],
   templateUrl: './devices.component.html',
   styleUrl: './devices.component.css'
 })
