@@ -4,6 +4,8 @@ import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { NavbarComponent } from 'src/app/components/shared/navbar/navbar.component';
 import { ThemeService } from 'src/services/theme.service';
+import { MapComponent } from 'src/app/components/shared/map/map.component';
+
 
 
 
@@ -11,7 +13,7 @@ import { ThemeService } from 'src/services/theme.service';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [UsersComponent,RouterOutlet,NavbarComponent,CommonModule],
+  imports: [UsersComponent,RouterOutlet,NavbarComponent,CommonModule,MapComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
 })
@@ -19,6 +21,7 @@ import { ThemeService } from 'src/services/theme.service';
 export class HomeComponent {
 
   constructor(public themeService: ThemeService) {}
+  
 
 
 }
