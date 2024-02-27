@@ -6,7 +6,6 @@ import { DeviceDetailComponent } from './pages/devices/device-detail/device-deta
 import { UsersComponent } from './pages/users/users.component';
 export const routes: Routes = [
     {path: '', redirectTo: '/login', pathMatch: 'full'},
-    {path: '**', redirectTo: '/login', pathMatch: 'full'},
     {path: 'login', pathMatch: 'full', component: LoginComponent},
     {path: 'devices', pathMatch: 'full', component: DevicesComponent},
     {path: 'devices/:id', pathMatch: 'full', component: DeviceDetailComponent},
