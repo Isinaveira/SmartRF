@@ -14,8 +14,8 @@ exports.createUser = async (req, res) => {
   // Get all todos
   exports.getUsers = async (req, res) => {
     try {
-      const todos = await Todo.find();
-      res.json(todos);
+      const users = await User.find();
+      res.json(users);
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
@@ -24,8 +24,8 @@ exports.createUser = async (req, res) => {
   // Update a todo by ID
   exports.updateUser = async (req, res) => {
     try {
-      const todo = await Todo.findByIdAndUpdate(req.params.id, req.body, { new: true });
-      res.json(todo);
+      const user = await User.findOneAndUpdate({ name: req.params.name }, req.body, { new: true });
+      res.json(user);
     } catch (error) {
       res.status(400).json({ error: error.message });
     }
@@ -34,8 +34,8 @@ exports.createUser = async (req, res) => {
   // Delete a todo by ID
   exports.deleteUser = async (req, res) => {
     try {
-      const todo = await Todo.findByIdAndDelete(req.params.id);
-      res.json(todo);
+      const user = await User.findOneAndDelete({ name: req.params.name });
+      res.json(user);
     } catch (error) {
       res.status(400).json({ error: error.message });
     }

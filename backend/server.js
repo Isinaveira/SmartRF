@@ -17,8 +17,8 @@ const userController = require('./controllers/userController');
 
 app.post('/createUser', userController.createUser);
 app.get('/retreiveUsers', userController.getUsers);
-app.put('/retreiveUser/:id', userController.updateUser);
-app.delete('/deleteUser/:id', userController.deleteUser);
+app.put('/updateUser/:name', userController.updateUser);
+app.delete('/deleteUserbyName/:name', userController.deleteUser);
 
 
 app.listen(PORT, () => {
