@@ -1,14 +1,26 @@
 const express = require('express');
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
-app.use(express.json());
+// Middleware
+app.use(cors());
+app.use(bodyParser.json());
 
-// Simple API endpoint
-app.get('/api/message', (req, res) => {
-    res.json({ message: 'Hello from the backend!' });
-});
+// Connect to MongoDB
+mongoose.connect('mongodb://localhost:27017/Prueba', { useNewUrlParser: true, useUnifiedTopology: true });
+
+const userController = require('./controllers/userController');
+
+app.post('/createUser', userController.createUser);
+app.get('/retreiveUsers', userController.getUsers);
+app.put('/retreiveUser/:id', userController.updateUser);
+app.delete('/deleteUser/:id', userController.deleteUser);
+
 
 app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
-});
+    console.log(`Server is running on port ${PORT}`);
+  });
