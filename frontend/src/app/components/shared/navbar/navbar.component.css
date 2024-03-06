@@ -1,4 +1,6 @@
-
+li {
+  list-style: none;
+}
 .nav-link {
     cursor: pointer;
     width: 100%;
