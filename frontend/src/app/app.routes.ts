@@ -1,10 +1,10 @@
 import { Routes } from '@angular/router';
-import { HomeComponent } from './pages/home/home.component';
-import { LoginComponent } from './pages/login/login.component';
-import { DevicesComponent } from './pages/devices/devices.component';
-import { DeviceDetailComponent } from './pages/devices/device-detail/device-detail.component';
-import { UsersComponent } from './pages/users/users.component';
-import { ProfileComponent } from './pages/profile/profile.component';
+import { HomeComponent } from '@/pages/home/home.component';
+import { LoginComponent } from '@/pages/login/login.component';
+import { DevicesComponent } from '@/pages/devices/devices.component';
+import { DeviceDetailComponent } from '@/pages/devices/device-detail/device-detail.component';
+import { UsersComponent } from '@/pages/users/users.component';
+import { ProfileComponent } from '@/pages/profile/profile.component';
 export const routes: Routes = [
     {path: '', redirectTo: '/login', pathMatch: 'full'},
     {path: 'login', pathMatch: 'full', component: LoginComponent},

@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
-import { UsersComponent } from './pages/users/users.component';
-import { HomeComponent } from './pages/home/home.component';
-import { NavbarComponent } from './components/shared/navbar/navbar.component';
+import { UsersComponent } from '@/pages/users/users.component';
+import { HomeComponent } from '@/pages/home/home.component';
+import { NavbarComponent } from '@/components/shared/navbar/navbar.component';
 
 
 @Component({

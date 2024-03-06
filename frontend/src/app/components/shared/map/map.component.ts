@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import mapboxgl from 'mapbox-gl';
-import { environment } from 'src/app/environment';
+import { environment } from '@/environment';
+import { Device } from '@/models/device.model';
 
 @Component({
   selector: 'app-map',
@@ -10,7 +11,7 @@ import { environment } from 'src/app/environment';
   styleUrl: './map.component.css'
 })
 export class MapComponent {
-  @Input() devices!: any[];
+  @Input() devices!: Device[];
   map!: mapboxgl.Map
 
   ngOnInit(){

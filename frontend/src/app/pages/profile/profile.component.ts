@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
-import { ThemeService } from 'src/services/theme.service';
-import { NavbarComponent } from '../../components/shared/navbar/navbar.component';
+import { ThemeService } from '@/services/theme.service';
+import { NavbarComponent } from '@/components/shared/navbar/navbar.component';
 
 
 @Component({

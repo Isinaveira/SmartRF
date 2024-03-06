@@ -241,8 +241,26 @@ export class Terrain extends Elevation {
     _pendingGroundEffectLayers: Array<number>;
     framebufferCopyTexture: ?Texture;
 
+    _debugParams: {
+        sortTilesHiZFirst: boolean,
+        disableRenderCache: boolean
+    }
+
     constructor(painter: Painter, style: Style) {
         super();
+
+        this._debugParams = {sortTilesHiZFirst: true, disableRenderCache: false};
+        painter.tp.registerParameter(this._debugParams, ["Terrain"], "sortTilesHiZFirst", {}, () => {
+            this._style.map.triggerRepaint();
+        });
+        painter.tp.registerParameter(this._debugParams, ["Terrain"], "disableRenderCache", {}, () => {
+            this._style.map.triggerRepaint();
+        });
+        painter.tp.registerButton(["Terrain"], "Invalidate Render Cache", () => {
+            this.invalidateRenderCache = true;
+            this._style.map.triggerRepaint();
+        });
+
         this.painter = painter;
         this.terrainTileForTile = {};
         this.prevTerrainTileForTile = {};
@@ -1032,6 +1050,10 @@ export class Terrain extends Elevation {
     }
 
     _shouldDisableRenderCache(): boolean {
+        if (this._debugParams.disableRenderCache) {
+            return true;
+        }
+
         // Disable render caches on dynamic events due to fading or transitioning.
         if (this._style.hasLightTransitions()) {
             return true;
@@ -1429,6 +1451,7 @@ export class Terrain extends Elevation {
             }
         }
         let hasOverlap = false;
+        const proxiesToSort = new Set();
         for (let i = 0; i < sourceCoords.length; i++) {
             const tile = sourceCache.getTile(sourceCoords[i]);
             if (!tile || !tile.hasData()) continue;
@@ -1440,15 +1463,24 @@ export class Terrain extends Elevation {
                 if (!array) {
                     this.proxyToSource[proxy.tileID.key][sourceCache.id] = [id];
                 } else {
-                    // The last element is parent added in loop above. This way we get
-                    // a list in Z descending order which is needed for stencil masking.
                     array.splice(array.length - 1, 0, id);
+                }
+                const arr = this.proxyToSource[proxy.tileID.key][sourceCache.id];
+                if (!proxiesToSort.has(arr)) {
+                    proxiesToSort.add(arr);
                 }
                 coords.push(id);
                 hasOverlap = true;
             }
         }
         this._sourceTilesOverlap[sourceCache.id] = hasOverlap;
+        if (hasOverlap && this._debugParams.sortTilesHiZFirst) {
+            for (const arr of proxiesToSort) {
+                arr.sort((a, b) => {
+                    return b.overscaledZ - a.overscaledZ;
+                });
+            }
+        }
     }
 
     _setupProxiedCoordsForImageSource(sourceCache: SourceCache, sourceCoords: Array<OverscaledTileID>, previousProxyToSource: {[number]: {[string]: Array<ProxiedTileID>}}) {

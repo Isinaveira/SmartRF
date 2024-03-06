@@ -11,12 +11,14 @@ app.use(cors());
 app.use(bodyParser.json());
 
 // Connect to MongoDB
-mongoose.connect('mongodb://localhost:27017/Prueba', { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect('mongodb://localhost:27017/Prueba', { useNewUrlParser: true, useUnifiedTopology: true })
+        .then(() => console.log('Conexión a MongoDB exitosa.'))
+        .catch(err => console.error('Error al conectar a MongoDB:', err));
 
 const userController = require('./controllers/userController');
 
 app.post('/createUser', userController.createUser);
-app.get('/retreiveUsers', userController.getUsers);
+app.get('/getUsers', userController.getUsers);
 app.put('/updateUser/:name', userController.updateUser);
 app.delete('/deleteUserbyName/:name', userController.deleteUser);
 

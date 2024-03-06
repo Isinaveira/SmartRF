@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 import { UsersComponent } from '../users/users.component';
 import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { NavbarComponent } from 'src/app/components/shared/navbar/navbar.component';
-import { ThemeService } from 'src/services/theme.service';
-import { MapComponent } from 'src/app/components/shared/map/map.component';
+import { NavbarComponent } from '@/components/shared/navbar/navbar.component';
+import { ThemeService } from '@/services/theme.service';
+import { MapComponent } from '@/components/shared/map/map.component';
 
 
 
