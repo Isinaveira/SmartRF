@@ -1,14 +1,11 @@
 POST http://localhost:3000/users HTTP/1.1
-
-content-type: application/json 
-       
-     { 
-
-        "department":	"teleco",
-        "dni":	"32725668A",
-        "email":	"lucas2002.vg@gmail.com",
-        "name":	"lucas",
-        "password":	"1234",
-        "role":	"user"
-
-     }
+Content-Type: "application/json"
+        
+{ 
+   "department":"teleco",
+   "dni":"32725668A",
+   "email":"lucas2002.vg@gmail.com",
+   "name":"lucas",
+   "password":"1234",
+   "role":"user"
+}
