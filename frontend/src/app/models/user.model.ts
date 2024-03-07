@@ -1,8 +1,9 @@
 export interface User{
     name: string,
-    username: string,
+    dni: string,
     email: string,
     role: string,
-    company: string,
+    department: string,
     password: string
 }
+

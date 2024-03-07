@@ -18,11 +18,13 @@ mongoose.connect('mongodb://localhost:27017/Prueba', { useNewUrlParser: true, us
 const userController = require('./controllers/userController');
 
 app.post('/createUser', userController.createUser);
+app.get('/getUser/:dni', userController.getUser);
 app.get('/getUsers', userController.getUsers);
-app.put('/updateUser/:name', userController.updateUser);
-app.delete('/deleteUserbyName/:name', userController.deleteUser);
+app.put('/updateUser/:dni', userController.updateUser);
+app.delete('/deleteUserbyDNI/:dni', userController.deleteUser);
 
 
 app.listen(PORT, () => {
+    console.log('Successful server initialization!')
     console.log(`Server is running on port ${PORT}`);
   });

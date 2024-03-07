@@ -129,82 +129,82 @@ export class DataService {
   users: User[] = [
     {
       "name": "John Doe",
-      "username": "john_doe",
+      "dni": "12345678B",
       "email": "john.doe@example.com",
       "role": "usuario",
-      "company": "Televés",
+      "department": "Televés",
       "password": "password123"
     },
     {
       "name": "Jane Smith",
-      "username": "jane_smith",
+      "dni": "12345678C",
       "email": "jane.smith@example.com",
       "role": "admin",
-      "company": "Televés",
+      "department": "Televés",
       "password": "password123"
     },
     {
       "name": "Alice Johnson",
-      "username": "alice_johnson",
+      "dni": "12345678D",
       "email": "alice.johnson@example.com",
       "role": "usuario",
-      "company": "Gradiant",
+      "department": "Gradiant",
       "password": "password123"
     },
     {
       "name": "Robert Brown",
-      "username": "robert_brown",
+      "dni": "12345678E",
       "email": "robert.brown@example.com",
       "role": "admin",
-      "company": "Gradiant",
+      "department": "Gradiant",
       "password": "password123"
     },
     {
       "name": "Emily Clark",
-      "username": "emily_clark",
+      "dni": "12345678F",
       "email": "emily.clark@example.com",
       "role": "usuario",
-      "company": "Surcontrol",
+      "department": "Surcontrol",
       "password": "password123"
     },
     {
       "name": "David Smith",
-      "username": "david_smith",
+      "dni": "12345678G",
       "email": "david.smith@example.com",
       "role": "usuario",
-      "company": "Surcontrol",
+      "department": "Surcontrol",
       "password": "password123"
     },
     {
       "name": "Sophia Wilson",
-      "username": "sophia_wilson",
+      "dni": "12345678H",
       "email": "sophia.wilson@example.com",
       "role": "admin",
-      "company": "Surcontrol",
+      "department": "Surcontrol",
       "password": "password123"
     },
     {
       "name": "Michael Johnson",
-      "username": "michael_johnson",
+      "dni": "12345678I",
       "email": "michael.johnson@example.com",
       "role": "usuario",
-      "company": "Televés",
+      "department": "Televés",
       "password": "password123"
     },
     {
       "name": "Olivia Martin",
-      "username": "olivia_martin",
+      "dni": "12345678J",
       "email": "olivia.martin@example.com",
       "role": "usuario",
-      "company": "Televés",
+      "department": "Televés",
       "password": "password123"
     },
     {
       "name": "James Davis",
-      "username": "james_davis",
+      "dni": "12345678K",
       "email": "james.davis@example.com",
       "role": "admin",
-      "company": "Televés",
+      "department": "Televés",
       "password": "password123"
     }
   ]
