@@ -49,9 +49,20 @@ export class UsersComponent  {
 
   
   ngOnInit(){
-    this.users = this.dataService.users;
+    //this.users = this.dataService.users;
+    this.getUsers();
   }
 
+  getUsers(){
+    this.usersService.getUsers().subscribe({
+      next: (users) => {
+        this.users = users
+      },
+      error: (err) => {
+        console.log(err)
+      }
+    })
+  }
 
   // Anadir un usuario
   addUser() {
