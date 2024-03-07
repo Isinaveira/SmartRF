@@ -5,7 +5,7 @@ import { DataService } from '@/services/data.service';
 import { NavbarComponent } from '@/components/shared/navbar/navbar.component';
 import { User } from '@/models/user.model';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { UserService } from '@/services/user.service';
+import { UsersService } from '@/services/users.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
 
@@ -28,7 +28,7 @@ export class UsersComponent  {
   
   
 
-  constructor(public themeService: ThemeService, public dataService: DataService, public userservice: UserService, private aRouter: ActivatedRoute, private fb: FormBuilder, public router: Router) {
+  constructor(public themeService: ThemeService, public dataService: DataService, public usersService: UsersService, private aRouter: ActivatedRoute, private fb: FormBuilder, public router: Router) {
 
    
     this.userForm = this.fb.group({
@@ -37,7 +37,7 @@ export class UsersComponent  {
       dni: ['', Validators.required],
       email: ['', Validators.required],
       role: ['', Validators.required],
-      departmen: ['', Validators.required],
+      department: ['', Validators.required],
       password: ['', Validators.required],
 
 
@@ -66,27 +66,29 @@ export class UsersComponent  {
     // Verificar existe el usuario
     if (this.dni !== null) {
       // existe el usuario se edita
-      this.userservice.editUser(this.dni, USER).subscribe(
-        (data) => {
+      this.usersService.editUser(this.dni, USER).subscribe({
+         next:  (data) => {
           this.router.navigate(['/users/']);
         },
-        (error) => {
+        
+        error:  (error) => {
           console.log(error);
           this.userForm.reset();
         }
-      );
+    });
     } else {
       // no existe el usuario se crea
       console.log(USER);
-      this.userservice.saveUser(USER).subscribe(
-        (data) => {
+      this.usersService.saveUser(USER).subscribe({
+        next :  (data) => { 
           this.router.navigate(['/users/']);
         },
-        (error) => {
+
+       error: (error) => {
           console.log(error);
           this.userForm.reset();
         }
-      );
+    });
     }
   }
   

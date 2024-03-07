@@ -1,21 +1,24 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { User } from '@/models/user.model';
-
-
-
 
 @Injectable({
   providedIn: 'root'
 })
-export class UserService {
+export class UsersService {
 
-  // url de la API de usuarios
-  url = 'http://localhost:3000';
 
-  constructor(private http: HttpClient) { }
+  user! : User;
+  url = "http://localhost:3000/users"
+  constructor(private http: HttpClient) {
 
+   }
+
+   
+
+
+  
   // Metodo para crear usuarios
   saveUser(user: User): Observable<any> {
     return this.http.post(this.url, user);
@@ -40,5 +43,5 @@ export class UserService {
   deleteUser(dni: string): Observable<any> {
     return this.http.delete(this.url + dni);
   }
-
+  
 }

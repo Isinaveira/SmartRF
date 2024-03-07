@@ -1,7 +1,8 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, AfterViewInit, OnInit } from '@angular/core';
 import mapboxgl from 'mapbox-gl';
 import { environment } from '@/environment';
 import { Device } from '@/models/device.model';
+
 
 @Component({
   selector: 'app-map',
@@ -10,13 +11,12 @@ import { Device } from '@/models/device.model';
   templateUrl: './map.component.html',
   styleUrl: './map.component.css'
 })
-export class MapComponent {
+export class MapComponent implements OnInit{
   @Input() devices!: Device[];
   map!: mapboxgl.Map
 
   ngOnInit(){
     this.initializeMap();
-    console.log(this.devices);
   }
 
   initializeMap() {
@@ -28,6 +28,8 @@ export class MapComponent {
       center: [-8.687971522957469, 42.16972099256685], // Coordenadas iniciales (longitud, latitud)
       zoom: 17, // Nivel de zoom inicial
     });
+
+    if(this.devices != undefined) {
 
     this.devices.forEach(dispositivo => {
       const properties = {
@@ -50,7 +52,7 @@ export class MapComponent {
         `));
     });
 
-
+  }
     this.map.resize();
   }
 }

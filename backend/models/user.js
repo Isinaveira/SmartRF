@@ -5,7 +5,7 @@ const userSchema = new mongoose.Schema({
   dni:  {type: String, required: true},
   email:  {type: String, required: true},
   role: { type: String, required: true },
-  departament:  {type: String, required: true},
+  department:  {type: String, required: true},
   password: { type: String, required: true },
   timeStamp: {type: Date, default: Date.now()}
 });
