@@ -64,3 +64,22 @@ exports.createUser = async (req, res) => {
       res.status(400).json({ error: error.message });
     }
   };
+
+  exports.checkUser = async (req, res) => {
+    try {
+      const { dni, password } = req.params;
+  
+      // Replace the following line with your actual logic to check user in the database
+      const user = await User.findOne({ dni: dni });
+      
+      if (!user) {
+        res.status(200).json({ success: 'No user found' });
+      }else if (user.password === password) {
+        res.status(200).json({ success: true });
+      } else {
+        res.status(200).json({ success: false });
+      }
+    } catch (error) {
+      res.status(400).json({ error: error.message });
+    }
+  };

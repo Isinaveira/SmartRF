@@ -26,7 +26,7 @@ export class UsersService {
 
   // Editar un usuario
   editUser(dni: string, user: User): Observable<any> {
-    return this.http.put(this.url+ "/" + dni, user);
+    return this.http.put(this.url+ "/edit/" + dni, user);
   }
 
   // Metodo para obtener usuarios
@@ -42,6 +42,10 @@ export class UsersService {
   // Metodo para borrar usuarios
   deleteUser(dni: string): Observable<any> {
     return this.http.delete(this.url+ "/" + dni);
+  }
+  checkUser(dni: string, password: string): Observable<any> {
+    const url = `${this.url}/check/${dni}/${password}`;
+    return this.http.put(url,{});
   }
   
 }

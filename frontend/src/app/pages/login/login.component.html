@@ -7,15 +7,17 @@
         <form class="form" [formGroup]="loginForm" (submit)="checkLogin()">
             <div class="form-group">
                 <label for="username">DNI</label>
-                <input type="text" name="username" id="username" required maxlength="9">
+                <!-- Use formControlName to bind the input to the form control -->
+                <input type="text" id="username" formControlName="username" required maxlength="9">
             </div>
             <div class="form-group">
                 <label for="password">Password</label>
-                <input type="password" name="password" id="password" required>
+                <!-- Use formControlName to bind the input to the form control -->
+                <input type="password" id="password" formControlName="password" required>
             </div>
             <div class="button-group">
                 <button type="submit">Submit</button>
-                <button type="reset" >Reset</button>
+                <button type="reset" (click)="resetForm()">Reset</button>
             </div>
         </form>
     </div>
