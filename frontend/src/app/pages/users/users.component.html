@@ -1,39 +1,61 @@
 <app-navbar></app-navbar>
 <div class="users-container" [ngClass]="themeService.getCurrentTheme()">
     <div class="form-container" >
+
+       
         <form form [formGroup]="userForm" (ngSubmit)="addUser()">
+        
             <div class="form-fields">
                 <div class="form-group">
-                    <label for="name">Nombre y apellidos</label>
+                    <label for="name">Name and surname</label>
                     <input type="text" id="name" formControlName="name">
                 </div>
+
+                @if(isEditing){
+                    <div class="form-group">
+                        <label for="dni">DNI</label>
+                        <input type="text" id="dni" formControlName="dni" pattern="\d{8}[A-Za-z]" maxlength="9" readonly>
+                    </div>  
+                } @else {
                 <div class="form-group">
                     <label for="dni">DNI</label>
-                    <input type="text" id="dni" formControlName="dni" pattern="\d{8}[A-Za-z]" title="Por favor, introduce un DNI válido (8 números seguidos de una letra)">
-                </div>                
+                    <input type="text" id="dni" formControlName="dni" pattern="\d{8}[A-Za-z]" maxlength="9">
+                </div> 
+            }               
                 <div class="form-group">
                     <label for="email">Email</label>
-                    <input type="text" id="email" formControlName="email">
+                    <input type="email" id="email" formControlName="email">
                 </div>
                 <div class="form-group">
                     <label for="role">Role</label>
                     <select id="role" formControlName="role">
+                        <option disabled selected value="">User Role</option>
                         <option value="user">User</option>
                         <option value="admin">Admin</option>
                     </select>
-                </div>                
+                </div>        
                 <div class="form-group">
-                    <label for="department">Departamento</label>
+                    <label for="department">Department</label>
                     <input type="text" id="department" formControlName="department">
                 </div>
                 <div class="form-group">
-                    <label for="password">Contraseña</label>
-                    <input type="text" id="password" formControlName="password">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" formControlName="password">
                 </div>
             </div>
             <div class="form-controllers">
-                <button type="submit">Enviar</button>
-                <button type="clear">Limpiar</button>
+                
+                @if(isEditing) {
+                
+                <input type="reset" (click)="isEditing=false" value="Back">
+                <input type="submit" value="Update">
+
+                } @else {
+
+                <input type="submit" value="Add">
+
+                }
+                <input type="reset" value="Reset">
             </div>
         </form>
     </div>
@@ -48,12 +70,16 @@
                     <span>{{user.dni}}</span>
                     <span>{{user.email}}</span>
                     <span>{{user.role}}</span>
-                    
+                    <button  class="edit-button" (click)="editUser(user)">Edit</button>
+
                 </div>
+
             </div>
             
         }
     </div>
-</div>
+
+
+ 
 
  

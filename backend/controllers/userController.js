@@ -18,13 +18,14 @@ exports.createUser = async (req, res) => {
 
     try {
   
-      let user = await User.findOne({ dni: req.params.dni }, req.body, { new: true })
+      let user = await User.findOne({ dni: req.params.dni })
   
       if (!user) {
         res.status(404).json({ msg: 'No se ha encontrado el user en la BD, intentelo de nuevo.' })
-      }
+      }else if(user){
   
       res.json(user);
+      }
   
     } catch (error) {
       console.log(error);
