@@ -47,15 +47,15 @@
                 
                 @if(isEditing) {
                 
-                <input type="reset" (click)="isEditing=false" value="Back">
+                <input type="reset" value="Back" (click)="clearForm()">
                 <input type="submit" value="Update">
 
                 } @else {
 
                 <input type="submit" value="Add">
-
-                }
                 <input type="reset" value="Reset">
+                }
+          
             </div>
         </form>
     </div>
@@ -71,6 +71,7 @@
                     <span>{{user.email}}</span>
                     <span>{{user.role}}</span>
                     <button  class="edit-button" (click)="editUser(user)">Edit</button>
+                    <button calss="delete-button" (click)="deleteUser(user)">Delete</button>
 
                 </div>
 
