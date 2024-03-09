@@ -122,7 +122,7 @@ export class UsersComponent  {
 }
 }
 
-
+ // Editar campos de un usuario excepto el DNI
 editUser(user: User) {
 
     this.isEditing = true;
@@ -139,6 +139,27 @@ editUser(user: User) {
   
 
 }
+
+  //  Eliminar un usuario y recargar la pagina
+deleteUser(user: User) {
+
+  this.usersService.deleteUser(user.dni).subscribe(data => {
+    
+    alert('User ' + user.name + ' was removed');
+    location.reload();
+  }, error => {
+    console.log(error)
+  })
+}
   
+
+clearForm(){
+
+  
+  this.userForm.reset();
+  this.isEditing = false;
+
+
+}
   
 }
