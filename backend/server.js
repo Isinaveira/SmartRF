@@ -20,15 +20,15 @@ mongoose
   .catch((err) => console.error('Error al conectar a MongoDB:', err));
 
 // MQTT Setup
-const brokerUrl = 'mqtt://your-broker-url'; // Replace with your MQTT broker URL
+const brokerUrl = 'mqtt://192.168.1.42:1883'; // Replace with your MQTT broker URL
 const options = {
-  clientId: 'your-client-id', // Replace with a unique client ID
-  username: 'your-username', // Replace with your MQTT broker username (if required)
-  password: 'your-password', // Replace with your MQTT broker password (if required)
+  clientId: '1222', // Replace with a unique client ID
+  //username: 'your-username', // Replace with your MQTT broker username (if required)
+  //password: 'your-password', // Replace with your MQTT broker password (if required)
 };
 const client = mqtt.connect(brokerUrl, options);
 
-const mqttTopic = 'your/mqtt/topic'; // Replace with the MQTT topic you want to subscribe to
+const mqttTopic = 'prueba'; // Replace with the MQTT topic you want to subscribe to
 
 // Subscribe to the MQTT topic
 client.subscribe(mqttTopic);
