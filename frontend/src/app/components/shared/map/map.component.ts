@@ -33,10 +33,10 @@ export class MapComponent implements OnInit{
 
     this.devices.forEach(dispositivo => {
       const properties = {
-        lat: dispositivo.coordenadas.lat,
-        lng: dispositivo.coordenadas.lng,
-        nombre: dispositivo.id_dispositivo,
-        estado: dispositivo.estado
+        lat: dispositivo.coordinates.lat,
+        lng: dispositivo.coordinates.lng,
+        nombre: dispositivo._id,
+        estado: dispositivo.state
       } // Ajusta según tu estructura de datos
       
       // Crea un marcador en el mapa

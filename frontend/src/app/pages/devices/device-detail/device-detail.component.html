@@ -1,17 +1,22 @@
 <app-navbar></app-navbar>
 <div class="device-detail-container">
     <div class="info-container">
-        {{device.id_dispositivo}}
-        {{device.estado}}
-        {{device.coordenadas}}
-        {{device.fecha_ultima_lectura}}
-        {{device.lecturas}}
+        {{device._id}}
+        {{device.state}}
+        {{device.coordinates}}
+        {{device.last_lectureAt}}
     </div>
     <form class="parametrization-measurements-form">
         
 
     </form>
 </div>
+
+
+
+
+
+
 <!--
     Parámetros para las mediciones: se programan como inputs en el formulario de detalle de los dispositivos
     y se pretende hacer un post al backend para que lance la medida. 

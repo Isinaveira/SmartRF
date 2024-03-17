@@ -17,9 +17,6 @@ export class DeviceDetailComponent {
 
   ngOnInit(){
    const current_id = this.location.path().split("/").pop();
-    if (current_id != undefined)
-      this.device = this.dataService.devices.filter(d => (d.id_dispositivo == parseInt(current_id)))[0];
-  
-    console.log(this.device);
+    
   }
 }

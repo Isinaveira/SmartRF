@@ -5,10 +5,7 @@ import { CommonModule } from '@angular/common';
 import { NavbarComponent } from '@/components/shared/navbar/navbar.component';
 import { ThemeService } from '@/services/theme.service';
 import { MapComponent } from '@/components/shared/map/map.component';
-
-
-
-
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -20,8 +17,17 @@ import { MapComponent } from '@/components/shared/map/map.component';
 
 export class HomeComponent {
 
-  constructor(public themeService: ThemeService) {}
+  routes = {
+    devices : 'devices',
+    users: 'users',
+    alerts: 'alerts',
+    constellations: 'constellations'
+  }
+
+  constructor(public themeService: ThemeService, public router: Router) {}
   
 
-
+  goTo(url: string){
+    this.router.navigate([url]);
+  }
 }

@@ -1,17 +1,17 @@
 <app-navbar></app-navbar>
 <div class="devices-container">
     <div class="devices-list">
-        @for(device of devices; track device.id_dispositivo){
-            <div class="device-container" (click)="openDeviceDetail(device.id_dispositivo)">
+        @for(device of devices; track device._id){
+            <div class="device-container" (click)="openDeviceDetail(device._id)">
                 <p class="info-data">
-                    Id dispositivo: {{device.id_dispositivo}}
+                    Id dispositivo: {{device._id}}
                 </p>
                 <div class="info-data">
-                    Estado: <div [ngClass]="isActive(device.estado)"></div>
+                    Estado: <div [ngClass]="isActive(device.state)"></div>
                     
                 </div>
                 <p class="info-data">
-                    Última lectura: {{generateTime(device.fecha_ultima_lectura)}}
+                    Última lectura: {{generateTime(device.last_lectureAt)}}
                 </p>
             </div>
         }
