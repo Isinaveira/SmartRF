@@ -34,10 +34,19 @@ const options = {
 };
 const client = mqtt.connect(brokerUrl, options);
 
-const mqttTopic = 'prueba'; // Replace with the MQTT topic you want to subscribe to
+const mqttTopics = {
+  prueba: {
+    topic: 'prueba',
+    message: ''
+  },
+  configuration: {
+    topic: 'config',
+    message: ''
+  }
+}; // Replace with the MQTT topic you want to subscribe to
 
 // Subscribe to the MQTT topic
-client.subscribe(mqttTopic);
+client.subscribe(mqttTopics.prueba.topic);
 
 // Handle incoming MQTT messages
 client.on('message', (receivedTopic, message) => {

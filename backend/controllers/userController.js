@@ -4,16 +4,15 @@ const User = require('../models/user');
 exports.createUser = async (req, res) => {
     try {
       console.log(req.body);
-      const newuser = new User(req.body);
-      await newuser.save();
-      res.json(newuser);
+      const newUser = new User(req.body);
+      await newUser.save();
+      res.json(newUser);
     } catch (error) {
       res.status(400).json({ error: error.message });
     }
   };
 
-  // Metodo para obtener un usuario
-
+  // Método para obtener un usuario
   exports.getUser = async (req, res) => {
 
     try {
@@ -21,7 +20,7 @@ exports.createUser = async (req, res) => {
       let user = await User.findOne({ dni: req.params.dni })
   
       if (!user) {
-        res.status(404).json({ msg: 'No se ha encontrado el user en la BD, intentelo de nuevo.' })
+        res.status(404).json({ msg: 'No se ha encontrado el user en la BD, inténtelo de nuevo.' })
       }else if(user){
   
       res.json(user);
@@ -45,7 +44,7 @@ exports.createUser = async (req, res) => {
     }
   };
   
-  // Update a todo by ID
+  // Update all by ID
   exports.updateUser = async (req, res) => {
     try {
       const user = await User.findOneAndUpdate({ dni: req.params.dni }, req.body, { new: true });
@@ -55,7 +54,7 @@ exports.createUser = async (req, res) => {
     }
   };
   
-  // Delete a todo by ID
+  // Delete all by ID
   exports.deleteUser = async (req, res) => {
     try {
       const user = await User.findOneAndDelete({ dni: req.params.dni });
@@ -68,7 +67,6 @@ exports.createUser = async (req, res) => {
   exports.checkUser = async (req, res) => {
     try {
       const { dni, password } = req.params;
-  
       // Replace the following line with your actual logic to check user in the database
       const user = await User.findOne({ dni: dni });
       
