@@ -58,7 +58,7 @@ client.on('connect', () => {
 
 // Handle MQTT disconnection events
 client.on('close', () => {
-  console.log('Disconnected from MQTT broker');
+  //console.log('Disconnected from MQTT broker');
 });
 io.on('connection', (socket) => {
   console.log('A user connected');
