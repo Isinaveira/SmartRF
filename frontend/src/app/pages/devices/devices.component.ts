@@ -6,6 +6,7 @@ import { NavbarComponent } from '@/components/shared/navbar/navbar.component';
 import { Device } from '@/models/device.model';
 import { DataService } from '@/services/data.service';
 import { Router } from '@angular/router';
+import { DevicesService } from '@/services/devices.service';
 
 @Component({
   selector: 'app-devices',
@@ -32,25 +33,25 @@ export class DevicesComponent {
     timeZone: 'UTC'
   };
 
-  constructor( public dataService: DataService, private router: Router) {}
+  constructor( public devicesService: DevicesService, private router: Router) {}
 
   ngOnInit(){
-   this.devices = this.dataService.devices;
+   this.devices = this.devicesService.devices;
    console.log(this.devices)
   }
 
-  generateTime(fechaOriginal: string): string {
+  generateTime(date: string): string {
     // Lógica para formatear la fecha
-    const fecha = moment(fechaOriginal);
-    return fecha.format('DD/MM/YYYY HH:mm:ss');
+    return moment(date).format('DD/MM/YYYY HH:mm:ss');
   }
 
-  isActive(estado: String){
+
+  isActive(estado: string){
     console.log(estado == 'activo');
     return (estado == 'activo')? 'active' : 'inactive';
   }
 
-  openDeviceDetail(id: number){
+  openDeviceDetail(id: string){
     this.router.navigate(["devices/"+id])
   }
  }

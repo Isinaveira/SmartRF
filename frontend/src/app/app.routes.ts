@@ -6,6 +6,8 @@ import { DeviceDetailComponent } from '@/pages/devices/device-detail/device-deta
 import { UsersComponent } from '@/pages/users/users.component';
 import { ProfileComponent } from '@/pages/profile/profile.component';
 import { AlertsComponent } from '@/pages/alerts/alerts.component';
+import { ConstellationsComponent } from './pages/constellations/constellations.component';
+import { ConstellationsDetailComponent } from './pages/constellations/constellations-detail/constellations-detail.component';
 export const routes: Routes = [
     {path: '', redirectTo: '/login', pathMatch: 'full'},
     {path: 'login', pathMatch: 'full', component: LoginComponent},
@@ -14,5 +16,7 @@ export const routes: Routes = [
     {path: 'home', pathMatch: 'full', component: HomeComponent},
     {path: 'users', pathMatch: 'full', component: UsersComponent},
     {path: 'profile', pathMatch: 'full', component: ProfileComponent},
-    {path: 'alerts', pathMatch: 'full', component: AlertsComponent}
+    {path: 'alerts', pathMatch: 'full', component: AlertsComponent},
+    {path: 'constellations', pathMatch: 'full', component: ConstellationsComponent},
+    {path: 'constellations/:id', pathMatch: 'full', component: ConstellationsDetailComponent}
 ];

@@ -1,3 +1,4 @@
+
 <app-navbar></app-navbar>
 <div class="users-container" [ngClass]="themeService.getCurrentTheme()">
     <div class="form-container" >
@@ -46,14 +47,11 @@
             <div class="form-controllers">
                 
                 @if(isEditing) {
-                
-                <input type="reset" value="Back" (click)="clearForm()">
-                <input type="submit" value="Update">
-
-                } @else {
-
-                <input type="submit" value="Add">
-                <input type="reset" value="Reset">
+                    <button type="reset" (click)="clearForm()"><i class="material-icons">reset</i></button>
+                    <button type="submit"><i class="material-icons">refresh</i></button>
+                }@else {
+                    <button class="save-button" type="submit"><i class="material-icons">save</i></button>
+                    <button class="delete-button" type="reset"><i class="material-icons">clear</i></button>
                 }
           
             </div>
@@ -66,17 +64,26 @@
                     <div class="circle"></div>
                 </div>
                 <div class="info-user">
-                    <span>{{user.name}}</span>
-                    <span>{{user.dni}}</span>
-                    <span>{{user.email}}</span>
-                    <span>{{user.role}}</span>
-                    <button  class="edit-button" (click)="editUser(user)">Edit</button>
-                    <button calss="delete-button" (click)="deleteUser(user)">Delete</button>
-
+                    <div class="username">
+                        {{user.name}}
+                    </div>
+                    <div class="user-data">
+                        <div class="user-info-field">
+                            <span class="material-symbols-outlined">id_card</span>{{user.dni}}
+                        </div>
+                        <div class="user-info-field">
+                            <span class="material-icons">mail</span>{{user.email}}
+                        </div>
+                        <div class="user-info-field">
+                            <span class="material-icons">badge</span>{{user.role}}                    
+                        </div>
+                    </div>
                 </div>
-
-            </div>
-            
+                <div class="user-actions">
+                    <button  class="edit-button" (click)="editUser(user)"><i class="material-icons">edit</i></button>
+                    <button class="delete-button" (click)="deleteUser(user)"><i class="material-icons">delete</i></button>
+                </div>
+            </div>           
         }
     </div>
 

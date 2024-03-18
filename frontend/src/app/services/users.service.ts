@@ -13,12 +13,7 @@ export class UsersService {
   url = "http://localhost:3000/users"
   constructor(private http: HttpClient) {
 
-   }
-
-   
-
-
-  
+   }  
   // Metodo para crear usuarios
   saveUser(user: User): Observable<any> {
     return this.http.post(this.url, user);
