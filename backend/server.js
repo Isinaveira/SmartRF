@@ -2,7 +2,6 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const mqtt = require('mqtt'); // Import the MQTT library
 const http = require('http');
 const app = express();
 const PORT = process.env.PORT || 3000;

@@ -1,7 +1,7 @@
 const mqtt = require('mqtt');
 
 const setupClient = () => {
-  const brokerUrl = 'mqtt://192.168.1.103:1883';
+  const brokerUrl = 'mqtt://192.168.1.140:1883';
   const options = {
     clientId: '1222',
   };
