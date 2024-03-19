@@ -34,7 +34,12 @@
     filter: blur(8px); 
     z-index: -1; 
 }
+.section-card:hover{
+    color: white;
+    background-color: black;
+}
 .section-card{
+    cursor: pointer;
     height: 200px;
     width: 150px;
     border-radius: 10px;

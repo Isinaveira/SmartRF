@@ -36,3 +36,6 @@
     background-color: black;
     color: white;
 }
+.constellation-card:hover{
+    cursor:pointer;
+}
