@@ -1,0 +1,32 @@
+<app-navbar></app-navbar>
+<div class="constellations-container">
+  <div class="section-description">
+    <h1 class="section-title">Constellations</h1>
+    <p>
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid,
+      repudiandae ratione dolorem veritatis corporis debitis et ut eveniet neque
+      nihil iste cupiditate dolore ipsum, quasi reprehenderit cum officiis eius
+      id.
+    </p>
+  </div>
+  <div class="constellations-list">
+    @for(constellation of constellations; track constellation._id){
+        <div class="constellation-card" (click)="goTo(constellation._id)">
+            <div class="constellation-info">
+                <div class="constellation-data">
+                    <h1>{{$index+1}}</h1>
+                </div>
+                <div class="constellation-data">
+                    <h3>{{constellation.name}}</h3>
+                </div>
+                <div class="constellation-data">
+                    Created At: {{generateTime(constellation.createdAt)}}
+                </div>
+                <div class="constellation-data">
+                    Devices: {{getNumberOfDevicesInConstellation(constellation._id)}}
+                </div>
+            </div>
+        </div>
+    }
+  </div>
+</div>

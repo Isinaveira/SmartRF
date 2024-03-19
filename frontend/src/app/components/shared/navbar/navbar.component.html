@@ -1,0 +1,37 @@
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+   
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link"  routerLink="/home">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/devices">Devices</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/users">Users</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link"routerLink="/alerts">Alerts</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link"routerLink="/constellations">Constellations</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" (click)="showAboutMessage()">About</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id=" dark-mode-toggle" (click)="toggleTheme()">Dark mode</a>
+          </li>         
+      </ul>
+      <ul>
+        <li class="nav-item ms-auto ">
+            <a class="nav-link" routerLink="/profile">
+              <i class="fa-regular fa-user"></i>&nbsp;Perfil
+            </a>
+        </li> 
+      </ul>      
+      </div>
+    </div>
+  </nav>

@@ -1,0 +1,20 @@
+<app-navbar></app-navbar>
+<div class="devices-container">
+    <div class="devices-list">
+        @for(device of devices; track device._id){
+            <div class="device-container" (click)="openDeviceDetail(device._id)">
+                <p class="info-data">
+                    Id dispositivo: {{device._id}}
+                </p>
+                <div class="info-data">
+                    Estado: <div [ngClass]="isActive(device.state)"></div>
+                    
+                </div>
+                <p class="info-data">
+                    Última lectura: {{generateTime(device.last_lectureAt)}}
+                </p>
+            </div>
+        }
+    </div>
+    <app-map class="map-container" [devices]="devices"></app-map>
+</div>

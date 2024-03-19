@@ -1,0 +1,29 @@
+<app-navbar></app-navbar>
+<div class="device-detail-container">
+    <div class="info-container">
+        {{device._id}}
+        {{device.state}}
+        {{device.coordinates}}
+        {{device.last_lectureAt}}
+    </div>
+    <form class="parametrization-measurements-form">
+        
+
+    </form>
+</div>
+
+
+
+
+
+
+<!--
+    Parámetros para las mediciones: se programan como inputs en el formulario de detalle de los dispositivos
+    y se pretende hacer un post al backend para que lance la medida. 
+    
+    Además, se pretende guardar esta configuración de medición para un sistema en concreto. 
+    - Frecuencia inicial: input de tipo number
+    - Anchos de banda: multiples opciones predefinidas
+    - Numero de puntos de la estimación: potencias de 2  (P.ej: 1024,2048, 4096, ...)
+    - Umbral de ruido 
+-->

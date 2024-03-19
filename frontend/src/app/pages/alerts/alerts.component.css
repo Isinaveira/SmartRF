@@ -1,0 +1,21 @@
+/* alerts.component.css */
+:host {
+    display: block; /* Ensure this component is a block element */
+    background-color: #f0f0f0; /* Set your desired background color */
+    padding: 20px; /* Add padding for better visibility */
+  }
+  
+  /* Style for each message container */
+  .message-container {
+    margin-bottom: 20px; /* Add margin between messages */
+    padding: 10px;
+    background-color: #ffffff; /* Set background color for each message container */
+    border: 1px solid #ccc; /* Add a border for better separation */
+  }
+  
+  /* Style for message content */
+  .message-content {
+    margin: 0;
+    color: #333; /* Set text color */
+  }
+  

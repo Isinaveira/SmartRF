@@ -1,0 +1,16 @@
+li {
+  list-style: none;
+}
+.nav-link {
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+}
+.nav-link:hover{
+  color: white;
+}
+.nav-item:hover{
+  background-color: rgb(177, 177, 177);
+  color: white;
+}
+
