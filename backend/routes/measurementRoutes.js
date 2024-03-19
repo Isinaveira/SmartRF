@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const measurementController = require('../controllers/measurementsController');
+const measurementsController = require('../controllers/measurementsController');
 
 router.post('/measurements', measurementsController.startMeasurement);                  // Crear un usuario
 //router.get('/measurements', measurementsController.getConstellations);                     // Listar todas los usuarios de la BD

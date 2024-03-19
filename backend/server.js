@@ -7,8 +7,11 @@ const http = require('http');
 const app = express();
 const PORT = process.env.PORT || 3000;
 const userRoutes = require("./routes/userRoutes");
+const deviceRoutes = require("./routes/deviceRoutes");
+const measurementRoutes = require("./routes/measurementRoutes");
+const constellationRoutes = require("./routes/constellationRoutes");
 const socketIo = require('socket.io'); // Import the socket.io library
-
+const client = require('./mqttClient');
 // Middleware
 app.use(cors());
 app.use(bodyParser.json());
@@ -28,11 +31,13 @@ mongoose
   .catch((err) => console.error('Error al conectar a MongoDB:', err));
 
 // MQTT Setup
-const brokerUrl = 'mqtt://192.168.1.102:1883'; // Replace with your MQTT broker URL
+const brokerUrl = 'mqtt://192.168.1.103:1883'; // Replace with your MQTT broker URL
 const options = {
   clientId: '1222', // Replace with a unique client ID
 };
-const client = mqtt.connect(brokerUrl, options);
+
+
+
 
 const mqttTopics = {
   prueba: {
