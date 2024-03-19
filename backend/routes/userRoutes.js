@@ -2,7 +2,6 @@
 const express = require('express');
 const router = express.Router();
 const userController = require('../controllers/userController');
-const measurementController = require('../controllers/measurementsController');
 
 
 router.post('/users', userController.createUser);                  // Crear un usuario
