@@ -17,12 +17,12 @@ import { CookieService } from 'ngx-cookie-service';
 export class LoginComponent {
 
   loginForm: FormGroup;
-  cookieValue: string;
+  // cookieValue: string;
   // token: string;
 
  
 
-  constructor(private router: Router, public usersService: UsersService, private formBuilder: FormBuilder,private cookieService: CookieService ){
+  constructor(private router: Router, public usersService: UsersService, private formBuilder: FormBuilder ){
 
     this.loginForm = this.formBuilder.group({
       username: ['', [Validators.required, Validators.maxLength(9)]],
@@ -30,16 +30,15 @@ export class LoginComponent {
     });
     // this.token  = "";
 
-    this.cookieService.set('Test', 'Hello World');
-    this.cookieValue = this.cookieService.get('Test');
+    // this.cookieService.set('Test', 'Hello World');
+    // this.cookieValue = this.cookieService.get('Test');
   }
 
 
   checkLogin() {
     const dni = this.loginForm.get('username')?.value;
     const password = this.loginForm.get('password')?.value;
-    console.log(dni);
-    console.log(password);
+  
     if (dni && password) {
       this.usersService.checkUser(dni, password).subscribe({
         next: (data: any) => {

@@ -103,7 +103,7 @@ export class UsersComponent  {
         this.userForm.reset();
       },
       error: (error) => {
-        console.log(error);
+       // console.log(error);
 
         // Si no existe en la base de datos lo creamos
         console.log(USER);
@@ -133,7 +133,7 @@ editUser(user: User) {
         email: data.email,
         role: data.role,
         department: data.department,
-        password: data.password,
+        password: null,
       });
     });
   
