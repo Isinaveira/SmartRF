@@ -15,6 +15,7 @@
                 <h5>Alerts</h5>
             </div>
         </div>
+        @if(isAdmin){
         <div class="section-card" (click)="goTo(routes.users)">
             <div class="icon-section">
                 <i class="material-icons">person</i>
@@ -23,6 +24,7 @@
                 <h5>Users</h5>
             </div>
         </div>
+    }
         <div class="section-card" (click)="goTo(routes.devices)">
             <div class="icon-section">
                 <i class="material-icons">vibration</i>

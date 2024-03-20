@@ -46,6 +46,7 @@ form{
 .form-group{
     display: flex;
     flex-direction: column;
+    color: white;
 }
 label{
     font-size: 1.2rem;
