@@ -10,28 +10,24 @@ import { CookieService } from 'ngx-cookie-service';
   selector: 'app-login',
   standalone: true,
   imports: [ReactiveFormsModule, CommonModule],
-  providers: [CookieService],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+  styleUrl: './login.component.css',
+  providers: [CookieService],
 })
 export class LoginComponent {
 
   loginForm: FormGroup;
-  // cookieValue: string;
-  // token: string;
+  
 
- 
+  constructor(private router: Router, public usersService: UsersService, private formBuilder: FormBuilder, private cookieService: CookieService){
 
-  constructor(private router: Router, public usersService: UsersService, private formBuilder: FormBuilder ){
 
+    
     this.loginForm = this.formBuilder.group({
       username: ['', [Validators.required, Validators.maxLength(9)]],
       password: ['', Validators.required],
     });
-    // this.token  = "";
-
-    // this.cookieService.set('Test', 'Hello World');
-    // this.cookieValue = this.cookieService.get('Test');
+    
   }
 
 
@@ -43,15 +39,28 @@ export class LoginComponent {
       this.usersService.checkUser(dni, password).subscribe({
         next: (data: any) => {
           if (data.success === true) {
-            alert('Successful Login!');
-
-           
-            //  this.token=data.token;
-            //  this.cookie.set("token",this.token);
-            
 
 
-            this.router.navigate(['/home']);
+            this.usersService.getUser(dni).subscribe({
+              next: (userData: any) => {
+                const expirationDate = new Date();
+                expirationDate.setTime(expirationDate.getTime() + (15 * 60 * 1000)); // 15 minutos
+                this.cookieService.set('myCookie', userData.role, expirationDate);
+
+                console.log(this.cookieService.get('myCookie'))
+                alert('Successful Login!');
+                this.router.navigate(['/home']);
+
+              },
+              error: (error) => {
+
+                console.log(error);
+                alert('An error occurred while fetching user data');
+                this.loginForm.reset();
+
+              }
+            });
+
           } else if (data.success === false) {
             alert('Incorrect password');
             this.loginForm.reset();
@@ -74,26 +83,5 @@ export class LoginComponent {
   resetForm() {
     this.loginForm.reset();
   }
-
-
-  // getIdToken(){
-
-  //   return this.cookie.get("token");
-  // }
-
-  // isLogged(){
-
-  //   return this.cookie.get("token");
-  // }
-
-  // logout(){
-
-  //   this.token="";
-  //   this.cookie.set("token",this.token);
-  //   this.router.navigate(['/login']);
-
-
-  // }
-
 
 }

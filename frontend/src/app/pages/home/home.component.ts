@@ -6,6 +6,7 @@ import { NavbarComponent } from '@/components/shared/navbar/navbar.component';
 import { ThemeService } from '@/services/theme.service';
 import { MapComponent } from '@/components/shared/map/map.component';
 import { Router } from '@angular/router';
+import { AuthService } from '@/services/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -17,6 +18,9 @@ import { Router } from '@angular/router';
 
 export class HomeComponent {
 
+
+  isAdmin: boolean = false;
+
   routes = {
     devices : 'devices',
     users: 'users',
@@ -24,9 +28,15 @@ export class HomeComponent {
     constellations: 'constellations'
   }
 
-  constructor(public themeService: ThemeService, public router: Router) {}
+  constructor(public themeService: ThemeService, public router: Router, private authService: AuthService) {}
   
-
+  ngOnInit() {
+    // Verificar si el usuario es administrador al inicializar el componente
+    const userData = this.authService.getSessionData();
+    if(userData === 'admin'){
+    this.isAdmin =  true;
+    }
+  }
   goTo(url: string){
     this.router.navigate([url]);
   }
