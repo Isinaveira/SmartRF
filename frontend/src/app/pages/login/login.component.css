@@ -51,8 +51,6 @@ label{
     font-size: 1.2rem;
 }
 
-
-
 .button-group{
     display: flex;
     align-items: center;
@@ -74,9 +72,7 @@ label{
     }
   }
 
-
-
-  /*
-  Faltan los media query ---> responsive Moviles PWA 
-  
-  */
+.button-gradient{
+    background: -webkit-linear-gradient(left, rgb(255, 170, 0), rgb(255, 106, 0));
+    color:white;
+}

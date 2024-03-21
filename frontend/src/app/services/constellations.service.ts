@@ -57,9 +57,10 @@ export class ConstellationsService {
   constructor() { }
 
   //obtener constelaciones
-
+  getConstellations(){}
   //editar constelaciones
-
+  editConstellations(){}
   //eliminar constelaciones
-
+  deleteConstellations(){}
+  
 }
