@@ -32,10 +32,12 @@
 .constellation-card{
     padding: 10px;
     height: 200px;
-    width: 150;
+    width: 200px;
     background-color: black;
     color: white;
 }
-.constellation-card:hover{
-    cursor:pointer;
+.constellation-card:hover {
+    color: black;
+    background: -webkit-linear-gradient(left,rgb(255, 170, 0), rgb(249, 97, 2));
+    cursor: pointer;
 }
