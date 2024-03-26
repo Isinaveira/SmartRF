@@ -50,8 +50,8 @@
 
 .section-card{
     cursor: pointer;
-    height: 200px;
-    width: 150px;
+    height: 300px;
+    width: 225px;
     border-radius: 10px;
     background-color: white;
     box-shadow: 2px 2px 10px rgb(182, 181, 181);

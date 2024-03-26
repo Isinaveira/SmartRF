@@ -69,7 +69,8 @@
      
 }
 .form-container {
-    width: 40%;
+    width: 30%;
+    max-width: 500px;
     display: flex;
     flex-direction: column;
     border-radius: 10px;

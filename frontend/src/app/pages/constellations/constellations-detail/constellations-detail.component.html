@@ -1,29 +1,30 @@
 <app-navbar></app-navbar>
 <div class="form-container">
   <div class="form-title">
-      <h2>Formulario de Medición</h2>
+      <h2>Measurement Form</h2>
   </div>  
   <form form >
     <div class="form-field">
         <label for="type">Tipo de Medición:</label><br />
         <select id="type" name="type" (change)="onChange($event)" required>
-          <option value="basic">Básico</option>
-          <option value="advanced">Avanzado</option>
+          <option value="predefined">Predefined</option>
+          <option value="basic">Basic</option>
+          <option value="advanced">Advanced</option>
         </select>
     </div>
     <div class="form-field">
-        <label for="decision_type">Tipo de Decisión:</label><br />
-        <select id="decision_type" name="decision_type" required>
-          <option value="1">Estimación a la Máxima</option>
-          <option value="2">Estimación a la Media</option>
+        <label for="decision_type">Decision type:</label><br />
+        <select id="mode" name="mode" required>
+          <option value="1">Estimation to the maximum</option>
+          <option value="2">Estimation to the minimum</option>
         </select>
     </div>
     <div class="form-field">
-        <label for="freq_inicial">Frecuencia Inicial (MHz):</label><br />
+        <label for="freqInit">Initial Frequency (MHz):</label><br />
         <input
           type="number"
-          id="freq_inicial"
-          name="freq_inicial"
+          id="freqIni"
+          name="freqIni"
           min="25"
           max="1750"
           step="any"
@@ -31,11 +32,11 @@
         />
     </div>
     <div class="form-field">
-        <label for="freq_final">Frecuencia Final (MHz):</label><br />
+        <label for="freqFinal">Final Frequency (MHz):</label><br />
         <input
           type="number"
-          id="freq_final"
-          name="freq_final"
+          id="freqFinal"
+          name="freqFinal"
           min="25"
           max="1750"
           step="any"
@@ -43,11 +44,11 @@
         />
     </div>
     <div class="form-field">
-        <label for="ancho_de_canal">Ancho de Canal (kHz):</label><br />
+        <label for="bandwidth">Bandwidth (kHz):</label><br />
         <input
           type="number"
-          id="ancho_de_canal"
-          name="ancho_de_canal"
+          id="bandwidth"
+          name="bandwidth"
           min="0"
           step="any"
           required
@@ -55,23 +56,23 @@
     </div>
     <div id="advancedOptions" style="display: none">
       <br>
-      <h4>Opciones Avanzadas</h4>
+      <h4>Advanced Options</h4>
       <div class="form-field">
-          <label for="umbral">Umbral:</label><br />
-          <input type="text" id="umbral" name="umbral" required /><br /><br />
+          <label for="threshold">Threshold:</label><br />
+          <input type="text" id="threshold" name="threshold" required /><br /><br />
       </div>
       <div class="form-field">
-          <label for="tiempo_captura_ventana">Tiempo de Captura de Ventana:</label>
+          <label for="t_capt">Window capture time:</label>
           <input
             type="text"
-            id="tiempo_captura_ventana"
-            name="tiempo_captura_ventana"
+            id="t_capt"
+            name="t_capt"
             required
           />
       </div>
       <div class="form-field">
-          <label for="numero_pts_ventana">Número de Puntos de Ventana:</label><br />
-          <select id="numero_pts_ventana" name="numero_pts_ventana" required>
+          <label for="nfft">Number of window points:</label><br />
+          <select id="nfft" name="nfft" required>
             <option value="1024">1024</option>
             <option value="2048">2048</option>
             <option value="4096">4096</option>
@@ -82,26 +83,8 @@
           </select>
       </div>
     </div>
-    <div class="form-fields">
-        <label for="inicio_medicion">Inicio de Medición:</label><br />
-        <input
-          type="datetime-local"
-          id="inicio_medicion"
-          name="inicio_medicion"
-          required
-        />
-    </div>
-    <div class="form-fields">
-        <label for="fin_medicion">Fin de Medición:</label><br />
-        <input
-          type="datetime-local"
-          id="fin_medicion"
-          name="fin_medicion"
-          required
-        />
-    </div>
-    <div class="form-controllers">
-        <button type="submit" class="init-button">Iniciar medición</button>
+        <div class="form-controllers">
+        <button type="submit" class="init-button">Start</button>
         <button type="reset" class="clear-button">Clear</button>
     </div>
   </form>
