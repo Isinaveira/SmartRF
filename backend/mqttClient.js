@@ -12,7 +12,15 @@ const setupClient = () => {
 
 
   client.publishMessage = function(topic, message) {
-    return this.publish(topic, message);
+    return new Promise((resolve, reject) => {
+      this.publish(topic, message, (err) => {
+        if(err){
+          reject(err);
+        }else{
+          resolve();
+        }
+      })
+    })
   };
 
   return client
