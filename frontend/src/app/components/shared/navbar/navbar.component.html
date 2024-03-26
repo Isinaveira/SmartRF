@@ -9,9 +9,11 @@
           <li class="nav-item">
             <a class="nav-link" routerLink="/devices">Devices</a>
           </li>
+          @if(isAdmin){
           <li class="nav-item">
             <a class="nav-link" routerLink="/users">Users</a>
           </li>
+        }
           <li class="nav-item">
             <a class="nav-link"routerLink="/alerts">Alerts</a>
           </li>
@@ -26,10 +28,12 @@
           </li>         
       </ul>
       <ul>
+        @if (isAdmin) {<li>Admin View</li>}
+        @else if (!isAdmin) {<li>User View</li>}
+        
         <li class="nav-item ms-auto ">
-            <a class="nav-link" routerLink="/profile">
-              <i class="fa-regular fa-user"></i>&nbsp;Perfil
-            </a>
+          <button (click)="logout()">Logout</button>
+
         </li> 
       </ul>      
       </div>

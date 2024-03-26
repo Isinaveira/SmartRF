@@ -16,12 +16,11 @@ SmartRF es una plataforma diseñada para explorar y utilizar de manera eficiente
 ## Instalación
 
 1. Clona este repositorio: `git clone https://github.com/tu_usuario/SmartRF.git`
-2. Instala las dependencias necesarias.
-3. Ejecuta `smartRF.py` para iniciar la aplicación.
+2. cd Backend && npm install.
+3. npm run start 
+4. cd Frontend && npm install.
+5. ng serve -o 
 
-## Uso
-
-Para comenzar, ejecuta la aplicación y sigue las instrucciones en la interfaz de usuario. Aquí hay un ejemplo básico:
 
 
 

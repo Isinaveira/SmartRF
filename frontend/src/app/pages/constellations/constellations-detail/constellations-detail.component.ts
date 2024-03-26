@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-
+import { NavbarComponent } from '@/components/shared/navbar/navbar.component';
 @Component({
   selector: 'app-constellations-detail',
   standalone: true,
-  imports: [],
+  imports: [NavbarComponent],
   templateUrl: './constellations-detail.component.html',
   styleUrl: './constellations-detail.component.css'
 })

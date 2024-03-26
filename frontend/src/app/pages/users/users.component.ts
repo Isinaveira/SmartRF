@@ -26,7 +26,13 @@ export class UsersComponent  {
   isEditing = false;
   
 
-  constructor(public themeService: ThemeService, public usersService: UsersService, private aRouter: ActivatedRoute, private fb: FormBuilder, public router: Router) {
+  constructor(
+    public themeService: ThemeService, 
+    public usersService: UsersService, 
+    private aRouter: ActivatedRoute, 
+    private fb: FormBuilder, 
+    public router: Router
+  ) {
 
    
     this.userForm = this.fb.group({

@@ -47,11 +47,11 @@
             <div class="form-controllers">
                 
                 @if(isEditing) {
-                    <button type="reset" (click)="clearForm()"><i class="material-icons">reset</i></button>
-                    <button type="submit"><i class="material-icons">refresh</i></button>
+                    <button class="delete-button" type="reset" (click)="clearForm()"><i class="material-icons">clear</i></button>
+                    <button class="save-button" type="submit"><i class="material-icons">refresh</i></button>
                 }@else {
-                    <button class="save-button" type="submit"><i class="material-icons">save</i></button>
                     <button class="delete-button" type="reset"><i class="material-icons">clear</i></button>
+                    <button class="save-button" type="submit"><i class="material-icons">save</i></button>
                 }
           
             </div>
