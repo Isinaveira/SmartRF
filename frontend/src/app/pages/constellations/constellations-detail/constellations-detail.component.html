@@ -5,7 +5,7 @@
   </div>  
   <form form >
     <div class="form-field">
-        <label for="type">Tipo de Medición:</label><br />
+        <label for="type">Tipo de Medición:</label>
         <select id="type" name="type" (change)="onChange($event)" required>
           <option value="predefined">Predefined</option>
           <option value="basic">Basic</option>
@@ -13,14 +13,14 @@
         </select>
     </div>
     <div class="form-field">
-        <label for="decision_type">Decision type:</label><br />
+        <label for="decision_type">Decision type:</label>
         <select id="mode" name="mode" required>
           <option value="1">Estimation to the maximum</option>
           <option value="2">Estimation to the minimum</option>
         </select>
     </div>
     <div class="form-field">
-        <label for="freqInit">Initial Frequency (MHz):</label><br />
+        <label for="freqInit">Initial Frequency (MHz):</label>
         <input
           type="number"
           id="freqIni"
@@ -32,7 +32,7 @@
         />
     </div>
     <div class="form-field">
-        <label for="freqFinal">Final Frequency (MHz):</label><br />
+        <label for="freqFinal">Final Frequency (MHz):</label>
         <input
           type="number"
           id="freqFinal"
@@ -44,7 +44,7 @@
         />
     </div>
     <div class="form-field">
-        <label for="bandwidth">Bandwidth (kHz):</label><br />
+        <label for="bandwidth">Bandwidth (kHz):</label>
         <input
           type="number"
           id="bandwidth"
@@ -58,8 +58,8 @@
       <br>
       <h4>Advanced Options</h4>
       <div class="form-field">
-          <label for="threshold">Threshold:</label><br />
-          <input type="text" id="threshold" name="threshold" required /><br /><br />
+          <label for="threshold">Threshold:</label>
+          <input type="text" id="threshold" name="threshold" required />
       </div>
       <div class="form-field">
           <label for="t_capt">Window capture time:</label>
@@ -71,7 +71,7 @@
           />
       </div>
       <div class="form-field">
-          <label for="nfft">Number of window points:</label><br />
+          <label for="nfft">Number of window points:</label>
           <select id="nfft" name="nfft" required>
             <option value="1024">1024</option>
             <option value="2048">2048</option>
