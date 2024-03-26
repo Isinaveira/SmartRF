@@ -34,14 +34,24 @@
     filter: blur(8px); 
     z-index: -1; 
 }
-.section-card:hover{
-    color: white;
+.section-card:hover {
     background-color: black;
+    background-image: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.7));
 }
+
+.section-card:hover .section-name h5,
+.section-card:hover .icon-section i {
+    background: -webkit-linear-gradient(left,rgb(255, 170, 0), rgb(249, 97, 2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+}
+
 .section-card{
     cursor: pointer;
-    height: 200px;
-    width: 150px;
+    height: 300px;
+    width: 225px;
     border-radius: 10px;
     background-color: white;
     box-shadow: 2px 2px 10px rgb(182, 181, 181);

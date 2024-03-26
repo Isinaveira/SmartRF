@@ -1,7 +1,8 @@
 .form-container{
     padding:10px;
     width: 30%;
-    height: 85%;
+    max-width: 600px;
+    height: auto;
     display: flex;
     flex-direction: column;
     margin: 20px;
@@ -33,8 +34,8 @@ select {
     color: white;
     background: transparent;
 }
-select:hover{
-
+select option{
+    color: black;
 }
 input {
     color: white;

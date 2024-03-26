@@ -16,9 +16,6 @@ input{
   height: 2rem;
   font-size: 1.2rem;
   border: solid rgb(172, 172, 172) 2px;
-  border-top: none;
-  border-left: none;
-  border-right: none;
   background-color: rgba(255,255,255,0.05);
 }
 
@@ -62,6 +59,16 @@ span {
   background-color: rgb(50,50,50);
 }
 
+.section-title{
+  font-size: 3rem;
+  text-align: center;
+  font-weight: bold;
+  background: -webkit-linear-gradient(left,rgb(255, 170, 0), rgb(249, 97, 2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
 
 
 
