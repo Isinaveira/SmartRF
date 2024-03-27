@@ -3,7 +3,7 @@ const router = express.Router();
 const measurementsController = require('../controllers/measurementsController');
 
 router.post('/start', measurementsController.startMeasurement);
-router.post('/stop', measurementsController.startMeasurement);                 // Iniciar medición y guardarla
+router.post('/stop', measurementsController.stopMeasurement);                 // Iniciar medición y guardarla
 router.get('', measurementsController.getMeasurements);
 router.get(':/id', measurementsController.getMeasurement);
                      // Listar todas los usuarios de la BD

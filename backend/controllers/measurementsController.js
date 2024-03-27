@@ -60,7 +60,7 @@ exports.getMeasurements = async (req, res) => {
         });
 };
 
-exports.getMeasurements = async (req, res) => {
+exports.getMeasurement = async (req, res) => {
     Measurement.findById(req.params.id)
         .then(measurement => {
             // Log the retrieved users to the console
