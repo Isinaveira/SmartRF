@@ -1,29 +1,33 @@
-//mqttClient.js
+const mqtt = require("mqtt");
 
-const mqtt = require('mqtt');
+const brokerUrl = "mqtt://127.0.0.1:1883"; // Adjust as per your MQTT broker configuration
 
-const setupClient = () => {
-  const brokerUrl = 'mqtt://127.0.0.1:1883';
-  const options = {
-    clientId: '1222',
-  };
-  
-  const client = mqtt.connect(brokerUrl, options);
+const client = mqtt.connect(brokerUrl);
 
+//EVENTS HANDLERS
 
-  client.publishMessage = function(topic, message) {
-    return new Promise((resolve, reject) => {
-      this.publish(topic, message, (err) => {
-        if(err){
-          reject(err);
-        }else{
-          resolve();
-        }
-      })
-    })
-  };
+// Connection to broker
 
-  return client
-};
+client.on("connect", () => {
+  console.log("Connected to MQTT broker");
+});
 
-module.exports = setupClient();
+//Reconnection to broker
+
+client.on("reconnect", () => {
+  console.log("Reconnected to the MQTT broker");
+});
+
+//Error Handling
+
+client.on("error", (error) => {
+  console.error("MQTT client error:", error);
+});
+
+//Message receiver handler
+
+client.on("message", (topic, message) => {
+  console.log(`Received message on topic ${topic}: ${message.toString()}`);
+});
+
+module.exports = client;
