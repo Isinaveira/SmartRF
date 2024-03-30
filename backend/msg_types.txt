@@ -1,0 +1,38 @@
+There are three types of topic:
+
+                    1º. Broadcast: All stations within range will receive and process the message
+                    2º. Constellation_X: directed to all the membern that belong to a certain constellation
+                    3º. Station_X: directed to a specific staion 
+
+
+
+
+
+This will be the default arquitecture of the payload inside the mqtt message directed to the stations:
+
+
+
+{
+  "topic": "",
+
+  "msg_type": "",
+  
+  "message": {
+
+      }
+}
+    
+
+
+Within each type of topic we will define different types of messages.
+
+
+
+==========================> Broadcast <==========================
+
+
+
+
+
+
+
