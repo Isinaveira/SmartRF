@@ -13,13 +13,11 @@ This will be the default arquitecture of the payload inside the mqtt message dir
 
 
 {
-  "topic": "",
-
   "msg_type": "",
 
   "message": {
 
-      }
+      },
 }
 
 This is the model that the messages, that intend to change the parameters, have to follow: 

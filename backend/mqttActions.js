@@ -42,16 +42,25 @@ function clientSubscriber(topics) {
 
 // Allows to publish to a specific topic
 
-function clientPublisher(message, topic) {
-  if (typeof message !== "string" || !message.trim()) {
-    throw new Error("Message must be a non-empty string");
+function clientPublisher(msg_type, message, topic) {
+  if (typeof msg_type !== "string" || !msg_type.trim()) {
+    throw new Error("msg_type must be a non-empty string");
+  }
+
+  if (!message || typeof message !== "object" || Array.isArray(message)) {
+    throw new Error("message must be a non-null object");
   }
 
   if (typeof topic !== "string" || !topic.trim()) {
-    throw new Error("Topic must be a non-empty string");
+    throw new Error("topic must be a non-empty string");
   }
 
-  mqttClient.publish(topic, message, (err) => {
+  const jsonMessage = {
+    msg_type: msg_type,
+    message: message,
+  };
+
+  mqttClient.publish(topic, JSON.stringify(jsonMessage), (err) => {
     if (err) {
       console.error("Error publishing message:", err);
     } else {

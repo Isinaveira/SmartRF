@@ -31,7 +31,7 @@ exports.startMeasurement = async (req, res) => {
     const { topic, message } = req.body;
 
     // Call clientPublisher function with topic and message
-    clientPublisher(JSON.stringify(message), topic);
+    clientPublisher(0, JSON.stringify(message), topic);
 
     // Save the measurement to the database
     const measurement = new Measurement({
