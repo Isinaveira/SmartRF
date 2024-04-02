@@ -14,7 +14,7 @@ export const routes: Routes = [
     { path: 'home', pathMatch: 'full', component: HomeComponent, canActivate: [authGuard] },
     { path: 'devices', pathMatch: 'full', component: DevicesComponent, canActivate: [authGuard] },
     { path: 'devices/:id', pathMatch: 'full', component: DeviceDetailComponent, canActivate: [authGuard] },
-    { path: 'users', pathMatch: 'full', component: UsersComponent, canActivate: [authGuard, adminGuard] },
+    { path: 'users', pathMatch: 'full', component: UsersComponent , canActivate: [authGuard, adminGuard] },
     { path: 'alerts', pathMatch: 'full', component: AlertsComponent, canActivate: [authGuard] },
     { path: 'constellations', pathMatch: 'full', component: ConstellationsComponent, canActivate: [authGuard] },
     { path: 'constellations/:id', pathMatch: 'full', component: ConstellationsDetailComponent, canActivate: [authGuard] },
