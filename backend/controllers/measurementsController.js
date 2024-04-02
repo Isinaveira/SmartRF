@@ -23,8 +23,14 @@ const {
 }
 } */
 
+/*
+  Endpoint to start measurement to any topic, depending on request body.message:(msg_type: 0 or 1)
+                1º If no measurement specification in message content => the station will start measuring with default parameters
+                2º If specification in body, must send the parameters to the station(s)
+                MUST CHECK NAME FIELD ON THE BODY TO SEE IF THERE ARE DEFAULT PARAMETERS IN DATABASE, IF EXISTS THEN RETREIVE AND IF NOT SAVE. ALSO THERE WILL BE A USER ADDON.
+                
+*/
 exports.startMeasurement = async (req, res) => {
-  // Log the received request body to the console
   console.log("Received measurement data:", req.body);
 
   try {
@@ -52,6 +58,11 @@ exports.startMeasurement = async (req, res) => {
   }
 };
 
+/*
+  Endpoint to stop measurement to any topic, depending on request:(msg_type: 2). NO BODY NEEDED ! WILL BE IGNORED
+
+*/
+
 exports.stopMeasurement = async (req, res) => {
   client
     .publishMessage("stop", JSON.stringify("stop"))
@@ -73,21 +84,6 @@ exports.stopMeasurement = async (req, res) => {
       res
         .status(500)
         .json({ status: 500, message: "Error interno del servidor" });
-    });
-};
-
-exports.getMeasurements = async (req, res) => {
-  Measurement.find(/* select * from users where users.dni = '123' */)
-    .then((measurements) => {
-      // Log the retrieved users to the console
-      console.log(measurements);
-
-      // Send a JSON response with the retrieved users
-      res.json(measurements);
-    })
-    .catch((error) => {
-      // Send a 500 Internal Server Error response with the error message
-      res.status(500).json({ error: error.message });
     });
 };
 
