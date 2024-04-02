@@ -32,7 +32,16 @@ client.on("error", (error) => {
 */
 
 client.on("message", (topic, message) => {
+  let msg = JSON.stringify(message);
   console.log(`Received message on topic ${topic}: ${message.toString()}`);
+  if (topic == "sample") {
+    console.log(msg.sample);
+  }
+  if (topic == "hello") {
+    const resultString = "Station_pub_" + msg.id_device;
+    client.subscribe(resultString);
+    console.log("Subscribed to:", resultString);
+  }
 });
 
 module.exports = client;

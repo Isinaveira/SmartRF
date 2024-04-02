@@ -47,7 +47,7 @@ function clientPublisher(msg_type, message, topic) {
     throw new Error("msg_type must be a non-empty string");
   }
 
-  if (!message || typeof message !== "object" || Array.isArray(message)) {
+  if (!message || Array.isArray(message)) {
     throw new Error("message must be a non-null object");
   }
 

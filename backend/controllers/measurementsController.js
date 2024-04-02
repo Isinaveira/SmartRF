@@ -7,7 +7,16 @@ const {
 } = require("../mqttActions");
 
 //This function modifies the current parameter of the stations measurements
-
+let default_message = {
+  name: "Measurement 1",
+  freqIni: 1000,
+  freqFinal: 2000,
+  threshold: "high",
+  t_capt: 10,
+  chanBW: 20,
+  nfft: 1024,
+  mode: "continuous",
+};
 //Example of what should be received in the request body!============>
 /* {
 "topic": "measurement_topic",
@@ -36,13 +45,22 @@ exports.startMeasurement = async (req, res) => {
   try {
     const { topic, message } = req.body;
 
-    // Call clientPublisher function with topic and message
-    clientPublisher(0, JSON.stringify(message), topic);
-
+    if (!message || Object.keys(message).length === 0) {
+      clientPublisher("0", JSON.stringify(" "), topic);
+    } else {
+      clientPublisher("1", JSON.stringify(message), topic);
+    }
+    let measurement = null;
     // Save the measurement to the database
-    const measurement = new Measurement({
-      ...message,
-    });
+    if (!message || Object.keys(message).length === 0) {
+      measurement = new Measurement({
+        ...default_message,
+      });
+    } else {
+      measurement = new Measurement({
+        ...message,
+      });
+    }
     const savedMeasurement = await measurement.save();
 
     // Send a JSON response with the newly created measurement
@@ -64,27 +82,64 @@ exports.startMeasurement = async (req, res) => {
 */
 
 exports.stopMeasurement = async (req, res) => {
-  client
-    .publishMessage("stop", JSON.stringify("stop"))
-    .then(() => {
-      const measurement = new Measurement({
-        ...req.body,
-      });
-      return measurement.save(); // Devolver la promesa aquí
-    })
-    .then((savedMeasurement) => {
-      // Send a JSON response with the newly created measurement
-      res.status(201).json(savedMeasurement); // 201 status code for resource created
-    })
-    .catch((error) => {
-      // Log the error to the console
-      console.error("Error starting measurement:", error);
+  try {
+    const { topic, message } = req.body;
+    console.log("Stopping measurement to: ", topic);
+    clientPublisher("2", JSON.stringify(" "), topic);
+    res.status(201).json(topic);
+  } catch (error) {
+    // Log the error to the console
+    console.error("Error stopping measurement:", error);
 
-      // Send a 500 Internal Server Error response with an error message
-      res
-        .status(500)
-        .json({ status: 500, message: "Error interno del servidor" });
-    });
+    // Send a 500 Internal Server Error response with an error message
+    res
+      .status(500)
+      .json({ status: 500, message: "Error interno del servidor" });
+  }
+};
+
+/*
+  Endpoint to join a specific constellation
+
+*/
+exports.joinConstellation = async (req, res) => {
+  try {
+    const { topic, message } = req.body;
+    console.log("Sending join constellation to: ", topic);
+    console.log("The constellation is: ", message.constellation);
+    console.log("Directed to: ", message.stations);
+    clientPublisher("3", JSON.stringify(message), topic);
+    res.status(201).json(message);
+  } catch (error) {
+    // Log the error to the console
+    console.error("Error sending join constellation:", error);
+
+    // Send a 500 Internal Server Error response with an error message
+    res
+      .status(500)
+      .json({ status: 500, message: "Error interno del servidor" });
+  }
+};
+
+/*
+  Endpoint to change the default parameters of the stations
+
+*/
+exports.changeDefoParameters = async (req, res) => {
+  try {
+    const { topic, message } = req.body;
+    console.log("Setting new default parameters: ", message);
+    clientPublisher("4", JSON.stringify(message), topic);
+    res.status(201).json(message);
+  } catch (error) {
+    // Log the error to the console
+    console.error("Error sending setting new default parameters:", error);
+
+    // Send a 500 Internal Server Error response with an error message
+    res
+      .status(500)
+      .json({ status: 500, message: "Error interno del servidor" });
+  }
 };
 
 exports.getMeasurement = async (req, res) => {
