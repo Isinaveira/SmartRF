@@ -3,7 +3,7 @@
   <div class="form-title">
       <h2>Formulario de Medición</h2>
   </div>  
-  <form form >
+  <form [formGroup]="measurementForm" (ngSubmit)="onSubmit()">
     <div class="form-field">
         <label for="type">Tipo de Medición:</label><br />
         <select id="type" name="type" (change)="onChange($event)" required>
