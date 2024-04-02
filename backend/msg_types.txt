@@ -1,0 +1,101 @@
+There are three types of topic:
+
+                    1º. Broadcast: All stations within range will receive and process the message
+                    2º. Constellation_X: directed to all the membern that belong to a certain constellation
+                    3º. Station_X: directed to a specific staion 
+
+
+
+
+
+This will be the default arquitecture of the payload inside the mqtt message directed to the stations:
+
+
+
+{
+  "msg_type": "",
+
+  "message": {
+
+      },
+}
+
+This is the model that the messages, that intend to change the parameters, have to follow: 
+
+                              "message": {
+                                "name": "Measurement 1",
+                                "freqIni": 1000,
+                                "freqFinal": 2000,
+                                "threshold": "high",
+                                "t_capt": 10,
+                                "chanBW": 20,
+                                "nfft": 1024,
+                                "mode": "continuous"
+                              }
+
+!!!!!!!!!!!!!!!!!!!!HERE WE SHOULD DEFINE WHAT EACH PARAMATER DOES!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+Within each type of topic we will define different message types.
+
+
+
+==========================> Broadcast <==========================
+
+topic = "broadcast"
+
+==> Types of messages
+
+  1º ===> msg_type = "0" : Stations within reach will start measuring with the default parameters. The message field will be ignored
+
+  2º ===> msg_type = "1" : Stations within reach will start measuring with the parameters defined in the message field
+
+  3º ===> msg_type = "2" : Stations within reach will stop measuring. The message field will be ignored
+
+  4º ===> msg_type = "3" : Stations within reach will join the specified constellation. This means that all that receive this message will adopt this as their new constellation, even if they already had one. 
+
+  "message": {
+      "constellation" : "x"
+  }
+
+  5º ===> msg_type = "4" : Stations within reach will change their default measuring parameters. The message field will be the same as the msg_type = "1"
+
+  ======================> Constellation_X <======================
+  
+  topic = "constellation_x"
+
+  ==> Types of messages
+
+  1º ===> msg_type = "0" : Stations within reach, that belong to the constellation, will start measuring with the defaul parameters. The message field will be ignored
+
+  2º ===> msg_type = "1" : Stations within reach, that belong to the constellation, will start measuring with the parameters defined in the message field
+
+  3º ===> msg_type = "2" : Stations within reach, that belong to the constellation, will stop measuring. The message field will be ignored
+
+  4º ===> msg_type = "3" : Stations within reach, that belong to the constellation, will join the specified constellation. This means that they will leave their current constellation and join the new one.
+
+  "message": {
+      "constellation" : "x"
+  }
+
+  5º ===> msg_type = "4" : Stations within reach, that belong to the constellation, will change their default measuring parameters. The message field will be the same as the msg_type = "1"
+
+  ==========================> Station_X <==========================
+
+  topic = "station_x"
+  
+  ==> Types of messages
+  
+    1º ===> msg_type = "0" : The station will start measuring with the defaul parameters. The message field will be ignored
+  
+    2º ===> msg_type = "1" : The station will start measuring with the parameters defined in the message field
+  
+    3º ===> msg_type = "2" : The station will stop measuring. The message field will be ignored
+  
+    4º ===> msg_type = "3" : The station will join the specified constellation. This means that if the station already had one, it will forgone the past one for the new one. 
+  
+    "message": {
+        "constellation" : "x"
+    }
+
+    5º ===> msg_type = "4" : The station will change their default measuring parameters. The message field will be the same as the msg_type = "1"
