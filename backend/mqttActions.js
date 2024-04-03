@@ -19,6 +19,7 @@ function setupSocketIO(server) {
   });
   mqttClient.on("message", (topic, message) => {
     const msg = message.toString();
+    console.log(`Received message on topic ${topic}: ${message.toString()}`);
     io.emit("mqtt_message", { message: msg });
     console.log(`Emitted MQTT message: ${msg}`);
   });
