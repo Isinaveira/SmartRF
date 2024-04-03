@@ -15,7 +15,6 @@ function setupSocketIO(server) {
 
   io.on("connection", (socket) => {
     console.log("A user connected");
-
     // Additional socket.io event handling goes here
   });
 

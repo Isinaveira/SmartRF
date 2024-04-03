@@ -1,5 +1,4 @@
-const io = require("./server");
-const socketIo = require("socket.io");
+import { io } from "./server.js";
 
 function emitMessage(message) {
   io.emit("mqtt_message", {
