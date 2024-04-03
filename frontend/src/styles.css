@@ -25,6 +25,8 @@ button {
   font-size: 1.3rem;
   border-radius: 10px;
   border: none;
+  background: -webkit-linear-gradient(left, rgb(255, 170, 0), rgb(255, 106, 0));
+  color:white;
 }
 button:hover{
   background-color: #ff924a;
@@ -34,6 +36,10 @@ button:hover{
   animation: glowAnimation 3s infinite alternate;
 
 }
+
+
+
+
 
 span {
   display: block;

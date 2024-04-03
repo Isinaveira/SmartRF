@@ -23,11 +23,6 @@ export class ConstellationsComponent implements OnInit {
       this.constellations = this.constellationsService.constellations;
   }
 
-  getDevicesOfConstellation( id_constellation: string){
-    let devices_list = this.constellations
-                           .filter( c => (c._id == id_constellation))[0].devices_list
-
-  }
   getNumberOfDevicesInConstellation(id_constellation:string){
     return this.constellations
                .filter(c => (c._id == id_constellation))[0].devices_list.length

@@ -1,91 +1,12 @@
 <app-navbar></app-navbar>
-<div class="form-container">
-  <div class="form-title">
-      <h2>Measurement Form</h2>
-  </div>  
-  <form [formGroup]="measurementForm" (ngSubmit)="onSubmit()">
-    <div class="form-field">
-        <label for="type">Tipo de Medición:</label>
-        <select id="type" name="type" (change)="onChange($event)" required>
-          <option value="predefined">Predefined</option>
-          <option value="basic">Basic</option>
-          <option value="advanced">Advanced</option>
-        </select>
-    </div>
-    <div class="form-field">
-        <label for="decision_type">Decision type:</label>
-        <select id="mode" name="mode" required>
-          <option value="1">Estimation to the maximum</option>
-          <option value="2">Estimation to the minimum</option>
-        </select>
-    </div>
-    <div class="form-field">
-        <label for="freqInit">Initial Frequency (MHz):</label>
-        <input
-          type="number"
-          id="freqIni"
-          name="freqIni"
-          min="25"
-          max="1750"
-          step="any"
-          required
-        />
-    </div>
-    <div class="form-field">
-        <label for="freqFinal">Final Frequency (MHz):</label>
-        <input
-          type="number"
-          id="freqFinal"
-          name="freqFinal"
-          min="25"
-          max="1750"
-          step="any"
-          required
-        />
-    </div>
-    <div class="form-field">
-        <label for="bandwidth">Bandwidth (kHz):</label>
-        <input
-          type="number"
-          id="bandwidth"
-          name="bandwidth"
-          min="0"
-          step="any"
-          required
-        />
-    </div>
-    <div id="advancedOptions" style="display: none">
-      <br>
-      <h4>Advanced Options</h4>
-      <div class="form-field">
-          <label for="threshold">Threshold:</label>
-          <input type="text" id="threshold" name="threshold" required />
-      </div>
-      <div class="form-field">
-          <label for="t_capt">Window capture time:</label>
-          <input
-            type="text"
-            id="t_capt"
-            name="t_capt"
-            required
-          />
-      </div>
-      <div class="form-field">
-          <label for="nfft">Number of window points:</label>
-          <select id="nfft" name="nfft" required>
-            <option value="1024">1024</option>
-            <option value="2048">2048</option>
-            <option value="4096">4096</option>
-            <option value="8192">8192</option>
-            <option value="16384">16384</option>
-            <option value="32768">32768</option>
-            <option value="65536">65536</option>
-          </select>
-      </div>
-    </div>
-        <div class="form-controllers">
-        <button type="submit" class="init-button">Start</button>
-        <button type="reset" class="clear-button">Clear</button>
-    </div>
-  </form>
+<measurement-form [msg_type]="1"></measurement-form>
+
+<div class="devices-container">
+    @for(device of devices_list; track device){
+     <div class="device-card">
+        <span>id:{{device._id}}</span>
+        <span>status: {{device.state}}</span>
+        <span>coordinates: lng:{{device.coordinates.lng | number: '1.2-4'}}, lat:{{device.coordinates.lat | number: '1.2-4'}}</span> 
+     </div>
+    }
 </div>

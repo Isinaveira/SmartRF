@@ -1,5 +1,5 @@
 const mqtt = require("mqtt");
-
+const webSocket = require("./webSocketEmitter");
 const brokerUrl = "mqtt://127.0.0.1:1883"; // Adjust as per your MQTT broker configuration
 
 const client = mqtt.connect(brokerUrl);
@@ -40,8 +40,10 @@ client.on("message", (topic, message) => {
   if (topic == "hello") {
     const resultString = "Station_pub_" + msg.id_device;
     client.subscribe(resultString);
-    console.log("Subscribed to:", resultString
-    );
+    console.log("Subscribed to:", resultString);
+  } else {
+    webSocket.emitMessage(msg);
+    console.log(msg);
   }
 });
 
