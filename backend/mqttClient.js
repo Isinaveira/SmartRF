@@ -24,10 +24,25 @@ client.on("error", (error) => {
   console.error("MQTT client error:", error);
 });
 
-//Message receiver handler
+/*
+  MUST ADD FILTER TO CHECK FOR THE DIFFERENT TYPES OF MESSAGES 
+    1º If it is a "hello" message then it must subscribe to a new topic (a new station)
+    2ºIf it is a "sample" message the store it.
+                
+*/
 
 client.on("message", (topic, message) => {
+  let msg = JSON.stringify(message);
   console.log(`Received message on topic ${topic}: ${message.toString()}`);
+  if (topic == "sample") {
+    console.log(msg.sample);
+  }
+  if (topic == "hello") {
+    const resultString = "Station_pub_" + msg.id_device;
+    client.subscribe(resultString);
+    console.log("Subscribed to:", resultString
+    );
+  }
 });
 
 module.exports = client;

@@ -2,7 +2,7 @@ There are three types of topic:
 
                     1º. Broadcast: All stations within range will receive and process the message
                     2º. Constellation_X: directed to all the membern that belong to a certain constellation
-                    3º. Station_X: directed to a specific staion 
+                    3º. Station_X: directed to a specific station 
 
 
 
@@ -13,19 +13,16 @@ This will be the default arquitecture of the payload inside the mqtt message dir
 
 
 {
-  "topic": "",
-
   "msg_type": "",
 
   "message": {
 
-      }
+      },
 }
 
 This is the model that the messages, that intend to change the parameters, have to follow: 
 
                               "message": {
-                                "name": "Measurement 1",
                                 "freqIni": 1000,
                                 "freqFinal": 2000,
                                 "threshold": "high",
@@ -57,7 +54,8 @@ topic = "broadcast"
   4º ===> msg_type = "3" : Stations within reach will join the specified constellation. This means that all that receive this message will adopt this as their new constellation, even if they already had one. 
 
   "message": {
-      "constellation" : "x"
+      "constellation" : "x",
+      "stations": [1,2,3]
   }
 
   5º ===> msg_type = "4" : Stations within reach will change their default measuring parameters. The message field will be the same as the msg_type = "1"

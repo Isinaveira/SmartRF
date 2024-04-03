@@ -11,13 +11,13 @@ import { Measurement } from '@/models/measurement.model';
 export class MeasurementsService {
 
   measurements!: Measurement[];
-
+  url: string = "http://localhost:3000/measurements"
   constructor(private http: HttpClient) { }
 
   //iniciar medición
-  startMeasurement(){
-
-  };
+  startMeasurement(measurement: Measurement): Observable<any> {
+    return this.http.post(this.url, measurement);
+  }
   //para medición
   stopMeasurement(){};
   //obtener mediciones
