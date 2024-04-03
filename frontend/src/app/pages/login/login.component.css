@@ -31,6 +31,8 @@
 
 .logo-container{
     width: 30%;
+    padding: 10px;
+    min-width: 300px;
     height: 100%;
     display: flex;
     justify-content: center;
@@ -71,6 +73,7 @@
 .form-container {
     width: 30%;
     max-width: 500px;
+    min-width: 300px;
     display: flex;
     flex-direction: column;
     border-radius: 10px;

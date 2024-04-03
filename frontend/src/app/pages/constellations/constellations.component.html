@@ -12,7 +12,9 @@
       beyond.
     </p>
   </div>
+  
   <div class="constellations-list">
+    <button class="create-constellation-button"><span class="material-icons">add</span></button>
     @for(constellation of constellations; track constellation._id){
     <div class="constellation-card" (click)="goTo(constellation._id)">
       <div class="constellation-info">
