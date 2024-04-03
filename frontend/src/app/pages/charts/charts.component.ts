@@ -12,7 +12,7 @@ import { chartTune } from '@/models/chartTune.model';
 import { WebsocketService } from '@/services/websocket.service';
 
 
-import { DummyData } from './data'
+
 
 
 @Component({
@@ -30,28 +30,36 @@ import { DummyData } from './data'
 export class ChartsComponent {
 
 
- 
+  //Form
   max = -60;
   min = -120;
   step = 1;
   maxDate: string;
+  isRT: boolean = true;
   chartForm: FormGroup;
   value ='';
-  
+
+  //Socket
   mqttMessages: any[] = []; // Array to store all MQTT messages
   maxMessages = 9;
 
-  isRT: boolean = true;
-
   
-    //Channels
-
+  //Channels
   channels: number[] = Array(10).fill(0); 
   total: number = 0;
-  testData: number[] = [1,0,1,0,1,0,1,0,1,0];
-  testData1: number[] = [];
-  k = 0;
-  
+  testData: number[] = []; // pruebas generar datos
+  k = 0; // pruebas generar datos
+  samplesPerChannel: { name: string; value: number; }[] = [];  
+
+
+  //Charts 
+  dataNC = this.samplesPerChannel;
+  viewNC: [number, number] = [2000, 150];
+  animationsNC = true;
+  colorSchemeNC = "fire"
+  viewPie: [number, number] = [1500, 300];
+
+ 
 
 
   constructor(private fb: FormBuilder, private websocketService: WebsocketService) {
@@ -77,9 +85,9 @@ export class ChartsComponent {
   }
 
 
-
   ngOnInit(): void {
-  
+
+    this.initObjectChannels();
     this.generaDatos();
     this.websocketService.getMessageUpdates().subscribe(data => {
       // console.log('Received MQTT message:', data);
@@ -90,6 +98,22 @@ export class ChartsComponent {
     });
   }
 
+  
+  initObjectChannels() {
+    
+
+    for(let m=0; m<10; m++){
+
+        this.samplesPerChannel.push( {
+
+            name: `channel${m}`,
+            value: 0,
+
+        })
+
+    }
+  
+  }
 
   updateChart(data: number[]): void {
   
@@ -109,7 +133,7 @@ export class ChartsComponent {
          
         }
 
-        DummyData.DataEjemplo[j].value = (this.channels[j]/this.total)*100;
+        this.samplesPerChannel[j].value = (this.channels[j]/this.total)*100;
       }
     }
 
@@ -121,20 +145,11 @@ export class ChartsComponent {
   
    while(this.k<3){
      this.k++;
-     this.testData1 = Array.from({ length: 10 }, () => Math.random() > 0.5 ? 1 : 0);
-     this.updateChart(this.testData1);
+     this.testData = Array.from({ length: 10 }, () => Math.random() > 0.5 ? 1 : 0);
+     this.updateChart(this.testData);
      
    }
   }
-
-   dataNC = DummyData.DataEjemplo;
-   viewNC: [number, number] = [2000, 150];
-   animationsNC = true;
-   colorSchemeNC = "fire"
-   viewPie: [number, number] = [1500, 300];
-
-  
-
 
   setCustom(){
 
@@ -149,7 +164,7 @@ export class ChartsComponent {
       amplitudeTreshold: this.chartForm.get('amplitudeTreshold')?.value,
     };
 
-}
+  }
 
   setRT(){
 
@@ -165,45 +180,3 @@ export class ChartsComponent {
 
 
 
-/// Pruebas
-
-
-// Options for Line Chart
-
-  // dataLC = DummyData.annualWageSalary;
-  // viewLC: [number, number] = [700, 300];
-  // animationsLC = true;
-  // showGridLinesLC = true;
-  // legendLC = true;
-  // legendTitleLC = "Countries";
-  // roundDomainsLC = true;
-  // xAxisLC = true;
-  // yAxisLC = true;
-
-  // currencyFormatterLC(moneyAmount: any): string {
-  //   const currencyFormat = new Intl.NumberFormat("en-US", {
-  //     style: "currency",
-  //     currency: "USD",
-  //   });
-  //   return currencyFormat.format(moneyAmount);
-  // }
-
-  // dateFormatterLC(date: string): string {
-  //   const datePipe = new DatePipe("en-US");
-  //   let formatted = datePipe.transform(date);
-  //   return formatted ? formatted : date;
-  // }
- 
-  // Options for Number Cards
-  // dataNC = DummyData.highestAvgAnnualSalary;
-  // viewNC: [number, number] = [800, 150];
-  // animationsNC = true;
-  // colorSchemeNC = "fire";
-
-  // currencyFormatterNC(moneyAmount: any): string {
-  //   const currencyFormat = new Intl.NumberFormat("en-US", {
-  //     style: "currency",
-  //     currency: "USD",
-  //   });
-  //   return currencyFormat.format(moneyAmount.value);
-  // }
