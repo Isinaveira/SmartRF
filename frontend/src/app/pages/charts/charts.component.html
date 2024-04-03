@@ -1,0 +1,124 @@
+<app-navbar></app-navbar>
+
+<button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#staticBackdrop" aria-controls="staticBackdrop">
+  <div class="icon-section">
+    <i class="material-icons">tune</i>
+  </div>
+</button>
+
+<div class="offcanvas offcanvas-start" data-bs-backdrop="static" tabindex="-1" id="staticBackdrop" aria-labelledby="staticBackdropLabel">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="staticBackdropLabel">Configuration</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    <form [formGroup]="chartForm" (ngSubmit)="setCustom()">
+      
+      <div>
+        <label for="fecha_inicio">Date range:</label>
+        <div>
+         <label for="fecha_fin">Start date:</label>
+         <input type="date" min='2024-01-01' max="{{ maxDate }}" id="fecha_inicio" name="fecha_inicio" formControlName="startDate">
+        </div>
+        <div>
+         <label for="fecha_fin">Finish date:</label>
+         <input type="date" min='2024-01-01' max="{{ maxDate }}" id="fecha_fin" name="fecha_fin" formControlName="finishDate">
+        </div>
+      </div>
+      
+      <div>
+        <label for="anchoCanal">Channel bandwidth (MHz):</label>
+        <select name="anchoCanal" id="anchoCanal" formControlName="channelBW">
+          <option value="5">5</option>
+          <option value="10">10</option>
+          <option value="20">20</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="frecuencia">Frecuency (MHz):</label>
+        <!-- <input type="range" id="frecuencia" name="frecuencia" min="698" max="806" step="20"> -->
+        <mat-slider min="698" max="806">
+       
+          <input matSliderStartThumb [(ngModel)]="value" #sliderMin formControlName="startFreq"> 
+          <input matSliderEndThumb [(ngModel)]="value" #sliderMax formControlName="finishFreq">
+        </mat-slider>
+        <span>Start: {{sliderMin.value}}</span>  <span>Finish: {{sliderMax.value}}</span>
+        
+      </div>
+    
+      <div>        
+        <mat-card class="example-result-card">
+          <mat-card-content>       
+            <div class="example-label-container">
+              <label id="example-name-label" class="example-name-label">Amplitude treshold (dBm):</label>
+              <label class="example-value-label">{{slider.value}}</label>
+            </div>
+            <mat-slider class="example-margin" [max]="max" [min]="min" [step]="step">
+              <input matSliderThumb [(ngModel)]="value" #slider formControlName="amplitudeTreshold">
+            </mat-slider>
+          </mat-card-content>
+        </mat-card>
+        
+      </div>
+
+      <div class="form-controllers">  
+            <button class="set-button" type="submit">Set</button>
+            <button class="set-button" type="button" (click)="setRT()">RT</button>
+      </div>
+   
+    </form>
+    
+  </div>
+</div>
+
+<div>
+
+  <ngx-charts-number-card
+  [view]="viewNC"
+  [animations]="animationsNC"
+  [results]="dataNC"
+  [scheme]="colorSchemeNC"
+
+></ngx-charts-number-card>
+
+<ngx-charts-pie-grid 
+[results] = "dataNC" 
+[view] = "viewPie"
+[animations]="animationsNC"
+[scheme]="colorSchemeNC">
+</ngx-charts-pie-grid>
+</div>
+
+
+
+<!-- Pruebas -->
+<!-- <div>
+
+  <ngx-charts-number-card
+  [view]="viewNC"
+  [animations]="animationsNC"
+  [results]="dataNC"
+  [scheme]="colorSchemeNC"
+
+></ngx-charts-number-card>
+
+  <ngx-charts-line-chart
+    [results]="dataLC"
+    [view]="viewLC"
+    [animations]="animationsLC"
+    [showGridLines]="showGridLinesLC"
+    [legend]="legendLC"
+    [legendTitle]="legendTitleLC"
+    [roundDomains]="roundDomainsLC"
+    [xAxis]="true"
+    [yAxis]="true"
+   
+  ></ngx-charts-line-chart>
+</div>
+
+ 
+  [valueFormatting]="currencyFormatterNC"
+
+[yAxisTickFormatting]="currencyFormatterLC" 
+[xAxisTickFormatting]="dateFormatterLC" --> 

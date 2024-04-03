@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ThemeService } from '@/services/theme.service';
 import { NavbarComponent } from '@/components/shared/navbar/navbar.component';
 import { User } from '@/models/user.model';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, MaxValidator } from '@angular/forms';
 import { UsersService } from '@/services/users.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -24,6 +24,7 @@ export class UsersComponent  {
   userForm : FormGroup;
   dni: string | null;
   isEditing = false;
+  userdniUPPER: string = '';
   
 
   constructor(
@@ -38,8 +39,8 @@ export class UsersComponent  {
     this.userForm = this.fb.group({
 
       name: ['', Validators.required],
-      dni: ['', Validators.required],
-      email: ['', Validators.required],
+      dni: ['', Validators.required, Validators.maxLength(9)],
+      email: ['', Validators.required, Validators.email],
       role: ['', Validators.required],
       department: ['', Validators.required],
       password: ['', Validators.required],
