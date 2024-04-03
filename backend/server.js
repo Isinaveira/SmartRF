@@ -30,7 +30,7 @@ mongoose
 const server = http.createServer(app);
 
 // Setup MQTT and Socket.io
-const initial_topic = ["hello"];
+const initial_topic = ["station_sub_1"];
 
 clientSubscriber(initial_topic);
 

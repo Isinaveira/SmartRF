@@ -40,7 +40,8 @@ client.on("message", (topic, message) => {
   if (topic == "hello") {
     const resultString = "Station_pub_" + msg.id_device;
     client.subscribe(resultString);
-    console.log("Subscribed to:", resultString);
+    console.log("Subscribed to:", resultString
+    );
   }
 });
 
