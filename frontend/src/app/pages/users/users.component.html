@@ -4,7 +4,7 @@
     <div class="form-container" >
 
        
-        <form form [formGroup]="userForm" (ngSubmit)="addUser()">
+        <form [formGroup]="userForm" (ngSubmit)="addUser()">
         
             <div class="form-fields">
                 <div class="form-group">
@@ -20,7 +20,7 @@
                 } @else {
                 <div class="form-group">
                     <label for="dni">DNI</label>
-                    <input type="text" id="dni" formControlName="dni" pattern="\d{8}[A-Za-z]" maxlength="9">
+                    <input type="text" id="dni" formControlName="dni" pattern="\d{8}[A-Za-z]" maxlength="9" [ngModel]="userdniUPPER" (ngModelChange)="userdniUPPER = $event.toUpperCase()">
                 </div> 
             }               
                 <div class="form-group">
