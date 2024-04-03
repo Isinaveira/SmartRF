@@ -17,7 +17,11 @@ function setupSocketIO(server) {
     console.log("A user connected");
     // Additional socket.io event handling goes here
   });
-
+  mqttClient.on("message", (topic, message) => {
+    const msg = message.toString();
+    io.emit("mqtt_message", { message: msg });
+    console.log(`Emitted MQTT message: ${msg}`);
+  });
   return io;
 }
 
