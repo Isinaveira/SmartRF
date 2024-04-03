@@ -15,7 +15,12 @@ export class ChartsService {
 
 
 
-  getChartsMeasuresByDate(startDate: Date, finishDate: Date): Observable<any> {
-    return this.http.get(this.url + "/" + startDate + "/" + finishDate);
+  // getChartsMeasuresByDate(startDate: Date, finishDate: Date): Observable<any> {
+  //   return this.http.get(this.url + "/" + startDate + "/" + finishDate);
+  // }
+
+  getLastMeasureConf(): Observable <any> {
+
+    return this.http.get(this.url);
   }
 }

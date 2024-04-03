@@ -1,5 +1,4 @@
 const mqtt = require("mqtt");
-const webSocket = require("./webSocketEmitter");
 const brokerUrl = "mqtt://127.0.0.1:1883"; // Adjust as per your MQTT broker configuration
 
 const client = mqtt.connect(brokerUrl);

@@ -49,7 +49,8 @@ export class ChartsComponent {
   total: number = 0;
   testData: number[] = []; // pruebas generar datos
   k = 0; // pruebas generar datos
-  samplesPerChannel: { name: string; value: number; }[] = [];  
+  samplesPerChannel: { name: string; value: number; }[] = []; 
+  first = true; 
 
 
   //Charts 
@@ -87,22 +88,29 @@ export class ChartsComponent {
 
   ngOnInit(): void {
 
-    this.initObjectChannels();
-    this.generaDatos();
+   // this.generaDatos();
     this.websocketService.getMessageUpdates().subscribe(data => {
       // console.log('Received MQTT message:', data);
+    
+    if(this.first){
+    
+    this.first = false;
+    const num_channels = JSON.parse(data).length;
+    this.initObjectChannels(num_channels);
 
-      this.updateChart(data);
+    }
+
+    this.updateChart(JSON.parse(data));
 
 
     });
   }
 
   
-  initObjectChannels() {
+  initObjectChannels(num_channels: number) {
     
 
-    for(let m=0; m<10; m++){
+    for(let m=0; m<num_channels; m++){
 
         this.samplesPerChannel.push( {
 
@@ -128,28 +136,29 @@ export class ChartsComponent {
     for (let i = 0; i < this.mqttMessages.length; i++) {
       for (let j = 0; j < this.mqttMessages[i].length; j++) {
         if (this.mqttMessages[i][j] === 1) { 
-          console.log('Canal', j + 1, 'ocupado'); 
+   
           this.channels[j]++; 
          
         }
 
-        this.samplesPerChannel[j].value = (this.channels[j]/this.total)*100;
+        //this.samplesPerChannel[j].value = (this.channels[j]/this.total)*100;
+        this.samplesPerChannel[j].value = ((this.samplesPerChannel[j].value*(this.total - 1) + this.channels[j])/this.total)
       }
     }
 
-  console.log(this.total);
-    this.generaDatos();
+
+    //this.generaDatos();
    }
    
-   generaDatos(){
+  //  generaDatos(){
   
-   while(this.k<3){
-     this.k++;
-     this.testData = Array.from({ length: 10 }, () => Math.random() > 0.5 ? 1 : 0);
-     this.updateChart(this.testData);
+  //  while(this.k<3){
+  //    this.k++;
+  //    this.testData = Array.from({ length: 10 }, () => Math.random() > 0.5 ? 1 : 0);
+  //    this.updateChart(this.testData);
      
-   }
-  }
+  //  }
+  // }
 
   setCustom(){
 

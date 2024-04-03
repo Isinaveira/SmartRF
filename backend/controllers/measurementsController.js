@@ -143,18 +143,20 @@ exports.changeDefoParameters = async (req, res) => {
 };
 
 exports.getMeasurement = async (req, res) => {
-  Measurement.findById(req.params.id)
-    .then((measurement) => {
-      // Log the retrieved users to the console
-      console.log(measurement);
-
-      // Send a JSON response with the retrieved users
-      res.json(measurement);
-    })
-    .catch((error) => {
-      // Send a 500 Internal Server Error response with the error message
-      res.status(500).json({ error: error.message });
-    });
+    try {
+      let lastMeasureConf = await Measurement.findOne().sort({_id:-1});
+  
+      if (!lastMeasureConf) {
+        res.status(404).json({
+          msg: "No se ha encontrado en la BD, inténtelo de nuevo.",
+        });
+      } else if (lastMeasureConf) {
+        res.json(lastMeasureConf);
+      }
+    } catch (error) {
+      console.log(error);
+      res.status(500).send("Se ha producido un error en el servidor.");
+    }
 };
 
 
