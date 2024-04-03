@@ -30,9 +30,9 @@ mongoose
 const server = http.createServer(app);
 
 // Setup MQTT and Socket.io
-const initial_topics = ["prueba"];
+const initial_topic = ["station_sub_1"];
 
-clientSubscriber(initial_topics);
+clientSubscriber(initial_topic);
 
 const io = setupSocketIO(server);
 
@@ -50,3 +50,7 @@ app.listen(PORT, () => {
 server.listen(4000, () => {
   console.log("Websocket server running");
 });
+
+module.exports = {
+  io,
+};

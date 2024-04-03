@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { UsersService } from '@/services/users.service';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, PatternValidator } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { CookieService } from 'ngx-cookie-service';
 
@@ -17,6 +17,7 @@ import { CookieService } from 'ngx-cookie-service';
 export class LoginComponent {
 
   loginForm: FormGroup;
+  usernameUPPER : String = '';
   
 
   constructor(private router: Router, public usersService: UsersService, private formBuilder: FormBuilder, private cookieService: CookieService){
@@ -48,7 +49,7 @@ export class LoginComponent {
                 this.cookieService.set('myCookie', userData.role, expirationDate);
 
                 console.log(this.cookieService.get('myCookie'))
-                alert('Successful Login!');
+                // alert('Successful Login!');
                 this.router.navigate(['/home']);
 
               },

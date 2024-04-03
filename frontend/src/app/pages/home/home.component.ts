@@ -25,7 +25,8 @@ export class HomeComponent {
     devices : 'devices',
     users: 'users',
     alerts: 'alerts',
-    constellations: 'constellations'
+    constellations: 'constellations',
+    charts: 'charts'
   }
 
   constructor(public themeService: ThemeService, public router: Router, private authService: AuthService) {}
