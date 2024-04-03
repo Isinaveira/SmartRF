@@ -1,4 +1,4 @@
-import { io } from "./server.js";
+const io = require("./server.js");
 
 function emitMessage(message) {
   io.emit("mqtt_message", {
