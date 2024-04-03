@@ -50,3 +50,7 @@ app.listen(PORT, () => {
 server.listen(4000, () => {
   console.log("Websocket server running");
 });
+
+module.exports = {
+  io,
+};
