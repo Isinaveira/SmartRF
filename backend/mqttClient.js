@@ -31,7 +31,7 @@ client.on("error", (error) => {
                 
 */
 
-client.on("message", (topic, message) => {
+/* client.on("message", (topic, message) => {
   let msg = JSON.stringify(message);
   console.log(`Received message on topic ${topic}: ${message.toString()}`);
   if (topic == "sample") {
@@ -45,6 +45,6 @@ client.on("message", (topic, message) => {
     webSocket.emitMessage(msg);
     console.log(msg);
   }
-});
+}); */
 
 module.exports = client;
