@@ -88,37 +88,12 @@
 [animations]="animationsNC"
 [scheme]="colorSchemeNC">
 </ngx-charts-pie-grid>
+
+
+<ngx-charts-bar-vertical
+[results] = "dataNC" 
+[view] = "viewPie"
+[animations]="animationsNC"
+[scheme]="colorSchemeNC">
+</ngx-charts-bar-vertical>
 </div>
-
-
-
-<!-- Pruebas -->
-<!-- <div>
-
-  <ngx-charts-number-card
-  [view]="viewNC"
-  [animations]="animationsNC"
-  [results]="dataNC"
-  [scheme]="colorSchemeNC"
-
-></ngx-charts-number-card>
-
-  <ngx-charts-line-chart
-    [results]="dataLC"
-    [view]="viewLC"
-    [animations]="animationsLC"
-    [showGridLines]="showGridLinesLC"
-    [legend]="legendLC"
-    [legendTitle]="legendTitleLC"
-    [roundDomains]="roundDomainsLC"
-    [xAxis]="true"
-    [yAxis]="true"
-   
-  ></ngx-charts-line-chart>
-</div>
-
- 
-  [valueFormatting]="currencyFormatterNC"
-
-[yAxisTickFormatting]="currencyFormatterLC" 
-[xAxisTickFormatting]="dateFormatterLC" --> 
