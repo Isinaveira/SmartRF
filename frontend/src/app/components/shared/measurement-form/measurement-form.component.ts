@@ -65,11 +65,9 @@ export class MeasurementFormComponent {
     .subscribe({
       next: (response) => {
         console.log('Measurement started successfully:', response);
-        // Aquí puedes manejar la respuesta del servidor como desees
       },
       error: (err) => {
         console.error('Error starting measurement:', err);
-        // Aquí puedes manejar los errores de la solicitud como desees
       }});
   }
 
