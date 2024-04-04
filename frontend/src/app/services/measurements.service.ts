@@ -15,8 +15,8 @@ export class MeasurementsService {
   constructor(private http: HttpClient) { }
 
   //iniciar medición
-  startMeasurement(measurement: Measurement): Observable<any> {
-    return this.http.post(this.url, measurement);
+  startMeasurement(data: any): Observable<any> {
+    return this.http.post(`${this.url}/start`,data);
   }
   //para medición
   stopMeasurement(){};

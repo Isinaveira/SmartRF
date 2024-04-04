@@ -1,3 +1,4 @@
+import { MeasurementsService } from '@/services/measurements.service';
 import { Component, Input, input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 @Component({
@@ -18,17 +19,16 @@ export class MeasurementFormComponent {
   anchoDeCanal!: number;
   measurementForm!: FormGroup;
   
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: FormBuilder, private measurementsService: MeasurementsService) {
     this.measurementForm = this.formBuilder.group({
-      name: [''],
-      type: ['', Validators.required],
+      type: ['predefined', Validators.required], // Default type is 'predefined'
+      mode: ['1', Validators.required],
       freqIni: ['', [Validators.required, Validators.min(25), Validators.max(1750)]],
       freqFinal: ['', [Validators.required, Validators.min(25), Validators.max(1750)]],
-      threshold: [''], // No se especifica validación porque no está requerido
-      t_capt: ['', Validators.required],
-      chanBW: ['', [Validators.required, Validators.min(0)]],
-      nfft: ['', Validators.required],
-      mode: ['', Validators.required],
+      bandwidth: ['', [Validators.required, Validators.min(0)]],
+      threshold: [''],
+      t_capt: [''],
+      nfft: ['1024']
     });
 
   }
@@ -45,9 +45,32 @@ export class MeasurementFormComponent {
   }
   
   onSubmit() {
-    // Aquí puedes acceder a los valores del formulario
-    console.log(this.measurementForm.value);
-    // También puedes realizar otras acciones, como enviar los datos a un servidor
+    const type = this.measurementForm.value.type;
+    const message = {
+      freqIni: this.measurementForm.value.freqIni,
+      freqFinal: this.measurementForm.value.freqFinal,
+      bandwidth: this.measurementForm.value.bandwidth,
+      threshold: this.measurementForm.value.threshold,
+      t_capt: this.measurementForm.value.t_capt,
+      nfft: this.measurementForm.value.nfft
+    };
+
+    console.log(type);
+    const result = {
+      topic: 'broadcast',
+      message: (type === 'basic' )? {} : message
+    };
+
+    this.measurementsService.startMeasurement(result)
+    .subscribe({
+      next: (response) => {
+        console.log('Measurement started successfully:', response);
+        // Aquí puedes manejar la respuesta del servidor como desees
+      },
+      error: (err) => {
+        console.error('Error starting measurement:', err);
+        // Aquí puedes manejar los errores de la solicitud como desees
+      }});
   }
 
   onReset() {
