@@ -7,7 +7,6 @@ import { UsersComponent } from '@/pages/users/users.component';
 import { AlertsComponent } from '@/pages/alerts/alerts.component';
 import { ConstellationsComponent } from './pages/constellations/constellations.component';
 import { ConstellationsDetailComponent } from './pages/constellations/constellations-detail/constellations-detail.component';
-import { ChartsComponent } from './pages/charts/charts.component';
 import { authGuard } from './guards/auth.guard';
 import { adminGuard } from './guards/admin.guard';
 export const routes: Routes = [
@@ -17,8 +16,7 @@ export const routes: Routes = [
     { path: 'devices/:id', pathMatch: 'full', component: DeviceDetailComponent, canActivate: [authGuard] },
     { path: 'users', pathMatch: 'full', component: UsersComponent , canActivate: [authGuard, adminGuard] },
     { path: 'alerts', pathMatch: 'full', component: AlertsComponent, canActivate: [authGuard] },
-    { path: 'constellations', pathMatch: 'full', component: ConstellationsComponent, canActivate: [authGuard, adminGuard] },
-    { path: 'constellations/:id', pathMatch: 'full', component: ConstellationsDetailComponent, canActivate: [authGuard, adminGuard] },
-    { path: 'charts', pathMatch: 'full', component: ChartsComponent, canActivate: [authGuard] },
+    { path: 'constellations', pathMatch: 'full', component: ConstellationsComponent, canActivate: [authGuard] },
+    { path: 'constellations/:id', pathMatch: 'full', component: ConstellationsDetailComponent, canActivate: [authGuard] },
     { path: '**', redirectTo: '/login', pathMatch: 'full' }
 ];

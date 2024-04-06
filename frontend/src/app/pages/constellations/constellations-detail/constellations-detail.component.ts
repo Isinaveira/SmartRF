@@ -8,10 +8,13 @@ import { ConstellationsService } from '@/services/constellations.service';
 import { DevicesService } from '@/services/devices.service';
 import { Device } from '@/models/device.model';
 import { DecimalPipe } from '@angular/common';
+import { Router } from '@angular/router';
+import moment from 'moment';
+import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-constellations-detail',
   standalone: true,
-  imports: [NavbarComponent, MeasurementFormComponent, DecimalPipe],
+  imports: [NavbarComponent, MeasurementFormComponent, DecimalPipe,  CommonModule],
   templateUrl: './constellations-detail.component.html',
   styleUrl: './constellations-detail.component.css'
 })
@@ -21,6 +24,7 @@ export class ConstellationsDetailComponent implements OnInit {
   constructor(
     private route: ActivatedRoute, 
     private constellationService: ConstellationsService,
+    private router: Router,
     private devicesService: DevicesService) {}
   
 
@@ -38,6 +42,22 @@ export class ConstellationsDetailComponent implements OnInit {
        return this.devicesService.devices.filter( d => d._id === device_id )[0]
     });
   }
+
+  generateTime(date: string): string {
+    // Lógica para formatear la fecha
+    return moment(date).format('DD/MM/YYYY HH:mm:ss');
+  }
+
+
+  isActive(estado: string){
+    console.log(estado == 'activo');
+    return (estado == 'activo')? 'active' : 'inactive';
+  }
+
+  openDeviceDetail(id: string){
+    this.router.navigate(["devices/"+id])
+  }
+
   
 
 }

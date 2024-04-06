@@ -4,14 +4,15 @@ import moment from 'moment';
 import { MapComponent } from '@/components/shared/map/map.component';
 import { NavbarComponent } from '@/components/shared/navbar/navbar.component';
 import { Device } from '@/models/device.model';
-import { DataService } from '@/services/data.service';
 import { Router } from '@angular/router';
 import { DevicesService } from '@/services/devices.service';
+import { ChartsComponent } from '@/components/shared/charts/charts.component';
+
 
 @Component({
   selector: 'app-devices',
   standalone: true,
-  imports: [MapComponent, NavbarComponent, CommonModule],
+  imports: [MapComponent, NavbarComponent, CommonModule, ChartsComponent],
   templateUrl: './devices.component.html',
   styleUrl: './devices.component.css'
 })

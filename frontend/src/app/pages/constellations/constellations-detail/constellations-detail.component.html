@@ -1,12 +1,20 @@
 <app-navbar></app-navbar>
-<measurement-form [msg_type]="1"></measurement-form>
-
-<div class="devices-container">
-    @for(device of devices_list; track device){
-     <div class="device-card">
-        <span>id:{{device._id}}</span>
-        <span>status: {{device.state}}</span>
-        <span>coordinates: lng:{{device.coordinates.lng | number: '1.2-4'}}, lat:{{device.coordinates.lat | number: '1.2-4'}}</span> 
-     </div>
-    }
+<div class="constellations-detail-container">
+    <measurement-form></measurement-form>
+    <div class="devices-container">
+        @for(device of devices_list; track device){
+            <div class="device-container" (click)="openDeviceDetail(device._id)">
+                <p class="info-data">
+                    Id dispositivo: {{device._id}}
+                </p>
+                <div class="info-data">
+                    Estado: <div [ngClass]="isActive(device.state)"></div>
+                    
+                </div>
+                <p class="info-data">
+                    Última lectura: {{generateTime(device.last_lectureAt)}}
+                </p>
+            </div>
+        }
+    </div>
 </div>

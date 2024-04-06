@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { RouterOutlet, RouterLink } from '@angular/router';
-import { ThemeService } from '@/services/theme.service';
 import { CookieService } from 'ngx-cookie-service';
 import { Router } from '@angular/router';
 import { AuthService } from '@/services/auth.service';
@@ -18,7 +17,7 @@ export class NavbarComponent {
 
  
 
-  constructor(public themeService: ThemeService, private cookieService: CookieService, private router: Router, private authService: AuthService) {}
+  constructor(private cookieService: CookieService, private router: Router, private authService: AuthService) {}
 
  
   ngOnInit() {
@@ -36,9 +35,7 @@ export class NavbarComponent {
   }
   
 
-  toggleTheme() {
-    this.themeService.toggleTheme();
-  }
+  
 
   logout() {
     // Borrar la cookie de sesión

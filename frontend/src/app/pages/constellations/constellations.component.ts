@@ -3,6 +3,7 @@ import { Constellation } from '@/models/constellation.model';
 import { ConstellationsService } from '@/services/constellations.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from '@/services/auth.service';
 import moment from 'moment';
 
 @Component({
@@ -13,13 +14,22 @@ import moment from 'moment';
   styleUrl: './constellations.component.css'
 })
 export class ConstellationsComponent implements OnInit {
+  
   constellations: Constellation[] = [];
+  isAdmin: boolean = false;
+
   constructor(
     private constellationsService: ConstellationsService, 
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ){}
 
   ngOnInit(): void {
+
+    const userData = this.authService.getSessionData();
+    if(userData === 'admin'){
+    this.isAdmin =  true;
+    }
       this.constellations = this.constellationsService.constellations;
   }
 

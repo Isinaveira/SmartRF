@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { UsersService } from '@/services/users.service';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, PatternValidator } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule} from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { CookieService } from 'ngx-cookie-service';
 

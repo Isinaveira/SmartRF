@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ThemeService } from '@/services/theme.service';
 import { NavbarComponent } from '@/components/shared/navbar/navbar.component';
 import { User } from '@/models/user.model';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, MaxValidator } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { UsersService } from '@/services/users.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -28,7 +27,6 @@ export class UsersComponent  {
   
 
   constructor(
-    public themeService: ThemeService, 
     public usersService: UsersService, 
     private aRouter: ActivatedRoute, 
     private fb: FormBuilder, 
@@ -39,7 +37,7 @@ export class UsersComponent  {
     this.userForm = this.fb.group({
 
       name: ['', Validators.required],
-      dni: ['', Validators.required, Validators.maxLength(9)],
+      dni: ['',[Validators.required, Validators.maxLength(9)]],
       email: ['', Validators.required, Validators.email],
       role: ['', Validators.required],
       department: ['', Validators.required],

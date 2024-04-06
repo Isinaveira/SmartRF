@@ -10,7 +10,7 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 })
 export class MeasurementFormComponent {
 
-  msg_type = input.required<Number>();
+  msg_type = input<Number>();
   device_id = input<string>();
   constellation_id = input<string>();
 

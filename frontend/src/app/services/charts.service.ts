@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { chartTune } from '@/models/chartTune.model';
+//import { chartTune } from '@/models/chartTune.model';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +10,7 @@ export class ChartsService {
 
 
 
-  url = "http://localhost:3000/charts"
+  url = "http://localhost:3000/measurements"
   constructor(private http: HttpClient) { }
 
 

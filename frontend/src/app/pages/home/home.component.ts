@@ -1,9 +1,7 @@
 import { Component } from '@angular/core';
-import { UsersComponent } from '../users/users.component';
 import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { NavbarComponent } from '@/components/shared/navbar/navbar.component';
-import { ThemeService } from '@/services/theme.service';
 import { MapComponent } from '@/components/shared/map/map.component';
 import { Router } from '@angular/router';
 import { AuthService } from '@/services/auth.service';
@@ -11,7 +9,7 @@ import { AuthService } from '@/services/auth.service';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [UsersComponent,RouterOutlet,NavbarComponent,CommonModule,MapComponent],
+  imports: [RouterOutlet,NavbarComponent,CommonModule,MapComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
 })
@@ -29,7 +27,7 @@ export class HomeComponent {
     charts: 'charts'
   }
 
-  constructor(public themeService: ThemeService, public router: Router, private authService: AuthService) {}
+  constructor(public router: Router, private authService: AuthService) {}
   
   ngOnInit() {
     // Verificar si el usuario es administrador al inicializar el componente

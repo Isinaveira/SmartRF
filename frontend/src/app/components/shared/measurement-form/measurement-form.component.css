@@ -8,8 +8,8 @@
     flex-direction: column;
     margin: 20px;
     border-radius: 10px;
-    background-color: rgb(0, 0, 0);
-    color: white;
+    background-color: #FCFCFC;
+    color: black;
     box-shadow: 2px 2px 10px rgb(182, 181, 181);
     overflow-y: auto;
     min-width: 250px;
@@ -32,14 +32,14 @@
 select {
     width: 100%;
     border: none;
-    color: white;
+    color: black;
     background: transparent;
 }
 select option{
     color: black;
 }
 input {
-    color: white;
+    color: black;
 }
 .form-controllers{
     padding-top: 8px;

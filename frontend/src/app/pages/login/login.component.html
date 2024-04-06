@@ -11,7 +11,7 @@
                 <div class="form-group">
                     <label for="username">DNI</label>
                     <!-- Use formControlName to bind the input to the form control -->
-                    <input class="input-field" type="text" id="username" formControlName="username" required maxlength="9" [ngModel]="usernameUPPER" (ngModelChange)="usernameUPPER = $event.toUpperCase()">
+                    <input class="input-field" type="text" id="username" formControlName="username" required maxlength="9" pattern="\d{8}[A-Z]" [ngModel]="usernameUPPER" (ngModelChange)="usernameUPPER = $event.toUpperCase()">
                 </div>
                 <div class="form-group">
                     <label for="password">Password</label>
