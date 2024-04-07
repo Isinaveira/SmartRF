@@ -11,6 +11,8 @@ import { chartTune } from '@/models/chartTune.model';
 import { WebsocketService } from '@/services/websocket.service';
 import { ChartsService } from '@/services/charts.service';
 import { Measurement } from '@/models/measurement.model';
+import { getHeapSnapshot } from 'node:v8';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'charts',
@@ -61,11 +63,11 @@ export class ChartsComponent {
   animationsNC = true;
   colorSchemeNC = "fire"
   viewPie: [number, number] = [1500, 300];
+  device_id!: string;
 
 
 
-
-  constructor(private fb: FormBuilder, private websocketService: WebsocketService, private ChartsService : ChartsService) {
+  constructor(private fb: FormBuilder, private websocketService: WebsocketService, private ChartsService : ChartsService, private route: ActivatedRoute) {
 
 
     // this.chartForm = this.fb.group({
@@ -91,7 +93,11 @@ export class ChartsComponent {
   ngOnInit(): void {
 
 
-
+    // Con el id podremos diferenciar los mensajes que llegan par representar solo los de la estacion correcta
+    const id = this.route.snapshot.paramMap.get('id');
+    if(id !== null ) {
+     this.device_id = id;
+    }
     // Calcular los valores reales a partir de la configuracion
 
       this.ChartsService.getLastMeasureConf().subscribe({
@@ -116,6 +122,25 @@ export class ChartsComponent {
     this.websocketService.getMessageUpdates().subscribe(data => {
       // console.log('Received MQTT message:', data);
 
+
+
+      //Tranforma el entero que se recibe en un array binario que represente la ocupación de los diferentes canales
+
+      // const binaryArray = [];
+
+      // // Convertir el número decimal a binario
+      // let num = data;
+      // while (num > 0) {
+      //     // Obtener el bit menos significativo (resto de la división por 2)
+      //     const bit = num % 2;
+      //     binaryArray.unshift(bit); // Agregar el bit al principio del array
+  
+      //     // Dividir el número por 2 (división entera)
+      //     num = Math.floor(num / 2);
+      // }
+
+      
+      // No hace falta cuando se recuperen los datos de la base de datos
     if(this.first){
 
     this.first = false;
