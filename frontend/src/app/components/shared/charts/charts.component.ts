@@ -11,8 +11,8 @@ import { chartTune } from '@/models/chartTune.model';
 import { WebsocketService } from '@/services/websocket.service';
 import { ChartsService } from '@/services/charts.service';
 import { Measurement } from '@/models/measurement.model';
-import { getHeapSnapshot } from 'node:v8';
 import { ActivatedRoute } from '@angular/router';
+
 
 @Component({
   selector: 'charts',
@@ -55,6 +55,9 @@ export class ChartsComponent {
   samplesPerChannel: { name: string; value: number; }[] = [];
   first = true;
   configuration!: Measurement;
+  nPointsPerChan!: number;
+  nChannels!: number;
+  realChanBW!: number;
 
 
   //Charts
@@ -109,10 +112,9 @@ export class ChartsComponent {
         }
       })
 
-      // nPointsPerChan = round(this.configuration.nfft*this.configuration.chanBW/2.56e6)
-      // nChannels =floor((this.configuration.nfft*(this.configuration.frequFinal-this.configuration.freqIni)/2.56e6)/this.nPointsPerChan)
-      // realChanBW=this.nPointsPerChan·2.56e6/this.configuration.nfft
-      // frec_vector = this.configuration.freqIni + (0:this.nChannels-1)*this.realChanBW
+      this.nPointsPerChan = Math.round(this.configuration.nfft * this.configuration.chanBW / 2.56e6);
+      this.nChannels = Math.floor((this.configuration.nfft * (this.configuration.freqFinal - this.configuration.freqIni) / 2.56e6) / this.nPointsPerChan);
+      this.realChanBW=this.nPointsPerChan*2.56e6/this.configuration.nfft
 
 
     //////////////////////////////////////////////////////////////
@@ -141,14 +143,16 @@ export class ChartsComponent {
 
       
       // No hace falta cuando se recuperen los datos de la base de datos
-    if(this.first){
+    
+    //   if(this.first){
 
-    this.first = false;
-    const num_channels = JSON.parse(data).length;
-    this.initObjectChannels(num_channels);
+    //   this.first = false;
+    //   const num_channels = JSON.parse(data).length;
+    //   this.initObjectChannels(num_channels);
 
-    }
+    // }
 
+    this.initObjectChannels(this.nChannels);
     this.updateChart(JSON.parse(data));
 
 
@@ -158,12 +162,14 @@ export class ChartsComponent {
 
   initObjectChannels(num_channels: number) {
 
+    
 
     for(let m=0; m<num_channels; m++){
 
+       let frec_vector = this.configuration.freqIni + m*this.realChanBW
         this.samplesPerChannel.push( {
 
-            name: `channel${m}`,
+            name: `channel ${frec_vector}MHz`,
             value: 0,
 
         })
