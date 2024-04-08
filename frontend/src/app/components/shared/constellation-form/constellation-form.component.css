@@ -1,0 +1,64 @@
+/* create-constellation-form.component.css */
+
+/* Estilo para el formulario */
+form {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+  
+  /* Estilo para los campos del formulario */
+  input[type="text"],
+  input[type="email"],
+  textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  
+  /* Estilo para el botón de enviar */
+  button[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+  }
+  
+  /* Cambiar el color del botón de enviar al pasar el cursor sobre él */
+  button[type="submit"]:hover {
+    background-color: #45a049;
+  }
+  
+  /* Estilo para el botón de cancelar */
+  .cancel-button {
+    background-color: #f44336;
+  }
+  
+  /* Cambiar el color del botón de cancelar al pasar el cursor sobre él */
+  .cancel-button:hover {
+    background-color: #da190b;
+  }
+  
+  /* Estilo para el botón de cerrar modal */
+  .close-button {
+    background-color: #ddd;
+    color: black;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    float: right;
+  }
+  
+  /* Cambiar el color del botón de cerrar modal al pasar el cursor sobre él */
+  .close-button:hover {
+    background-color: #bbb;
+  }

@@ -29,6 +29,16 @@ let default_message = {
       "chanBW": 20,
       "nfft": 1024,
       "mode": "continuous"
+
+
+
+measurement : {
+  idUser: asdsad,
+  name: asdasda
+}
+
+
+
 }
 } */
 
@@ -61,7 +71,7 @@ exports.startMeasurement = async (req, res) => {
         ...message,
       });
     }
-    const savedMeasurement = await measurement.save();
+    const savedMeasurement = await measurement.save(); // saving before starting measuerment. 
 
     // Send a JSON response with the newly created measurement
     res.status(201).json(savedMeasurement); // 201 status code for resource created

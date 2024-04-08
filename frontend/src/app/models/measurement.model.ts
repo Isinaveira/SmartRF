@@ -1,6 +1,11 @@
 
 export interface Measurement {
-    name: string, 
+    name: string,
+    user_id: string, 
+    type: {
+        isConstellation: true,
+        id: string
+    }, 
     freqIni: number,
     freqFinal: number 
     threshold: string

@@ -15,7 +15,9 @@
   
   <div class="constellations-list">
     @if(isAdmin){
-    <button class="create-constellation-button"><span class="material-icons">add</span></button>
+    <button class="create-constellation-button" (click)="openCreateConstellationFormDialog()">
+      <span class="material-icons">add</span>
+    </button>
     }
     @for(constellation of constellations; track constellation._id){
     <div class="constellation-card" (click)="goTo(constellation._id)">

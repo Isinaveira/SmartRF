@@ -5,11 +5,14 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '@/services/auth.service';
 import moment from 'moment';
+import { MatDialog } from '@angular/material/dialog';
+import { ConstellationFormComponent } from '@/components/shared/constellation-form/constellation-form.component';
+
 
 @Component({
   selector: 'app-constellations',
   standalone: true,
-  imports: [NavbarComponent],
+  imports: [NavbarComponent, ConstellationFormComponent],
   templateUrl: './constellations.component.html',
   styleUrl: './constellations.component.css'
 })
@@ -21,7 +24,8 @@ export class ConstellationsComponent implements OnInit {
   constructor(
     private constellationsService: ConstellationsService, 
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private dialog: MatDialog
   ){}
 
   ngOnInit(): void {
@@ -45,4 +49,13 @@ export class ConstellationsComponent implements OnInit {
   goTo(constellation_id: string){
     this.router.navigate(['constellations/'+constellation_id])
   }
+
+  openCreateConstellationFormDialog(): void {
+    this.dialog.open(ConstellationFormComponent, {
+      backdropClass: 'modal-backdrop',
+      panelClass: 'modal-panel'
+    });
+  }
+
+
 }

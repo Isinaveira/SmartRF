@@ -46,10 +46,10 @@ export class MapComponent implements OnInit{
     
       marker.setPopup(new mapboxgl.Popup().setHTML(
         `
-        <span>ID dispositivo:${properties.nombre}</span>
-        <span>estado:${properties.estado}</span>
-        
-        `));
+        <span>Device id:${properties.nombre}</span>
+        <span>status:${properties.estado}</span>
+        <span>coordinates: lat:${properties.lat}, lng:${properties.lng}
+        `).setMaxWidth('500px'));
     });
 
   }

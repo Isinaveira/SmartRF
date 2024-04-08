@@ -41,6 +41,7 @@ app.use("/users", userRoutes);
 app.use("/devices", deviceRoutes);
 app.use("/constellations", constellationRoutes);
 app.use("/measurements", measurementRoutes);
+app.use("/predefinedMeasurements", predefinedMeasurementRoutes);
 
 app.listen(PORT, () => {
   console.log("Successful server initialization!");

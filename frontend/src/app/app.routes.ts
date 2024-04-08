@@ -9,6 +9,7 @@ import { ConstellationsComponent } from './pages/constellations/constellations.c
 import { ConstellationsDetailComponent } from './pages/constellations/constellations-detail/constellations-detail.component';
 import { authGuard } from './guards/auth.guard';
 import { adminGuard } from './guards/admin.guard';
+import { DocumentationComponent } from './pages/documentation/documentation.component';
 export const routes: Routes = [
     { path: 'login', pathMatch: 'full', component: LoginComponent },
     { path: 'home', pathMatch: 'full', component: HomeComponent, canActivate: [authGuard] },
@@ -18,5 +19,6 @@ export const routes: Routes = [
     { path: 'alerts', pathMatch: 'full', component: AlertsComponent, canActivate: [authGuard] },
     { path: 'constellations', pathMatch: 'full', component: ConstellationsComponent, canActivate: [authGuard] },
     { path: 'constellations/:id', pathMatch: 'full', component: ConstellationsDetailComponent, canActivate: [authGuard] },
+    { path: 'documentation', pathMatch: 'full', component: DocumentationComponent, canActivate: [authGuard]},
     { path: '**', redirectTo: '/login', pathMatch: 'full' }
 ];

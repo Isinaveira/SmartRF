@@ -19,28 +19,6 @@ input{
   background-color: rgba(255,255,255,0.05);
 }
 
-button {
-  width: 6rem;
-  height: 3rem;
-  font-size: 1.3rem;
-  border-radius: 10px;
-  border: none;
-  background: -webkit-linear-gradient(left, rgb(255, 170, 0), rgb(255, 106, 0));
-  color:white;
-}
-button:hover{
-  background-color: #ff924a;
-  color: white;
-  border-style: solid #ff924a;
-  box-shadow: 0 0 5px 2px rgba(255, 136, 0, 0.863);
-  animation: glowAnimation 3s infinite alternate;
-
-}
-
-
-
-
-
 span {
   display: block;
 }
@@ -78,7 +56,23 @@ span {
   color: transparent;
 }
 
+button {
+  width: 6rem;
+  height: 3rem;
+  font-size: 1.3rem;
+  border-radius: 10px;
+  border: none;
+  background: -webkit-linear-gradient(left, rgb(255, 170, 0), rgb(255, 106, 0));
+  color:white;
+}
+button:hover{
+  background-color: #ff924a;
+  color: white;
+  border-style: solid #ff924a;
+  box-shadow: 0 0 5px 2px rgba(255, 136, 0, 0.863);
+  animation: glowAnimation 3s infinite alternate;
 
+}
 
 /* Tema oscuro */
 .dark-theme {

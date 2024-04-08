@@ -1,19 +1,19 @@
+<!-- create-constellation-form.component.html -->
 
-<div>
-    <h1>Add Constellation</h1>
-</div>
-<div class="form-container">
-    <form action="">
-        <div class="form-field">
-            <label for="name">Name</label>
-            <input type="text" name="name" id="">
+<div class="modal-container">
+    <div class="modal-form">
+      <h2>Create Constellation</h2>
+      <form (ngSubmit)="onSubmit()">
+        <div>
+          <label for="constellation-name">Name:</label>
+          <input type="text" id="constellation-name" name="name"  required>
         </div>
-        <div class="form-field">
-            <label for="name">Devices</label>
-            <select name="devices" id="">Devices in constellation</select>
-            <!--Receive from devices service list of all devices which doesn't form part of a group-->
-        </div>
-        <div class="form-controllers"></div>
-        <div class="form-field"></div>
-    </form>
-</div>
+        
+        <!-- Otros campos del formulario según el modelo de datos -->
+        
+        <button type="submit">Submit</button>
+        <button type="button" class="cancel-button" (click)="closeForm()">Cancel</button>
+      </form>
+    </div>
+  </div>
+  

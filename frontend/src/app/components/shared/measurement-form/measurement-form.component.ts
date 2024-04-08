@@ -1,4 +1,5 @@
 import { MeasurementsService } from '@/services/measurements.service';
+import { PredefinedMeasurementsService } from '@/services/predefined-measurements.service';
 import { Component, Input, input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 @Component({
@@ -18,8 +19,10 @@ export class MeasurementFormComponent {
   freqFinal!: number;
   anchoDeCanal!: number;
   measurementForm!: FormGroup;
-  
-  constructor(private formBuilder: FormBuilder, private measurementsService: MeasurementsService) {
+  predefinedMeasurements!: any[];
+
+
+  constructor(private formBuilder: FormBuilder, private measurementsService: MeasurementsService, private predefinedMeasurementService : PredefinedMeasurementsService) {
     this.measurementForm = this.formBuilder.group({
       type: ['predefined', Validators.required], // Default type is 'predefined'
       mode: ['1', Validators.required],
@@ -33,6 +36,17 @@ export class MeasurementFormComponent {
 
   }
 
+  ngOnInit(){
+    this.predefinedMeasurementService.getPredefinedMeasurements().subscribe({
+      next: (predefinedMeasurements) => {
+        this.predefinedMeasurements = predefinedMeasurements
+      },
+      error: (err) => {
+        console.log(err);
+      }
+      
+    })
+  }
   onChangeTypeOfMeasurement(event: any){    
       const selectedValue = event.target.value;
       const element = document.getElementById("advancedOptions");

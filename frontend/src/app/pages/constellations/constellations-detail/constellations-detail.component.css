@@ -1,6 +1,8 @@
 .constellations-detail-container{
     display: flex;
     flex-direction: row;
+    height: 100%;
+    width: 100%;
 }
 .devices-container{
     margin: 20px;
@@ -44,3 +46,4 @@
     flex-direction: row;
     align-items: center;
 }
+

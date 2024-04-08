@@ -47,7 +47,8 @@ export class LoginComponent {
                 const expirationDate = new Date();
                 expirationDate.setTime(expirationDate.getTime() + (15 * 60 * 1000)); // 15 minutos
                 this.cookieService.set('myCookie', userData.role, expirationDate);
-
+                this.usersService.dni_user = dni;
+                console.log(this.usersService.dni_user);
                 console.log(this.cookieService.get('myCookie'))
                 // alert('Successful Login!');
                 this.router.navigate(['/home']);
