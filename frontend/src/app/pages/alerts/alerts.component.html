@@ -8,4 +8,59 @@
     <p class="message-content"><strong>Received MQTT Topic:</strong> {{ message.topic }}</p>
     <p class="message-content"><strong>Received MQTT Message:</strong> {{ message.message }}</p>
   </div>
+  <form [formGroup]="alertsForm" (ngSubmit)="onSubmit()">
+
+    <div class="form-fields">
+          <label for="name">Name</label>
+          <input type="text" id="name" formControlName="name">
+    </div>
+    <div class="form-fields">
+      <label for="station_id">Station ID</label>
+      <input type="number" id="station_id" formControlName="station_id">
+    </div>
+    <div class="form-field">
+        <label for="type_alert">Type of alert:</label>
+        <select id="type_alert" formControlName="type_alert">
+          <option value="busy">Busy channel</option>
+          <option value="free">Free channel</option>
+        </select>
+    </div>
+    <div class="form-fields">
+      <label for="channel_number">Channel</label>
+      <input type="number" id="channel_number" formControlName="channel_number">
+    </div>
+
+        <div class="form-controllers">
+        <button type="submit" class="init-button">Create</button>
+        <button type="reset" class="clear-button">Clear</button>
+    </div>
+  </form>
+
+  <div >
+    @for(alert of alerts; track alert){
+        <div>
+            <div>
+                <div></div>
+            </div>
+            <div>
+                <div class="username">
+                    {{alert.name}}
+                </div>
+                <div>
+                    <div>
+                        <span>Station</span>{{alert.station_id}}
+                    </div>
+                    <div>
+                        <span>Type</span>{{alert.type_alert}}
+                    </div>
+                    <div>
+                        <span>Channel</span>{{alert.channel_number}}                    
+                    </div>
+                </div>
+            </div>
+            <button (click)="deleteAlert(alert)">Delete</button>
+            
+        </div>           
+    }
+</div>
 </div>
