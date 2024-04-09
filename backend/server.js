@@ -9,7 +9,7 @@ const userRoutes = require("./routes/userRoutes");
 const deviceRoutes = require("./routes/deviceRoutes");
 const measurementRoutes = require("./routes/measurementRoutes");
 const constellationRoutes = require("./routes/constellationRoutes");
-
+const predefinedMeasurementRoutes = require("./routes/predefinedMeasurementsRoutes");
 const {
   setupSocketIO,
   clientSubscriber,
