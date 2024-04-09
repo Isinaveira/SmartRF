@@ -10,6 +10,8 @@ const deviceRoutes = require("./routes/deviceRoutes");
 const measurementRoutes = require("./routes/measurementRoutes");
 const constellationRoutes = require("./routes/constellationRoutes");
 const predefinedMeasurementRoutes = require("./routes/predefinedMeasurementsRoutes");
+const alertRoutes = require("./routes/alertRoutes");
+
 const {
   setupSocketIO,
   clientSubscriber,
@@ -41,6 +43,7 @@ app.use("/users", userRoutes);
 app.use("/devices", deviceRoutes);
 app.use("/constellations", constellationRoutes);
 app.use("/measurements", measurementRoutes);
+app.use("/alerts", alertRoutes)
 app.use("/predefinedMeasurements", predefinedMeasurementRoutes);
 
 app.listen(PORT, () => {
