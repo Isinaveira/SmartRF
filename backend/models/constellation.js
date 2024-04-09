@@ -10,7 +10,6 @@ const constellationSchema = new mongoose.Schema({
       ref: "Devices",
     },
   ],
-  password: { type: String, required: true },
 });
 
 const Constellation = mongoose.model(

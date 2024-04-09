@@ -1,5 +1,7 @@
+import { AuthService } from '@/services/auth.service';
 import { MeasurementsService } from '@/services/measurements.service';
 import { PredefinedMeasurementsService } from '@/services/predefined-measurements.service';
+import { UsersService } from '@/services/users.service';
 import { Component, Input, input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 @Component({
@@ -11,7 +13,7 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 })
 export class MeasurementFormComponent {
 
-  msg_type = input<Number>();
+  isConstellation = input.required<boolean>();
   device_id = input<string>();
   constellation_id = input<string>();
 
@@ -22,7 +24,12 @@ export class MeasurementFormComponent {
   predefinedMeasurements!: any[];
 
 
-  constructor(private formBuilder: FormBuilder, private measurementsService: MeasurementsService, private predefinedMeasurementService : PredefinedMeasurementsService) {
+  constructor(
+    private formBuilder: FormBuilder, 
+    private measurementsService: MeasurementsService, 
+    private predefinedMeasurementService : PredefinedMeasurementsService,
+    private usersService: UsersService
+  ) {
     this.measurementForm = this.formBuilder.group({
       type: ['predefined', Validators.required], // Default type is 'predefined'
       mode: ['1', Validators.required],
@@ -61,6 +68,12 @@ export class MeasurementFormComponent {
   onSubmit() {
     const type = this.measurementForm.value.type;
     const message = {
+      name: this.measurementForm.value.name,
+      user_dni: this.usersService.dni_user, 
+      type: {
+        isConstellation: this.isConstellation(),
+        id: (this.isConstellation() === true )? this.constellation_id() : this.device_id()
+      }, 
       freqIni: this.measurementForm.value.freqIni,
       freqFinal: this.measurementForm.value.freqFinal,
       bandwidth: this.measurementForm.value.bandwidth,

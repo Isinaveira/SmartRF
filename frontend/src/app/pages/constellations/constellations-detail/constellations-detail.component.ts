@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { NavbarComponent } from '@/components/shared/navbar/navbar.component';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { Measurement } from '@/models/measurement.model';
 import { MeasurementFormComponent } from '@/components/shared/measurement-form/measurement-form.component';
 import { ActivatedRoute } from '@angular/router';
 import { ConstellationsService } from '@/services/constellations.service';
@@ -50,7 +48,6 @@ export class ConstellationsDetailComponent implements OnInit {
 
 
   isActive(estado: string){
-    console.log(estado == 'activo');
     return (estado == 'activo')? 'active' : 'inactive';
   }
 

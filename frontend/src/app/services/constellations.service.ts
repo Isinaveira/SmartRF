@@ -7,60 +7,22 @@ import { Constellation } from '@/models/constellation.model';
   providedIn: 'root'
 })
 export class ConstellationsService {
-
-  constellations: Constellation[] = [
-    {
-      _id: "1",
-      name: "Andromeda",
-      createdAt: "2024-03-15T00:00:00.000Z",
-      isActive: true,
-      devices_list: ["1", "2", "3", "4", "5", "6"]
-    },
-    {
-      _id: "2",
-      name: "Orion",
-      createdAt: "2024-03-14T00:00:00.000Z",
-      isActive: true,
-      devices_list: ["4", "5"]
-    },
-    {
-      _id: "3",
-      name: "Cassiopeia",
-      createdAt: "2024-03-13T00:00:00.000Z",
-      isActive: false,
-      devices_list: ["4", "6", "3", "1"]
-    },
-    {
-      _id: "4",
-      name: "Ursa Major",
-      createdAt: "2024-03-12T00:00:00.000Z",
-      isActive: true,
-      devices_list: ["1"]
-    },
-    {
-      _id: "5",
-      name: "Scorpius",
-      createdAt: "2024-03-11T00:00:00.000Z",
-      isActive: false,
-      devices_list: ["5", "2"]
-    },
-    {
-      _id: "6",
-      name: "Lyra",
-      createdAt: "2024-03-10T00:00:00.000Z",
-      isActive: true,
-      devices_list: ["1", "3", "6"]
-    }
-  ];
-  
-
-  constructor() { }
+  url: string = 'http://localhost:3000/constellations'
+  constructor(private http: HttpClient) { }
 
   //obtener constelaciones
-  getConstellations(){}
+  getConstellations(): Observable<any> {
+    return this.http.get(this.url);
+  }
   //editar constelaciones
-  editConstellations(){}
-  //eliminar constelaciones
-  deleteConstellations(){}
+  createConstellations(constellation:any): Observable<any> {
+    return this.http.post(this.url, constellation);
+  }
+  getConstellation(constellation_id: any): Observable<any> {
+    return this.http.post(this.url, constellation_id);
+  }
+  deleteConstellations(constellation_id: any): Observable <any>{
+    return this.http.delete(this.url, constellation_id);
+  }
   
 }

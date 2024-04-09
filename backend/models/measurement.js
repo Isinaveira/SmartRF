@@ -2,6 +2,11 @@ const mongoose = require("mongoose");
 
 const measurementSchema = new mongoose.Schema({
   name: { type: String },
+  user_id: { type: String},
+  type: {
+    isConstellation: { type: Boolean, required: true },
+    id: { type: String, required: true }
+  },
   freqIni: { type: Number, required: true },
   freqFinal: { type: Number, required: true },
   threshold: { type: String, required: true },
@@ -20,3 +25,24 @@ const Measurement = mongoose.model(
 );
 
 module.exports = Measurement;
+
+/*
+export interface Measurement {
+    name: string,
+    user_id: string, 
+    type: {
+        isConstellation: true,
+        id: string
+    }, 
+    freqIni: number,
+    freqFinal: number 
+    threshold: string
+    t_capt: number
+    chanBW: number
+    nfft: number
+    mode: string
+    startedAt: Date // se llena cuando la medición empieza
+    finishedAt: Date // cuando la medición termina
+}
+
+*/

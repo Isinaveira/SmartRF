@@ -12,3 +12,4 @@ const deviceSchema = new mongoose.Schema({
 const Device = mongoose.model("Device", deviceSchema, "Devices");
 
 module.exports = Device;
+
