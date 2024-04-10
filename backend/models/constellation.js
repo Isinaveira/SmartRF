@@ -6,7 +6,7 @@ const constellationSchema = new mongoose.Schema({
   isActive: { type: Boolean, required: true },
   devices_list: [
     {
-      type: mongoose.Schema.Types.ObjectId,
+      type: mongoose.Schema.Types.Number,
       ref: "Devices",
     },
   ],
