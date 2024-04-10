@@ -2,15 +2,25 @@ const Device = require("../models/device");
 
 exports.createDevice = async (req, res) => {
   try {
-    console.log(req.body);
+    // Buscar el dispositivo con el station_id más alto
+    const highestStationIdDevice = await Device.findOne().sort({ station_id: -1 });
+
+    // Determinar el nuevo station_id
+    const newStationId = highestStationIdDevice ? highestStationIdDevice.station_id + 1 : 1;
+
+    // Asignar el nuevo station_id al dispositivo
+    req.body.station_id = newStationId;
+
+    // Crear el dispositivo con los datos actualizados
     const newDevice = new Device(req.body);
+
+    // Guardar el dispositivo
     await newDevice.save();
     res.json(newDevice);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
 };
-
 // Método para obtener un usuario
 
 exports.getDevice = async (req, res) => {

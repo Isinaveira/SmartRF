@@ -34,11 +34,24 @@ export class ConstellationsDetailComponent implements OnInit {
    this.getDevicesOfConstellation(this.id_constellation);
   }
   getDevicesOfConstellation( id_constellation: string){
-    const devices_ids = this.constellationService.constellations
-                           .filter( c => (c._id == id_constellation))[0].devices_list
-    this.devices_list = devices_ids.map( device_id => {
-       return this.devicesService.devices.filter( d => d._id === device_id )[0]
+    const devices_ids = this.constellationService.getConstellation(id_constellation).subscribe({
+      next: (constellation) => {
+        constellation.devices_list.forEach( (station_id: any) => {
+          this.devicesService.getDevice(station_id).subscribe({
+            next: (device) => {
+              this.devices_list.push(device)
+            },
+            error: (error) => {
+              console.log(error);
+            }
+          })
+        });
+      },
+      error: (err) => {
+        console.log(err)
+      }
     });
+    
   }
 
   generateTime(date: string): string {

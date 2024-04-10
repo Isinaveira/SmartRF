@@ -3,6 +3,6 @@ export interface Constellation {
     name: string,
     createdAt: Date,
     isActive: boolean
-    devices_list : string[]
+    devices_list : number[]
 }
 
