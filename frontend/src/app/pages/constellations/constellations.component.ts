@@ -34,12 +34,18 @@ export class ConstellationsComponent implements OnInit {
     if(userData === 'admin'){
     this.isAdmin =  true;
     }
-      this.constellations = this.constellationsService.constellations;
-  }
-
-  getNumberOfDevicesInConstellation(id_constellation:string){
-    return this.constellations
-               .filter(c => (c._id == id_constellation))[0].devices_list.length
+    this.constellationsService.getConstellations().subscribe({
+      next: (constellations) => {
+        this.constellations = constellations;
+        console.log(constellations);
+        constellations.forEach((element:any) => {
+          console.log(element.devices_list.length);
+        });
+      },
+      error: (err) => {
+        console.log(err)
+      }
+    });
   }
 
   generateTime(date: string): string {

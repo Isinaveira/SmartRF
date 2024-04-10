@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 
 const deviceSchema = new mongoose.Schema({
+  station_id: { type: String, required: true },
   coordinates: {
     lng: { type: Number, required: true },
     lat: { type: Number, required: true },
