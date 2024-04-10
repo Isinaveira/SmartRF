@@ -19,7 +19,7 @@
       <span class="material-icons">add</span>
     </button>
     }
-    @for(constellation of constellations; track constellation._id){
+    @for(constellation of constellations; track constellation){
     <div class="constellation-card" (click)="goTo(constellation._id)">
       <div class="constellation-info">
         <div class="constellation-data">
