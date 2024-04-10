@@ -4,6 +4,8 @@ import { PredefinedMeasurementsService } from '@/services/predefined-measurement
 import { UsersService } from '@/services/users.service';
 import { Component, Input, input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { predefinedMeasurements } from '@/models/predefinedMeasurement.model';
+
 @Component({
   selector: 'measurement-form',
   standalone: true,
@@ -14,14 +16,15 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 export class MeasurementFormComponent {
 
   isConstellation = input.required<boolean>();
-  device_id = input<string>();
+  station_id = input<string>();
   constellation_id = input<string>();
 
   freqInicial!: number; 
   freqFinal!: number;
   anchoDeCanal!: number;
   measurementForm!: FormGroup;
-  predefinedMeasurements!: any[];
+  predefinedMeasurements: predefinedMeasurements[] = [];
+  predefinedView: boolean = false;
 
 
   constructor(
@@ -57,12 +60,20 @@ export class MeasurementFormComponent {
   onChangeTypeOfMeasurement(event: any){    
       const selectedValue = event.target.value;
       const element = document.getElementById("advancedOptions");
-      if (element)
-        if (selectedValue === 'advanced') {
-          element.style.display = 'block';
-        } else {
-          element.style.display = 'none';
-        }
+      if(selectedValue === 'predefined'){
+        this.predefinedView=true;
+
+      }
+      else{
+        if (element)
+          if (selectedValue === 'advanced') {
+            element.style.display = 'block';
+          }        
+          else {
+            element.style.display = 'none';
+          }
+      }
+     
   }
   
   onSubmit() {
@@ -72,7 +83,7 @@ export class MeasurementFormComponent {
       user_dni: this.usersService.dni_user, 
       type: {
         isConstellation: this.isConstellation(),
-        id: (this.isConstellation() === true )? this.constellation_id() : this.device_id()
+        id: (this.isConstellation() === true )? this.constellation_id() : this.station_id()
       }, 
       freqIni: this.measurementForm.value.freqIni,
       freqFinal: this.measurementForm.value.freqFinal,
@@ -100,5 +111,19 @@ export class MeasurementFormComponent {
 
   onReset() {
     this.measurementForm.reset();
+  }
+
+
+  isPredefined(name : string){
+
+    
+    this.predefinedMeasurementService.getPredefineMeasurement(name).subscribe((data) => {
+      this.measurementForm.setValue({
+        freqIni: data.freqIni,
+        freqFinal: data.freqFinal,
+      });
+    });
+
+
   }
 }

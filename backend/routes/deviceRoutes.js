@@ -2,10 +2,14 @@ const express = require("express");
 const router = express.Router();
 const devicesController = require("../controllers/devicesController");
 
-router.post("/", devicesController.createDevice); // Crear un usuario
-router.get("/", devicesController.getDevices); // Listar todas los usuarios de la BD
-router.delete("/:id", devicesController.deleteDevice); // Metodo para borrar un usuario de la BD
-router.get("/:id", devicesController.getDevice); // Mostrar un usuario por su dni
-router.put("/edit/:id", devicesController.updateDevice); // Actualizar
+router.get("",devicesController.getDevices)
+// Ruta para obtener un dispositivo por station_id
+router.get("/:station_id", devicesController.getDevice);
+
+// Ruta para eliminar un dispositivo por station_id
+router.delete("/:station_id", devicesController.deleteDevice);
+
+// Ruta para actualizar un dispositivo por station_id
+router.put("/edit/:station_id", devicesController.updateDevice);
 
 module.exports = router;

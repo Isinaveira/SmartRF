@@ -5,5 +5,6 @@ export interface Sample{
     startedAt: string,
     finishedAt: string,
     num_channels: number,
+    treshold: number,
     results: {"channel": string, samples: number[]}[]
 }

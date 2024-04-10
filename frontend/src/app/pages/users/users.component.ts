@@ -38,7 +38,7 @@ export class UsersComponent  {
       name: ['', Validators.required],
       dni: ['',[Validators.required, Validators.maxLength(9)]],
       email: ['', Validators.required, Validators.email],
-      role: ['', Validators.required],
+      role: ['user', Validators.required],
       department: ['', Validators.required],
       password: ['', Validators.required],
 
@@ -159,9 +159,9 @@ deleteUser(user: User) {
 
 clearForm(){
 
-  
-  this.userForm.reset();
   this.isEditing = false;
+  this.userForm.reset();
+
 
 
 }

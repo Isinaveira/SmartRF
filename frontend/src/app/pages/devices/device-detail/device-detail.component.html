@@ -1,15 +1,15 @@
 <app-navbar></app-navbar>
-<measurement-form [isConstellation]="false" [device_id]="device_id"></measurement-form>
+<measurement-form [isConstellation]="false" [station_id]="this.station_id"></measurement-form>
 <div class="device-detail-container">
     <div class="info-container">
-        {{device._id}}
-        {{device.state}}
-        {{device.coordinates}}
-        {{device.last_lectureAt}}
+    <span>{{ device?.station_id }}</span>
+    <span>{{ device?.state }}</span>
+    <span>{{ device?.coordinates?.lat }},{{device?.coordinates?.lng}}</span>   
+    <span>{{ device?.last_lectureAt }}</span>
     </div>
     <form class="parametrization-measurements-form">
         
-
+ 
     </form>
 </div>
 <div>

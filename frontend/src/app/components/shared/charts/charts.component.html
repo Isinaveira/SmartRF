@@ -71,17 +71,17 @@
 </div>
 -->
 <div>
-
+<!-- 
   <ngx-charts-number-card
   [view]="viewNC"
   [animations]="animationsNC"
   [results]="dataNC"
   [scheme]="colorSchemeNC"
 
-></ngx-charts-number-card>
+></ngx-charts-number-card> -->
 
 <ngx-charts-pie-grid 
-[results] = "dataNC" 
+[results] = "samplesPerChannel" 
 [view] = "viewPie"
 [animations]="animationsNC"
 [scheme]="colorSchemeNC">
@@ -89,7 +89,7 @@
 
 
 <ngx-charts-bar-vertical
-[results] = "dataNC" 
+[results] = "samplesPerChannel" 
 [view] = "viewPie"
 [animations]="animationsNC"
 [scheme]="colorSchemeNC">

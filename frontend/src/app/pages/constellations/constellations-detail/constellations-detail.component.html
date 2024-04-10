@@ -3,9 +3,9 @@
     <measurement-form [isConstellation]="true" [constellation_id]="this.id_constellation"></measurement-form>
     <div class="devices-container">
         @for(device of devices_list; track device){
-            <div class="device-container" (click)="openDeviceDetail(device._id)">
+            <div class="device-container" (click)="openDeviceDetail(device.station_id)">
                 <p class="info-data">
-                    Id dispositivo: {{device._id}}
+                    Id dispositivo: {{device.station_id}}
                 </p>
                 <div class="info-data">
                     Estado: <div [ngClass]="isActive(device.state)"></div>

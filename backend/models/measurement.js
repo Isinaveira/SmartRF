@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const measurementSchema = new mongoose.Schema({
   name: { type: String },
-  user_id: { type: String},
+  dni_user: { type: String},
   type: {
     isConstellation: { type: Boolean, required: true },
     id: { type: String, required: true }

@@ -5,6 +5,7 @@ import { Location } from '@angular/common';
 import { ChartsComponent } from '@/components/shared/charts/charts.component';
 import { MeasurementFormComponent } from '@/components/shared/measurement-form/measurement-form.component';
 import { ActivatedRoute } from '@angular/router';
+import { DevicesService } from '@/services/devices.service';
 @Component({
   selector: 'app-device-detail',
   standalone: true,
@@ -12,16 +13,34 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: './device-detail.component.html',
   styleUrl: './device-detail.component.css'
 })
-export class DeviceDetailComponent {
+export class DeviceDetailComponent implements OnInit {
   device!: Device;
-  device_id!: string;
-  constructor(private location: Location, private route: ActivatedRoute){}
+  station_id!: string;
+  constructor(private route: ActivatedRoute, private devicesService: DevicesService){}
 
   ngOnInit(){
-    const id = this.route.snapshot.paramMap.get('id');
+  
+    this.getDevice();
+  }
+
+
+  getDevice() {
+
+    const id = this.route.snapshot.paramMap.get('station_id');
     if(id !== null ) {
-     this.device_id = id;
-    }
-    
+     this.station_id = id;
+
+    this.devicesService.getDevice(id).subscribe({
+      next: (device) => {
+        this.device = device;
+      },
+      error: (err) => {
+        console.log(err)
+      }
+    })
+  }
+
+
+
   }
 }

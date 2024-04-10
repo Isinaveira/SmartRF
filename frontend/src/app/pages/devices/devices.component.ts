@@ -18,7 +18,7 @@ import { ChartsComponent } from '@/components/shared/charts/charts.component';
 })
 export class DevicesComponent {
 
-  devices!: Device[];
+  devices: Device[] = [];
 
   style = 'mapbox://styles/mapbox/streets-v11'; // URL del estilo del mapa
   lat = 37.75; // Latitud inicial del mapa
@@ -37,7 +37,16 @@ export class DevicesComponent {
   constructor( public devicesService: DevicesService, private router: Router) {}
 
   ngOnInit(){
-   this.devices = this.devicesService.devices;
+
+
+   this.devicesService.getDevices().subscribe({
+    next: (devices) => {
+      this.devices = devices;
+    },
+    error: (err) => {
+      console.log(err)
+    }
+  })
    console.log(this.devices)
   }
 
@@ -48,8 +57,8 @@ export class DevicesComponent {
 
 
   isActive(estado: string){
-    console.log(estado == 'activo');
-    return (estado == 'activo')? 'active' : 'inactive';
+   // console.log(estado == 'activo');
+    return (estado == 'activated')? 'active' : 'inactive';
   }
 
   openDeviceDetail(id: string){

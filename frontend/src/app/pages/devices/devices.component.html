@@ -1,10 +1,10 @@
 <app-navbar></app-navbar>
 <div class="devices-container">
     <div class="devices-list">
-        @for(device of devices; track device._id){
-            <div class="device-container" (click)="openDeviceDetail(device._id)">
+        @for(device of devices; track device.station_id){
+            <div class="device-container" (click)="openDeviceDetail(device.station_id)">
                 <p class="info-data">
-                    Id dispositivo: {{device._id}}
+                    Id dispositivo: {{device.station_id}}
                 </p>
                 <div class="info-data">
                     Estado: <div [ngClass]="isActive(device.state)"></div>

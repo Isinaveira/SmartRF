@@ -17,3 +17,21 @@ exports.getPredefinedMeasurements = async (req, res) => {
       res.status(500).send("Se ha producido un error en el servidor.");
     }
   };
+
+
+  exports.getPredefinedMeasurement = async (req, res) => {
+    try {
+      let predefinedMeasurement = await PredefinedMeasurement.findOne({ name: req.params.name });
+  
+      if (!predefinedMeasurement) {
+        res.status(404).json({
+          msg: "No se ha encontrado la medida en la BD, inténtelo de nuevo.",
+        });
+      } else if (predefinedMeasurement) {
+        res.json(predefinedMeasurement);
+      }
+    } catch (error) {
+      console.log(error);
+      res.status(500).send("Se ha producido un error en el servidor.");
+    }
+  };

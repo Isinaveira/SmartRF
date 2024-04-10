@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const measurementsController = require("../controllers/measurementsController");
 
+router.get("",measurementsController.getMeasurement);
 router.post("/start", measurementsController.startMeasurement);
 router.post("/join", measurementsController.joinConstellation);
 router.post("/changeDefo", measurementsController.changeDefoParameters);

@@ -1,4 +1,4 @@
-const Device = require("../models/device");
+const Device = require("../models/device")
 
 exports.createDevice = async (req, res) => {
   try {
@@ -25,11 +25,11 @@ exports.createDevice = async (req, res) => {
 
 exports.getDevice = async (req, res) => {
   try {
-    let device = await Device.findOne({ _id: req.params._id });
+    let device = await Device.findOne({ station_id: req.params.station_id });
 
     if (!device) {
       res.status(404).json({
-        msg: "No se ha encontrado el user en la BD, inténtelo de nuevo.",
+        msg: "No se ha encontrado el device en la BD, inténtelo de nuevo.",
       });
     } else if (device) {
       res.json(device);
@@ -55,7 +55,7 @@ exports.getDevices = async (req, res) => {
 exports.updateDevice = async (req, res) => {
   try {
     const device = await Device.findOneAndUpdate(
-      { _id: req.params._id },
+      { station_id: req.params.station_id },
       req.body,
       { new: true }
     );
@@ -68,7 +68,7 @@ exports.updateDevice = async (req, res) => {
 // Delete all by name
 exports.deleteDevice = async (req, res) => {
   try {
-    const device = await Device.findOneAndDelete({ _id: req.params._id });
+    const device = await Device.findOneAndDelete({ station_id: req.params.station_id_id });
     res.json(device);
   } catch (error) {
     res.status(400).json({ error: error.message });

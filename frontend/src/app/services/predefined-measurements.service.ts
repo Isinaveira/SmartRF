@@ -7,12 +7,17 @@ import { HttpClient } from '@angular/common/http';
 export class PredefinedMeasurementsService {
   
 
-  url = "http://localhost:3000/predefinedMeasurement"
+  url = "http://localhost:3000/predefinedMeasurements"
   constructor(private http: HttpClient) { }
 
 
 
   getPredefinedMeasurements(): Observable<any> {
     return this.http.get(this.url);
+  }
+
+  getPredefineMeasurement(name: string): Observable<any>{
+
+    return this.http.get(this.url + "/" + name)
   }
 }

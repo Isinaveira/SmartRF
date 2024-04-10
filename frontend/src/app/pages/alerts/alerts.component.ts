@@ -7,6 +7,7 @@ import { ToastrService} from 'ngx-toastr'
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Alerts } from '@/models/alerts.model';
 import { AlertsService } from '@/services/alerts.service';
+import { UsersService } from '@/services/users.service';
 
 
 @Component({
@@ -17,92 +18,25 @@ import { AlertsService } from '@/services/alerts.service';
   styleUrls: ['./alerts.component.css']
 })
 export class AlertsComponent implements OnInit {
-  mqttMessages: any[] = [
-    {
-      topic: "Prueba",
-      message: "Hola, es una prueba"
-    },
-    {
-      topic: "Prueba",
-      message: "Hola, es una prueba"
-    },
-    {
-      topic: "Prueba",
-      message: "Hola, es una prueba"
-    },
-    {
-      topic: "Prueba",
-      message: "Hola, es una prueba"
-    },
-    {
-      topic: "Prueba",
-      message: "Hola, es una prueba"
-    },
-    {
-      topic: "Prueba",
-      message: "Hola, es una prueba"
-    },
-    {
-      topic: "Prueba",
-      message: "Hola, es una prueba"
-    },
-    {
-      topic: "Prueba",
-      message: "Hola, es una prueba"
-    },
-    {
-      topic: "Prueba",
-      message: "Hola, es una prueba"
-    },
-    {
-      topic: "Prueba",
-      message: "Hola, es una prueba"
-    },
-    {
-      topic: "Prueba",
-      message: "Hola, es una prueba"
-    },
-    {
-      topic: "Prueba",
-      message: "Hola, es una prueba"
-    },
-    {
-      topic: "Prueba",
-      message: "Hola, es una prueba"
-    },
-    {
-      topic: "Prueba",
-      message: "Hola, es una prueba"
-    },
-    {
-      topic: "Prueba",
-      message: "Hola, es una prueba"
-    },
-    {
-      topic: "Prueba",
-      message: "Hola, es una prueba"
-    },
-    {
-      topic: "Prueba",
-      message: "Hola, es una prueba"
-    },
-    {
-      topic: "Prueba",
-      message: "Hola, es una prueba"
-    },
-
-  ]; // Array to store all MQTT messages
+  mqttMessages: any[] = []; // Array to store all MQTT messages
   messageObject!: 'hola';
   alertsForm!: FormGroup;
   alerts: Alerts[] = [];
 
-  constructor(private fb: FormBuilder, private websocketService: WebsocketService, private toastS: ToastrService, private alertsService : AlertsService) {
+  constructor(
+    private fb: FormBuilder, 
+    private websocketService: WebsocketService,
+    private toastS: ToastrService,
+    private alertsService : AlertsService,
+    private userService: UsersService) {
 
+    
     this.alertsForm = this.fb.group({
       name: ['', Validators.required], 
       station_id: ['', Validators.required],
       type_alert: ['', Validators.required],
       channel_number: ['', Validators.required],
+
     });
   }
 
@@ -159,11 +93,13 @@ export class AlertsComponent implements OnInit {
       station_id: this.alertsForm.get('station_id')?.value,
       type_alert: this.alertsForm.get('type_alert')?.value,
       channel_number: this.alertsForm.get('channel_number')?.value,
+      dni: this.userService.dni_user
 
       };
           this.alertsService.saveAlert(ALERT).subscribe({
             next: (data) => {
               console.log(ALERT);
+              location.reload();
             },
             error: (error) => {
               console.log(error);

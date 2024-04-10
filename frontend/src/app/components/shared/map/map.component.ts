@@ -35,7 +35,7 @@ export class MapComponent implements OnInit{
       const properties = {
         lat: dispositivo.coordinates.lat,
         lng: dispositivo.coordinates.lng,
-        nombre: dispositivo._id,
+        nombre: dispositivo.station_id,
         estado: dispositivo.state
       } // Ajusta según tu estructura de datos
       
