@@ -2,12 +2,17 @@
 <app-navbar></app-navbar>
 
 <!-- Your content goes here -->
-<div class="alerts-container">
+<div class="log-container">
   <h2>Alerts Component</h2>
   <div *ngFor="let message of mqttMessages" class="message-container">
     <p class="message-content"><strong>Received MQTT Topic:</strong> {{ message.topic }}</p>
     <p class="message-content"><strong>Received MQTT Message:</strong> {{ message.message }}</p>
   </div>
+</div>
+
+<div class="alerts-container">
+ 
+  
   <form [formGroup]="alertsForm" (ngSubmit)="onSubmit()">
 
     <div class="form-fields">
@@ -36,7 +41,7 @@
     </div>
   </form>
 
-  <div >
+  <div class="alert-list" >
     @for(alert of alerts; track alert){
         <div>
             <div>
@@ -62,6 +67,6 @@
             
         </div>           
     }
-</div>
+  </div>
 </div>
 

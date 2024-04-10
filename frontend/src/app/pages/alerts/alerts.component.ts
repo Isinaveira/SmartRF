@@ -36,10 +36,12 @@ export class AlertsComponent implements OnInit {
   ngOnInit(): void {
 
     this.getAlerts();
-    this.toastS.success('hello world');
+  
+    
     
     this.websocketService.getMessageUpdates().subscribe(data => {
       console.log('Received MQTT message:', data);
+   
 
       if (this.mqttMessages.length === this.maxMessages) {
         // Remove the oldest message if the limit is reached
@@ -51,29 +53,31 @@ export class AlertsComponent implements OnInit {
 
 
       //Manejo de alertas
-     
-
+   
+      const dataSample = JSON.parse(data.message);
       if (this.alerts.length > 0) {
+  
         for (const alerta of this.alerts) {
 
-          if (data.deviceId === alerta.station_id) {
+          if (dataSample.id_device === alerta.station_id) {
 
             if (alerta.type_alert === 'busy') {
+            
 
-              const channelNumber = data.channel_number;
-              const sampleValue = data.sample[channelNumber];
+              const channelNumber = alerta.channel_number;
+              const sampleValue = dataSample.results[channelNumber];
 
               if (sampleValue === 1) {
-                this.toastS.warning(`Message: ${data}`, 'Busy');
+                this.toastS.warning(`Message: ${JSON.stringify(dataSample)}`, 'Busy');
               }
             } else if(alerta.type_alert === 'free'){
 
-                const channelNumber = data.channel_number;
-                const sampleValue = data.sample[channelNumber];
+                const channelNumber = alerta.channel_number;
+                const sampleValue = dataSample.sample[channelNumber];
   
                 if (sampleValue === 0) {
 
-                  this.toastS.success(`Message: ${data}`, 'Free');
+                  this.toastS.success(`Message: ${JSON.stringify(dataSample)}`, 'Free');
                 }      
             }
           }
@@ -81,6 +85,8 @@ export class AlertsComponent implements OnInit {
       }
     });
   }
+
+
 
 
   onSubmit() {
@@ -95,7 +101,7 @@ export class AlertsComponent implements OnInit {
           this.alertsService.saveAlert(ALERT).subscribe({
             next: (data) => {
               console.log(ALERT);
-              this.ngOnInit();  // Esto podria haber que cambiarlo
+              location.reload();
             },
             error: (error) => {
               console.log(error);
@@ -124,7 +130,7 @@ export class AlertsComponent implements OnInit {
       this.alertsService.deleteAlert(Alert.name).subscribe(data => {
     
         alert('Alert ' + Alert.name + ' was removed');
-        this.ngOnInit(); // Esto podria haber que cambiarlo
+        location.reload();
       }, error => {
         console.log(error)
       })
