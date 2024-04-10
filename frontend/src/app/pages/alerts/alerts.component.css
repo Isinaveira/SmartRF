@@ -1,53 +1,103 @@
 
 
-  .alerts-container {
-
+.alerts-container {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    align-items: center;
     width: 100%;
     height: 100%;
-  }
-
-  .log-container {
-
-    position: relative;
-    width: 70%;
-    height: 85%;
-    overflow-y: hidden;
-
-  }
-  .log-title {
-
-    position: absolute;
-    top: 0px;
-    left: 10px;
-    color: black;
-
-  }
-  .form-alert-container {
-
+}
+.controllers-container{
     display: flex;
     flex-direction: column;
-    height: 100%;
+    height: 90%;
+}
+.form-container{
+    padding:10px;
     width: 30%;
-    padding: 10px 10px;
+    max-width: 600px;
+    max-height: 85%;
+    display: flex;
+    flex-direction: column;
+    margin: 20px;
+    border-radius: 10px;
+    background-color: #FCFCFC;
+    color: black;
+    box-shadow: 2px 2px 10px rgb(182, 181, 181);
+    overflow-y: auto;
+    min-width: 300px;
+}
+.form-title{
+  font-weight: bold;
+  background: -webkit-linear-gradient(left,rgb(255, 170, 0), rgb(249, 97, 2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
 
-  }
-  
-  
-  /* Style for each message container */
-  .message-container {
-    margin-bottom: 20px; /* Add margin between messages */
-    padding: 10px;
-    background-color: #ffffff; /* Set background color for each message container */
-    border: 1px solid #ccc; /* Add a border for better separation */
-  }
-  
-  /* Style for message content */
-  .message-content {
-    margin: 0;
-    color: #333; /* Set text color */
-  }
-  
+}
+.form-field{
+  margin: 0 0;
+  padding: 5px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+}
+.form-controllers{
+  padding-top: 8px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+.log-container {
+  margin: 20px 20px;
+  padding: 10px;
+  position: relative;
+  width: 70%;
+  height: 85%;
+  box-shadow: 2px 2px 10px rgb(182, 181, 181);
+  border-radius: 10px;
+
+}
+.log-title {
+  color: black;
+
+}
+.message-list-container{
+  overflow-y: scroll;
+  height: 95%;
+  padding: 10px;
+  background-color: #ececec;
+  border-radius: 10px;
+}
+/* Style for each message container */
+.message-container {
+  border-radius: 10px;
+  margin-bottom: 20px; /* Add margin between messages */
+  padding: 10px;
+  background-color: #ffffff; /* Set background color for each message container */
+  box-shadow: 2px 2px 10px rgb(182, 181, 181);/* Add a border for better separation */
+}
+
+/* Style for message content */
+.message-content {
+  margin: 0;
+  color: #333; /* Set text color */
+}
+
+.alert-list{
+  box-shadow: 2px 2px 10px rgb(182, 181, 181);
+  padding: 10px;
+  margin-right:20px;
+  border-radius: 10px;
+  height: 50%;
+}
+
+.alerts-list-container{
+  overflow-y: scroll;
+  height: 90%;
+  padding: 10px;
+  background-color: #ececec;
+  border-radius: 10px;
+}

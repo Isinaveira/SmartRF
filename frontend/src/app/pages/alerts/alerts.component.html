@@ -3,71 +3,62 @@
 <div class="alerts-container">
   <!-- Your content goes here -->
   <div class="log-container">
-    <h2 class="log-title">Alerts Component</h2>
-    @for (message of mqttMessages; track message){
-    <div class="message-container">
-      <p class="message-content"><strong>Received MQTT Topic:</strong> {{ message.topic }}</p>
-      <p class="message-content"><strong>Received MQTT Message:</strong> {{ message.message }}</p>
-    </div>
-    }
-
-  </div>
-
-  <div class="form-alert-container">
-    <form [formGroup]="alertsForm" (ngSubmit)="onSubmit()">
-
-      <div class="form-fields">
-        <label for="name">Name</label>
-        <input type="text" id="name" formControlName="name">
-      </div>
-      <div class="form-fields">
-        <label for="station_id">Station ID</label>
-        <input type="number" id="station_id" formControlName="station_id">
-      </div>
-      <div class="form-field">
-        <label for="type_alert">Type of alert:</label>
-        <select id="type_alert" formControlName="type_alert">
-          <option value="busy">Busy channel</option>
-          <option value="free">Free channel</option>
-        </select>
-      </div>
-      <div class="form-fields">
-        <label for="channel_number">Channel</label>
-        <input type="number" id="channel_number" formControlName="channel_number">
-      </div>
-
-      <div class="form-controllers">
-        <button type="submit" class="init-button">Create</button>
-        <button type="reset" class="clear-button">Clear</button>
-      </div>
-    </form>
-
-    <div class="alert-list">
-      @for(alert of alerts; track alert){
-      <div>
-        <div>
-          <div></div>
-        </div>
-        <div>
-          <div class="username">
-            {{alert.name}}
-          </div>
-          <div>
-            <div>
-              <span>Station</span>{{alert.station_id}}
-            </div>
-            <div>
-              <span>Type</span>{{alert.type_alert}}
-            </div>
-            <div>
-              <span>Channel</span>{{alert.channel_number}}
-            </div>
-          </div>
-        </div>
-        <button (click)="deleteAlert(alert)">Delete</button>
-
+    <h2 class="log-title">Received Messages</h2>
+    <div class="message-list-container">
+      @for (message of mqttMessages; track message){
+      <div class="message-container">
+        <p class="message-content"><strong>Received MQTT Topic:</strong> {{ message.topic }}</p>
+        <p class="message-content"><strong>Received MQTT Message:</strong> {{ message.message }}</p>
       </div>
       }
     </div>
+  </div>
+  <div class="controllers-container">
+    <div class="form-container">
+      <h2 class="form-title">Create filter alerts</h2>
+      <form [formGroup]="alertsForm" (ngSubmit)="onSubmit()">
+  
+        <div class="form-field">
+          <label for="name">Name</label>
+          <input type="text" id="name" formControlName="name">
+        </div>
+        <div class="form-field">
+          <label for="station_id">Station ID</label>
+          <input type="number" id="station_id" formControlName="station_id">
+        </div>
+        <div class="form-field">
+          <label for="type_alert">Type of alert:</label>
+          <select id="type_alert" formControlName="type_alert">
+            <option value="busy">Busy channel</option>
+            <option value="free">Free channel</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label for="channel_number">Channel</label>
+          <input type="number" id="channel_number" formControlName="channel_number">
+        </div>
+  
+        <div class="form-controllers">
+          <button type="submit" class="init-button">Create</button>
+          <button type="reset" class="clear-button">Clear</button>
+        </div>
+      </form>
+    </div>
+      <div class="alert-list">
+        <h2 class="form-title">Active Alerts</h2>
+        <div class="alerts-list-container">
+          @for(alert of alerts; track alert){
+          <div class="message-container">
+            <div class="alert-field">
+              <span class="alert-info">Alert name: {{alert.name}}</span>
+              <span class="alert-info">Station: {{alert.station_id}}</span>
+              <span class="alert-info"> Type: {{alert.type_alert}}</span>
+              <span class="alert-info">Channel: {{alert.channel_number}}</span>
+            </div>
+            <button (click)="deleteAlert(alert)">Delete</button>
+          </div>
+          }
+        </div>
+      </div>
   </div>
 </div>

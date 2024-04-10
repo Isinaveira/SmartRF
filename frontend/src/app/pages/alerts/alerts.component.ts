@@ -17,8 +17,81 @@ import { AlertsService } from '@/services/alerts.service';
   styleUrls: ['./alerts.component.css']
 })
 export class AlertsComponent implements OnInit {
-  mqttMessages: any[] = []; // Array to store all MQTT messages
-  maxMessages = 9;
+  mqttMessages: any[] = [
+    {
+      topic: "Prueba",
+      message: "Hola, es una prueba"
+    },
+    {
+      topic: "Prueba",
+      message: "Hola, es una prueba"
+    },
+    {
+      topic: "Prueba",
+      message: "Hola, es una prueba"
+    },
+    {
+      topic: "Prueba",
+      message: "Hola, es una prueba"
+    },
+    {
+      topic: "Prueba",
+      message: "Hola, es una prueba"
+    },
+    {
+      topic: "Prueba",
+      message: "Hola, es una prueba"
+    },
+    {
+      topic: "Prueba",
+      message: "Hola, es una prueba"
+    },
+    {
+      topic: "Prueba",
+      message: "Hola, es una prueba"
+    },
+    {
+      topic: "Prueba",
+      message: "Hola, es una prueba"
+    },
+    {
+      topic: "Prueba",
+      message: "Hola, es una prueba"
+    },
+    {
+      topic: "Prueba",
+      message: "Hola, es una prueba"
+    },
+    {
+      topic: "Prueba",
+      message: "Hola, es una prueba"
+    },
+    {
+      topic: "Prueba",
+      message: "Hola, es una prueba"
+    },
+    {
+      topic: "Prueba",
+      message: "Hola, es una prueba"
+    },
+    {
+      topic: "Prueba",
+      message: "Hola, es una prueba"
+    },
+    {
+      topic: "Prueba",
+      message: "Hola, es una prueba"
+    },
+    {
+      topic: "Prueba",
+      message: "Hola, es una prueba"
+    },
+    {
+      topic: "Prueba",
+      message: "Hola, es una prueba"
+    },
+
+  ]; // Array to store all MQTT messages
   messageObject!: 'hola';
   alertsForm!: FormGroup;
   alerts: Alerts[] = [];
@@ -41,19 +114,9 @@ export class AlertsComponent implements OnInit {
     
     this.websocketService.getMessageUpdates().subscribe(data => {
       console.log('Received MQTT message:', data);
-   
-
-      if (this.mqttMessages.length === this.maxMessages) {
-        // Remove the oldest message if the limit is reached
-        this.mqttMessages.shift();
-      }
-
       // Add the received message to the array
       this.mqttMessages.push(data);
-
-
       //Manejo de alertas
-   
       const dataSample = JSON.parse(data.message);
       if (this.alerts.length > 0) {
   
@@ -101,7 +164,6 @@ export class AlertsComponent implements OnInit {
           this.alertsService.saveAlert(ALERT).subscribe({
             next: (data) => {
               console.log(ALERT);
-              location.reload();
             },
             error: (error) => {
               console.log(error);
