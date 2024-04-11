@@ -1,1 +1,34 @@
 <app-navbar></app-navbar>
+<div class="documentations-container">
+  <div class="section-description">
+    <h1 class="section-title">Documentation</h1>
+    <p>
+      Welcome to our section dedicated to the fascinating world of radio
+      frequencies, cognitive radio, and mobile coverage. Here, you'll find a
+      curated collection of documentation, website links, and resources covering
+      everything from RF fundamentals to the latest innovations in mobile
+      coverage technology. Whether you're a student, a professional, or simply
+      curious about this evolving field, our resources aim to provide you with a
+      comprehensive understanding and keep you informed about the latest trends
+      and developments in wireless communications. Explore, learn, and enjoy the
+      journey into the boundless realm of wireless connectivity!
+    </p>
+  </div>
+
+  <div class="documentations-list">
+    @for(documentation of documentations; track documentation){
+    <a [href]="documentation.url" target="_blank">
+      <div class="documentation-card">
+        <div class="documentation">
+          <div class="documentation-data">
+            <h1>{{ $index + 1 }}</h1>
+          </div>
+          <div class="dcoumentation-data documentation-name">
+            <h3>{{ documentation.name }}</h3>
+          </div>
+        </div>
+      </div>
+    </a>
+    }
+  </div>
+</div>
