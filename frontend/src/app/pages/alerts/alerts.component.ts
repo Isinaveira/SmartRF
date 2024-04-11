@@ -3,17 +3,17 @@ import { CommonModule } from '@angular/common';
 import { NavbarComponent } from '@/components/shared/navbar/navbar.component';
 import { Component, OnInit } from '@angular/core';
 import { WebsocketService } from '@/services/websocket.service';
-import { ToastrService} from 'ngx-toastr'
+import { ToastrModule,ToastrService} from 'ngx-toastr'
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Alerts } from '@/models/alerts.model';
 import { AlertsService } from '@/services/alerts.service';
 import { UsersService } from '@/services/users.service';
-
+import { LogComponent } from './log/log.component';
 
 @Component({
   selector: 'app-alerts',
   standalone: true,
-  imports: [NavbarComponent,CommonModule, ReactiveFormsModule],
+  imports: [NavbarComponent,CommonModule, ReactiveFormsModule, LogComponent],
   templateUrl: './alerts.component.html',
   styleUrls: ['./alerts.component.css']
 })
@@ -28,9 +28,8 @@ export class AlertsComponent implements OnInit {
     private websocketService: WebsocketService,
     private toastS: ToastrService,
     private alertsService : AlertsService,
-    private userService: UsersService) {
-
-    
+    private userService: UsersService) {  
+        
     this.alertsForm = this.fb.group({
       name: ['', Validators.required], 
       station_id: ['', Validators.required],
@@ -44,8 +43,11 @@ export class AlertsComponent implements OnInit {
 
     this.getAlerts();
   
+    //Comporbamos si ya hay abierto un socket para no duplicar mensajes
+    if (!this.websocketService.isConnected) {
+      this.websocketService.connect(); // Conectar al WebSocket si no está conectado
     
-    
+
     this.websocketService.getMessageUpdates().subscribe(data => {
       console.log('Received MQTT message:', data);
       // Add the received message to the array
@@ -65,7 +67,7 @@ export class AlertsComponent implements OnInit {
               const sampleValue = dataSample.results[channelNumber];
 
               if (sampleValue === 1) {
-                this.toastS.warning(`Message: ${JSON.stringify(dataSample)}`, 'Busy');
+                this.toastS.warning(`Message: ${JSON.stringify(dataSample)}`, 'Busy',{ "positionClass" : "toast-bottom-left"});
               }
             } else if(alerta.type_alert === 'free'){
 
@@ -74,13 +76,14 @@ export class AlertsComponent implements OnInit {
   
                 if (sampleValue === 0) {
 
-                  this.toastS.success(`Message: ${JSON.stringify(dataSample)}`, 'Free');
+                  this.toastS.success(`Message: ${JSON.stringify(dataSample)}`, 'Free',{ "positionClass" : "toast-bottom-right"});
                 }      
             }
           }
         }
       }
     });
+  }
   }
 
 

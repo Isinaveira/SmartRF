@@ -34,14 +34,14 @@ export class MeasurementFormComponent {
     private usersService: UsersService
   ) {
     this.measurementForm = this.formBuilder.group({
-      type: ['predefined', Validators.required], // Default type is 'predefined'
+      type: ['basic', Validators.required], // Default type is 'predefined'
       mode: ['1', Validators.required],
       freqIni: ['', [Validators.required, Validators.min(25), Validators.max(1750)]],
       freqFinal: ['', [Validators.required, Validators.min(25), Validators.max(1750)]],
       bandwidth: ['', [Validators.required, Validators.min(0)]],
       threshold: [''],
       t_capt: [''],
-      nfft: ['1024']
+      nfft: ['1024'],
     });
 
   }
@@ -56,6 +56,9 @@ export class MeasurementFormComponent {
       }
       
     })
+
+
+    
   }
   onChangeTypeOfMeasurement(event: any){    
       const selectedValue = event.target.value;
@@ -65,6 +68,7 @@ export class MeasurementFormComponent {
 
       }
       else{
+        this.predefinedView=false;
         if (element)
           if (selectedValue === 'advanced') {
             element.style.display = 'block';
@@ -113,11 +117,22 @@ export class MeasurementFormComponent {
     this.measurementForm.reset();
   }
 
+  onPredefinedChange(event: any){
+
+    const selectedPredefined = event.target.value;
+   
+    if(selectedPredefined){
+      this.isPredefined(selectedPredefined);
+    }
+
+  }
 
   isPredefined(name : string){
 
     
     this.predefinedMeasurementService.getPredefineMeasurement(name).subscribe((data) => {
+      console.log(data.freqFinal);
+      console.log(data.freqIni);
       this.measurementForm.setValue({
         freqIni: data.freqIni,
         freqFinal: data.freqFinal,

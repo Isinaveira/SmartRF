@@ -6,9 +6,9 @@
     <div class="form-field">
       <label for="type">Type of measurement:</label>
       <select id="type" formControlName="type" (change)="onChangeTypeOfMeasurement($event)" required>
-        <option value="predefined">Predefined</option>
         <option value="basic">Basic</option>
         <option value="advanced">Advanced</option>
+        <option value="predefined">Predefined</option>
       </select>
     </div>
 
@@ -17,16 +17,19 @@
 
     @if(predefinedView) {
 
-    @for (predefinedMeasurement of predefinedMeasurements; track predefinedMeasurement){
+  
 
       <div class="form-field">
         <label for="predefined">Predefined Measurements:</label>
-        <select id="predefined" formControlName="predefined">
-          <option value="{{predefinedMeasurement.name}}">{{predefinedMeasurement.name}}</option>
+        <select id="predefined" (change)="onPredefinedChange($event)">
+          <option>Select one option below</option>
+          @for (predefinedMeasurement of predefinedMeasurements; track predefinedMeasurement){
+          <option  value="{{predefinedMeasurement.name}}">{{predefinedMeasurement.name}}</option>
+        }
         </select>
       </div>
 
-    }
+    
 
     <div class="form-field">
       <label for="freqInit">Initial Frequency (MHz):</label>
