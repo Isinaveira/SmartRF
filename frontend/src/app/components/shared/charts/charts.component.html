@@ -70,28 +70,33 @@
   </div>
 </div>
 -->
-<div>
-<!-- 
-  <ngx-charts-number-card
-  [view]="viewNC"
-  [animations]="animationsNC"
-  [results]="dataNC"
-  [scheme]="colorSchemeNC"
 
-></ngx-charts-number-card> -->
+<h2>Charts</h2>
+<div class="charts-container">
+  <div class="tarjetas">
+    <ngx-charts-number-card 
+     [animations]="animationsNC" [results]="samplesPerChannel"
+      [scheme]="colorSchemeNC">
+    </ngx-charts-number-card>
+  </div>
+  <div class="tartas"><ngx-charts-pie-grid
+     [results]="samplesPerChannel"  [animations]="animationsNC"
+      [scheme]="colorSchemeNC">
+    </ngx-charts-pie-grid>
+  </div>
+  <div class="barras"><ngx-charts-bar-vertical 
+    [results]="samplesPerChannel"
+    [animations]="animationsNC"
+    [scheme]="colorSchemeNC"
+    [xAxisLabel]="'Channels'"
+    [xAxis]="true"
+    [yAxisLabel]="'Ocupation'"
+    [yAxis]="true"
+    [legend]="true"
+    [legendTitle]="'Bars'"
+    > 
+    
+    </ngx-charts-bar-vertical>
+  </div>
 
-<ngx-charts-pie-grid 
-[results] = "samplesPerChannel" 
-[view] = "viewPie"
-[animations]="animationsNC"
-[scheme]="colorSchemeNC">
-</ngx-charts-pie-grid>
-
-
-<ngx-charts-bar-vertical
-[results] = "samplesPerChannel" 
-[view] = "viewPie"
-[animations]="animationsNC"
-[scheme]="colorSchemeNC">
-</ngx-charts-bar-vertical>
 </div>

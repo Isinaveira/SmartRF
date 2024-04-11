@@ -1,33 +1,20 @@
 <app-navbar></app-navbar>
-<measurement-form [isConstellation]="false" [station_id]="this.station_id"></measurement-form>
 <div class="device-detail-container">
-    <div class="info-container">
-    <span>{{ device?.station_id }}</span>
-    <span>{{ device?.state }}</span>
-    <span>{{ device?.coordinates?.lat }},{{device?.coordinates?.lng}}</span>   
-    <span>{{ device?.last_lectureAt }}</span>
+    <div class="measurement-form">
+        <measurement-form [isConstellation]="false" [station_id]="this.station_id"></measurement-form>
     </div>
-    <form class="parametrization-measurements-form">
-        
- 
-    </form>
+
+    <div class="info-container">
+        <div class="device-info-container">
+            <div>Id: {{ device?.station_id }}
+                State: {{ device?.state }}
+                Coordinates: {{ device?.coordinates?.lat }},{{device?.coordinates?.lng}}
+                Last lecture: {{ device?.last_lectureAt }}
+            </div>
+        </div>
+
+        <div class="charts-container">
+            <charts></charts>
+        </div>
+    </div>
 </div>
-<div>
-    <charts></charts>
-</div>
-
-
-
-
-
-
-<!--
-    Parámetros para las mediciones: se programan como inputs en el formulario de detalle de los dispositivos
-    y se pretende hacer un post al backend para que lance la medida. 
-    
-    Además, se pretende guardar esta configuración de medición para un sistema en concreto. 
-    - Frecuencia inicial: input de tipo number
-    - Anchos de banda: multiples opciones predefinidas
-    - Numero de puntos de la estimación: potencias de 2  (P.ej: 1024,2048, 4096, ...)
-    - Umbral de ruido 
--->

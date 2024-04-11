@@ -4,7 +4,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatInputModule } from '@angular/material/input';
+import { MatInputModule} from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
 import { chartTune } from '@/models/chartTune.model';
@@ -18,14 +18,14 @@ import { ActivatedRoute } from '@angular/router';
   selector: 'charts',
   standalone: true,
   imports: [
-    NgxChartsModule,
-    CommonModule,
+    NgxChartsModule, 
+    CommonModule, 
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,
     FormsModule,
     MatCheckboxModule,
-    MatSliderModule,
+    MatSliderModule, 
     ReactiveFormsModule],
   templateUrl: './charts.component.html',
   styleUrl: './charts.component.css'
@@ -58,20 +58,21 @@ export class ChartsComponent {
   nPointsPerChan!: number;
   nChannels!: number;
   realChanBW!: number;
-  num_channels!: number;
 
 
   //Charts
-
+  dataNC = this.samplesPerChannel;
   viewNC: [number, number] = [2000, 150];
   animationsNC = true;
   colorSchemeNC = "fire"
   viewPie: [number, number] = [1500, 300];
   device_id!: string;
 
+  
 
 
-  constructor(private fb: FormBuilder, private websocketService: WebsocketService, private ChartsService: ChartsService, private route: ActivatedRoute) {
+
+  constructor(private fb: FormBuilder, private websocketService: WebsocketService, private ChartsService : ChartsService, private route: ActivatedRoute) {
 
 
     // this.chartForm = this.fb.group({
@@ -99,29 +100,29 @@ export class ChartsComponent {
 
     // Con el id podremos diferenciar los mensajes que llegan par representar solo los de la estacion correcta
     const id = this.route.snapshot.paramMap.get('id');
-    if (id !== null) {
-      this.device_id = id;
+    if(id !== null ) {
+     this.device_id = id;
     }
     // Calcular los valores reales a partir de la configuracion
 
-    this.ChartsService.getLastMeasureConf().subscribe({
-      next: (configuration) => {
-        this.configuration = configuration
+      this.ChartsService.getLastMeasureConf().subscribe({
+        next: (configuration) => {
+          this.configuration = configuration
+          this.nPointsPerChan = Math.round(this.configuration.nfft * this.configuration.chanBW / 2.56e6);
+          this.nChannels = Math.floor((this.configuration.nfft * (this.configuration.freqFinal - this.configuration.freqIni) / 2.56e6) / this.nPointsPerChan);
+          this.realChanBW=this.nPointsPerChan*2.56e6/this.configuration.nfft
+        },
+        error: (err) => {
+          console.log(err)
+        }
+      })
 
-        this.nPointsPerChan = Math.round(this.configuration.nfft * this.configuration.chanBW / 2.56e6);
-        this.nChannels = Math.floor((this.configuration.nfft * (this.configuration.freqFinal - this.configuration.freqIni) / 2.56e6) / this.nPointsPerChan);
-        this.realChanBW = this.nPointsPerChan * 2.56e6 / this.configuration.nfft
-
-      },
-      error: (err) => {
-        console.log(err)
-      }
-    })
+      
 
 
     //////////////////////////////////////////////////////////////
 
-    this.initObjectChannels();
+    this.initObjectChannels(10);
     this.generaDatos();
     this.websocketService.getMessageUpdates().subscribe(data => {
       // console.log('Received MQTT message:', data);
@@ -138,43 +139,43 @@ export class ChartsComponent {
       //     // Obtener el bit menos significativo (resto de la división por 2)
       //     const bit = num % 2;
       //     binaryArray.unshift(bit); // Agregar el bit al principio del array
-
+  
       //     // Dividir el número por 2 (división entera)
       //     num = Math.floor(num / 2);
       // }
 
-
+      
       // No hace falta cuando se recuperen los datos de la base de datos
+    
+      if(this.first){
 
-      // if (this.first) {
+      this.first = false;
+      const num_channels = JSON.parse(data).length;
+      this.initObjectChannels(num_channels);
 
-      //   this.first = false;
-      //   this.num_channels = JSON.parse(data.message).length;
-      //   this.initObjectChannels(this.num_channels);
+    }
 
-      // }
-
-      // //this.initObjectChannels(this.nChannels);
-      // this.updateChart(JSON.parse(data.message));
+    this.initObjectChannels(this.nChannels);
+    this.updateChart(JSON.parse(data));
 
 
     });
   }
 
 
-  initObjectChannels() {
+  initObjectChannels(num_channels: number) {
 
+    
 
+    for(let m=0; m<num_channels; m++){
 
-    for (let m = 0; m < 10; m++) {
+       //let frec_vector = this.configuration.freqIni + m*this.realChanBW
+        this.samplesPerChannel.push( {
 
-      // let frec_vector = this.configuration.freqIni + m * this.realChanBW
-      this.samplesPerChannel.push({
+            name: `channel ${m}MHz`,
+            value: 0,
 
-        name: `channel ${m}MHz`,
-        value: 0,
-
-      })
+        })
 
     }
 
@@ -182,33 +183,39 @@ export class ChartsComponent {
 
   updateChart(data: number[]): void {
 
+    console.log(data);
     this.total++;
+    this.mqttMessages.fill(0);
+    console.log(data);
 
     // Agrega el mensaje recibido al array
     this.mqttMessages.push(data);
-    console.log(this.mqttMessages.length);
-    for (let i = 0; i < this.num_channels; i++) {
 
-      const sumOfValues = this.mqttMessages.reduce((acc, channelValue) => acc + channelValue[i], 0);
-      this.samplesPerChannel[i].value = sumOfValues / this.mqttMessages.length;
-      console.log(sumOfValues);
+    for (let i = 0; i < this.mqttMessages.length; i++) {
+      for (let j = 0; j < this.mqttMessages[i].length; j++) {
+        if (this.mqttMessages[i][j] === 1) {
+
+          this.channels[j]++;
+
+        }
+
+        //this.samplesPerChannel[j].value = (this.channels[j]/this.total)*100;
+        this.samplesPerChannel[j].value = ((this.samplesPerChannel[j].value*(this.total - 1) + this.channels[j])/this.total)
+      }
     }
-    
-    console.log(this.samplesPerChannel);
 
 
+    //this.generaDatos();
+   }
 
-    this.generaDatos();
-  }
+   generaDatos(){
 
-  generaDatos() {
+   while(this.k<3){
+     this.k++;
+     this.testData = Array.from({ length: 10 }, () => Math.random() > 0.5 ? 1 : 0);
+     this.updateChart(this.testData);
 
-    while (this.k < 3) {
-      this.k++;
-      this.testData = Array.from({ length: 10 }, () => Math.random() > 0.5 ? 1 : 0);
-      this.updateChart(this.testData);
-
-    }
+   }
   }
 
   // setCustom(){
