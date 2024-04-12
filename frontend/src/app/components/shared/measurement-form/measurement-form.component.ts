@@ -22,10 +22,9 @@ export class MeasurementFormComponent {
   freqInicial!: number; 
   freqFinal!: number;
   anchoDeCanal!: number;
-  measurementForm!: FormGroup;
+  measurementForm: FormGroup;
   predefinedMeasurements: predefinedMeasurements[] = [];
   predefinedView: boolean = false;
-
 
   constructor(
     private formBuilder: FormBuilder, 
@@ -44,6 +43,7 @@ export class MeasurementFormComponent {
       nfft: ['1024'],
     });
 
+   
   }
 
   ngOnInit(){
@@ -131,12 +131,13 @@ export class MeasurementFormComponent {
 
     
     this.predefinedMeasurementService.getPredefineMeasurement(name).subscribe((data) => {
-      console.log(data.freqFinal);
-      console.log(data.freqIni);
-      this.measurementForm.setValue({
+      
+      this.measurementForm.patchValue({
+        type: "predefined",
         freqIni: data.freqIni,
-        freqFinal: data.freqFinal,
+        freqFinal: data.freqFinal
       });
+
     });
 
 
