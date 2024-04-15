@@ -26,8 +26,8 @@
     flex-wrap: wrap;
     justify-content: flex-start;
     align-items: center;
-    align-content: flex-start;
-    gap: 20px;
+    align-content: center;
+    gap: 10px;
 }
 .sections::before {
     content: '';
@@ -55,6 +55,7 @@
     color: transparent;
 }
 .section-card{
+    margin: 0px 20px;
     cursor: pointer;
     height: 30%;
     min-height: 200px;

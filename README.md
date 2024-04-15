@@ -21,6 +21,17 @@ SmartRF es una plataforma diseñada para explorar y utilizar de manera eficiente
 4. cd Frontend && npm install.
 5. ng serve -o 
 
+## Ejemplo de medición 
 
-
+La medición que se envía desde cada estación al servidor es la siguiente:
+```json
+{
+    station_id: "Identificador_estación", /* Corresponde a el valor en db de la señal medida */
+    measurement_id: "identificador del proceso de medición", /* Corresponde a el valor en db de la señal medida */
+    threshold: "potencia normalizada", /* Corresponde a el valor en db de la señal medida */
+    results: [102, -5, 3, 2], /* Corresponde a el valor en db de la señal medida */
+    firma: "hash de firmado", /* Corresponde a el valor en db de la señal medida */
+    timestamp: "fecha de la medición" /* Corresponde a el valor en db de la señal medida */
+}
+```
 
