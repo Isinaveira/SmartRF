@@ -8,7 +8,6 @@ import { User } from '@/models/user.model';
 })
 export class UsersService {
 
-  dni_user!: string;
   user! : User;
   url = "http://localhost:3000/users"
   constructor(private http: HttpClient) {

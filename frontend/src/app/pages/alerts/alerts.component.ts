@@ -9,6 +9,8 @@ import { Alerts } from '@/models/alerts.model';
 import { AlertsService } from '@/services/alerts.service';
 import { UsersService } from '@/services/users.service';
 import { LogComponent } from './log/log.component';
+import { CookieService } from 'ngx-cookie-service';
+
 
 @Component({
   selector: 'app-alerts',
@@ -28,7 +30,8 @@ export class AlertsComponent implements OnInit {
     private websocketService: WebsocketService,
     private toastS: ToastrService,
     private alertsService : AlertsService,
-    private userService: UsersService) {  
+    private userService: UsersService,
+    private cookieService: CookieService) {  
         
     this.alertsForm = this.fb.group({
       name: ['', Validators.required], 
@@ -96,13 +99,15 @@ export class AlertsComponent implements OnInit {
       station_id: this.alertsForm.get('station_id')?.value,
       type_alert: this.alertsForm.get('type_alert')?.value,
       channel_number: this.alertsForm.get('channel_number')?.value,
-      dni: this.userService.dni_user
+      dni: this.cookieService.get('dniCookie')
 
       };
           this.alertsService.saveAlert(ALERT).subscribe({
             next: (data) => {
               console.log(ALERT);
-              location.reload();
+              this.getAlerts();
+              this.alertsForm.reset();
+
             },
             error: (error) => {
               console.log(error);
@@ -131,9 +136,11 @@ export class AlertsComponent implements OnInit {
       this.alertsService.deleteAlert(Alert.name).subscribe(data => {
     
         alert('Alert ' + Alert.name + ' was removed');
-        location.reload();
+        this.getAlerts();
       }, error => {
         console.log(error)
       })
     }
+
+   
   }

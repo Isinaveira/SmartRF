@@ -5,6 +5,7 @@ import { UsersService } from '@/services/users.service';
 import { Component, Input, input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { predefinedMeasurements } from '@/models/predefinedMeasurement.model';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'measurement-form',
@@ -30,7 +31,8 @@ export class MeasurementFormComponent {
     private formBuilder: FormBuilder, 
     private measurementsService: MeasurementsService, 
     private predefinedMeasurementService : PredefinedMeasurementsService,
-    private usersService: UsersService
+    private usersService: UsersService,
+    private cookieService: CookieService
   ) {
     this.measurementForm = this.formBuilder.group({
       type: ['basic', Validators.required], // Default type is 'predefined'
@@ -84,7 +86,7 @@ export class MeasurementFormComponent {
     const type = this.measurementForm.value.type;
     const message = {
       name: this.measurementForm.value.name,
-      user_dni: this.usersService.dni_user, 
+      user_dni: this.cookieService.get('dniCookie'), 
       type: {
         isConstellation: this.isConstellation(),
         id: (this.isConstellation() === true )? this.constellation_id() : this.station_id()
