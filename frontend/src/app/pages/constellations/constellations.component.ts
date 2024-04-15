@@ -5,7 +5,6 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '@/services/auth.service';
 import moment from 'moment';
-import { MatDialog } from '@angular/material/dialog';
 import { ConstellationFormComponent } from '@/components/shared/constellation-form/constellation-form.component';
 
 
@@ -20,12 +19,13 @@ export class ConstellationsComponent implements OnInit {
   
   constellations: Constellation[] = [];
   isAdmin: boolean = false;
+  showForm: boolean = false;
 
   constructor(
     private constellationsService: ConstellationsService, 
     private router: Router,
     private authService: AuthService,
-    private dialog: MatDialog
+ 
   ){}
 
   ngOnInit(): void {
@@ -56,11 +56,30 @@ export class ConstellationsComponent implements OnInit {
     this.router.navigate(['constellations/'+constellation_id])
   }
 
-  openCreateConstellationFormDialog(): void {
-    this.dialog.open(ConstellationFormComponent, {
-      backdropClass: 'modal-backdrop',
-      panelClass: 'modal-panel'
-    });
+  // openCreateConstellationFormDialog(): void {
+  //   this.dialog.open(ConstellationFormComponent, {
+  //     backdropClass: 'modal-backdrop',
+  //     panelClass: 'modal-panel'
+  //   });
+  // }
+
+  toggleConstellationForm(): void {
+    this.showForm = !this.showForm;
+  }
+
+  deleteConstellation(constellation_id: string) {
+
+    
+    this.constellationsService.deleteConstellation(constellation_id).subscribe(data => {
+
+      alert('Constellation ' + constellation_id + ' was removed');
+      location.reload();
+    }, error => {
+      console.log(error)
+    })
+
+
+
   }
 
 

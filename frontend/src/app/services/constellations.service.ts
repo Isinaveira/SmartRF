@@ -15,14 +15,15 @@ export class ConstellationsService {
     return this.http.get(this.url);
   }
   //editar constelaciones
-  createConstellations(constellation:any): Observable<any> {
+  createConstellations(constellation: Constellation): Observable<any> {
     return this.http.post(this.url, constellation);
   }
-  getConstellation(constellation_id: any): Observable<any> {
-    return this.http.post(this.url, constellation_id);
+  getConstellation(constellation_id: string): Observable<any> {
+    return this.http.get(this.url + "/" + constellation_id);
   }
-  deleteConstellations(constellation_id: any): Observable <any>{
-    return this.http.delete(this.url, constellation_id);
-  }
+
+  deleteConstellation(constellation_id: string): Observable<any> {
+    return this.http.delete(this.url + "/" + constellation_id);
+}
   
 }
