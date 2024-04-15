@@ -3,13 +3,13 @@ const Device = require("../models/device")
 exports.createDevice = async (req, res) => {
   try {
     // Buscar el dispositivo con el station_id más alto
-    const highestStationIdDevice = await Device.findOne().sort({ station_id: -1 });
+    // const highestStationIdDevice = await Device.findOne().sort({ station_id: -1 });
 
-    // Determinar el nuevo station_id
-    const newStationId = highestStationIdDevice ? highestStationIdDevice.station_id + 1 : 1;
+    // // Determinar el nuevo station_id
+    // const newStationId = highestStationIdDevice ? highestStationIdDevice.station_id + 1 : 1;
 
-    // Asignar el nuevo station_id al dispositivo
-    req.body.station_id = newStationId;
+    // // Asignar el nuevo station_id al dispositivo
+    // req.body.station_id = newStationId;
 
     // Crear el dispositivo con los datos actualizados
     const newDevice = new Device(req.body);
@@ -68,7 +68,7 @@ exports.updateDevice = async (req, res) => {
 // Delete all by name
 exports.deleteDevice = async (req, res) => {
   try {
-    const device = await Device.findOneAndDelete({ station_id: req.params.station_id_id });
+    const device = await Device.findOneAndDelete({ station_id: req.params.station_id });
     res.json(device);
   } catch (error) {
     res.status(400).json({ error: error.message });

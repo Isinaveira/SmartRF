@@ -69,3 +69,13 @@ button {
   
   }
   
+
+  .form-container {
+    overflow: hidden;
+    transition: height 0.3s ease;
+    height: 0;
+  }
+  
+  .form-container.open {
+    height: auto;
+  }

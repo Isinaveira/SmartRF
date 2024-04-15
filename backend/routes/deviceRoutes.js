@@ -2,7 +2,9 @@ const express = require("express");
 const router = express.Router();
 const devicesController = require("../controllers/devicesController");
 
-router.get("",devicesController.getDevices)
+router.post("",devicesController.createDevice);
+
+router.get("",devicesController.getDevices);
 // Ruta para obtener un dispositivo por station_id
 router.get("/:station_id", devicesController.getDevice);
 

@@ -1,6 +1,6 @@
 //this type of data forms groups of measurement devices. 
 export interface Constellation {
-    _id: string,
+    constellation_id: string,
     name: string,
     createdAt: string,
     isActive: boolean

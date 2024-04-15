@@ -12,15 +12,18 @@
       beyond.
     </p>
   </div>
-  
+
   <div class="constellations-list">
     @if(isAdmin){
-    <button class="create-constellation-button" (click)="openCreateConstellationFormDialog()">
-      <span class="material-icons">add</span>
-    </button>
+    <div>
+      <button (click)="toggleConstellationForm()">Add</button>
+    </div>
+    <div class="form-container" [class.open]="showForm">
+      <app-constellation-form></app-constellation-form>
+    </div>
     }
     @for(constellation of constellations; track constellation){
-    <div class="constellation-card" (click)="goTo(constellation._id)">
+    <div class="constellation-card" (click)="goTo(constellation.constellation_id)">
       <div class="constellation-info">
         <div class="constellation-data">
           <h1>{{ $index + 1 }}</h1>
@@ -36,6 +39,11 @@
         </div>
       </div>
     </div>
+    @if(isAdmin){
+    <div>
+      <button (click)="deleteConstellation(constellation.constellation_id)">Delete</button>
+    </div>
+    }
     }
   </div>
 </div>

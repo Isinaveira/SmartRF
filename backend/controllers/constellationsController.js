@@ -15,8 +15,8 @@ exports.createConstellation = async (req, res) => {
 
 exports.getConstellation = async (req, res) => {
   try {
-    let constellation = await Constellation.findOne({ name: req.params.name });
-
+    let constellation = await Constellation.findOne({ constellation_id: req.params.constellation_id });
+   
     if (!constellation) {
       res
         .status(404)
@@ -47,7 +47,7 @@ exports.getConstellations = async (req, res) => {
 exports.updateConstellation = async (req, res) => {
   try {
     const constellation = await Constellation.findOneAndUpdate(
-      { name: req.params.name },
+      { name: req.params.constellation_id },
       req.body,
       { new: true }
     );
@@ -61,7 +61,7 @@ exports.updateConstellation = async (req, res) => {
 exports.deleteConstellation = async (req, res) => {
   try {
     const constellation = await Constellation.findOneAndDelete({
-      name: req.params.name,
+      constellation_id: req.params.constellation_id,
     });
     res.json(constellation);
   } catch (error) {

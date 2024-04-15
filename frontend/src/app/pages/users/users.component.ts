@@ -37,7 +37,7 @@ export class UsersComponent  {
 
       name: ['', Validators.required],
       dni: ['',[Validators.required, Validators.maxLength(9)]],
-      email: ['', Validators.required, Validators.email],
+      email: ['',[Validators.required, Validators.email]],
       role: ['user', Validators.required],
       department: ['', Validators.required],
       password: ['', Validators.required],
@@ -130,17 +130,14 @@ export class UsersComponent  {
 editUser(user: User) {
 
     this.isEditing = true;
-    this.usersService.getUser(user.dni).subscribe((data) => {
-      this.userForm.setValue({
-        name: data.name,
-        dni: data.dni,
-        email: data.email,
-        role: data.role,
-        department: data.department,
+    this.userForm.setValue({
+        name: user.name,
+        dni: user.dni,
+        email: user.email,
+        role: user.role,
+        department: user.department,
         password: null,
-      });
-    });
-  
+      });  
 
 }
 

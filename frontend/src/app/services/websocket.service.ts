@@ -9,10 +9,19 @@ import { io } from 'socket.io-client';
 })
 export class WebsocketService {
   private socket: any;
+  public isConnected: boolean = false;
 
   constructor() {
-    // Replace 'http://localhost:3000' with your backend server URL
-    this.socket = io('http://localhost:4000');
+    // // Replace 'http://localhost:3000' with your backend server URL
+    // this.socket = io('http://localhost:4000');
+  }
+
+  public connect(): void {
+    if (!this.isConnected) {
+      // Reemplaza 'http://localhost:4000' con la URL de tu servidor WebSocket
+      this.socket = io('http://localhost:4000');
+      this.isConnected = true;
+    }
   }
 
   getMessageUpdates(): Observable<any> {
@@ -21,5 +30,12 @@ export class WebsocketService {
         observer.next(data);
       });
     });
+  }
+  
+
+  public disconnect(): void {
+    if (this.socket && this.socket.connected) {
+      this.socket.disconnect();
+    }
   }
 }
