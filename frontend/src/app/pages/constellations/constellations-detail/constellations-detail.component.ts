@@ -17,8 +17,8 @@ import { CommonModule } from '@angular/common';
   styleUrl: './constellations-detail.component.css'
 })
 export class ConstellationsDetailComponent implements OnInit {
-  id_constellation!: string;
-  devices_list!: Device[];
+  constellation_id!: string;
+  devices_list: Device[] = [];
   constructor(
     private route: ActivatedRoute, 
     private constellationService: ConstellationsService,
@@ -29,14 +29,16 @@ export class ConstellationsDetailComponent implements OnInit {
   ngOnInit(): void {
    const id = this.route.snapshot.paramMap.get('id');
    if(id !== null ) {
-    this.id_constellation = id;
+    this.constellation_id = id;
    }
-   this.getDevicesOfConstellation(this.id_constellation);
+   this.getDevicesOfConstellation(this.constellation_id);
   }
-  getDevicesOfConstellation( id_constellation: string){
-    const devices_ids = this.constellationService.getConstellation(id_constellation).subscribe({
+  getDevicesOfConstellation(constellation_id: string){
+   
+    this.constellationService.getConstellation(constellation_id).subscribe({
       next: (constellation) => {
-        constellation.devices_list.forEach( (station_id: any) => {
+        this.devices_list = []; 
+        constellation.devices_list.forEach((station_id: string) => {
           this.devicesService.getDevice(station_id).subscribe({
             next: (device) => {
               this.devices_list.push(device)

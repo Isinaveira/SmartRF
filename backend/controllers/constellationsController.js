@@ -15,8 +15,8 @@ exports.createConstellation = async (req, res) => {
 
 exports.getConstellation = async (req, res) => {
   try {
-    let constellation = await Constellation.findOne({ name: req.params.constellation_id });
-
+    let constellation = await Constellation.findOne({ constellation_id: req.params.constellation_id });
+   
     if (!constellation) {
       res
         .status(404)
