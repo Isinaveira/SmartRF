@@ -18,7 +18,7 @@ export class ConstellationFormComponent {
   constellationForm: FormGroup;
   Devices: Device[]=[];
   Constellations: Constellation[] = [];
-
+  num_constellations!: number;
 
   constructor(private constellationsService : ConstellationsService, private fb: FormBuilder, private deviceService: DevicesService) { 
 
@@ -41,26 +41,33 @@ export class ConstellationFormComponent {
     this.deviceService.getDevices().subscribe({
       next: (Devices) => {
         this.Devices = Devices;
+
       },
       error: (err) => {
         console.log(err);
       }
       
     })
-  }
 
-  onSubmit(){
-
+    
    this.constellationsService.getConstellations().subscribe({
     next: (Constellations) => {
       this.Constellations = Constellations;
+      this.num_constellations = this.Constellations.length;
+
     },
     error: (err) => {
       console.log(err);
     }
    })
 
-   if(this.Constellations.length < 6){
+
+  }
+
+  onSubmit(){
+
+
+   if(this.num_constellations < 6){
 
     const constellation_id = this.constellationForm.get('constellation_id')?.value;
     const name = this.constellationForm.get('name')?.value;
@@ -111,6 +118,7 @@ else{
 
   alert('Maximum number of constellations is 6');
   console.log('Maximum number of constellations is 6');
+  this.closeForm();
 }
   }
 

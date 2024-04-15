@@ -7,11 +7,11 @@ const constellationSchema = new mongoose.Schema({
   isActive: { type: Boolean, required: true },
   devices_list: [
     {
-      type: mongoose.Schema.Types.Number,
+      type: mongoose.Schema.Types.String,
       ref: "Devices",
     },
   ],
-});
+},{timestamps: { createdAt: true, updatedAt: false }});
 
 const Constellation = mongoose.model(
   "Constellation",

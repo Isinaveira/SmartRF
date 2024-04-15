@@ -61,7 +61,7 @@ exports.updateConstellation = async (req, res) => {
 exports.deleteConstellation = async (req, res) => {
   try {
     const constellation = await Constellation.findOneAndDelete({
-      name: req.params.constellation_id,
+      constellation_id: req.params.constellation_id,
     });
     res.json(constellation);
   } catch (error) {
