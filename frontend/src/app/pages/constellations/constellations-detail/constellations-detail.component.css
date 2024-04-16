@@ -4,13 +4,20 @@
     height: 100%;
     width: 100vw;
 }
+.data-container{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    height: 90%;
+}
 .devices-container{
     margin: 20px;
-    display: grid;
-    grid-template-columns: repeat(2,1fr);
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
     gap: 10px;
     width: 100%;
-    height: 30%;
+    height: 10%;
 }
 .device-container{
     display: flex;
@@ -21,9 +28,10 @@
     border-radius: 10px;
     padding: 10px;
     height: auto;
-    width: 100%;
+    width: 200px;
     color:white;
 }
+
 .device-container:hover {
     color: black;
     background: -webkit-linear-gradient(left,rgb(255, 170, 0), rgb(249, 97, 2));
