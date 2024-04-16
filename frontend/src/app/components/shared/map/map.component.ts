@@ -1,4 +1,4 @@
-import { Component, Input, AfterViewInit, OnInit } from '@angular/core';
+import { Component, input, AfterViewInit, OnInit } from '@angular/core';
 import mapboxgl from 'mapbox-gl';
 import { environment } from '@/environment';
 import { Device } from '@/models/device.model';
@@ -12,7 +12,7 @@ import { Device } from '@/models/device.model';
   styleUrl: './map.component.css'
 })
 export class MapComponent implements OnInit{
-  @Input() devices!: Device[];
+  devices = input.required<any[]>();
   map!: mapboxgl.Map
 
   ngOnInit(){
@@ -32,7 +32,7 @@ export class MapComponent implements OnInit{
 
     if(this.devices != undefined) {
 
-    this.devices.forEach(dispositivo => {
+    this.devices().forEach(dispositivo => {
       const properties = {
         lat: dispositivo.coordinates.lat,
         lng: dispositivo.coordinates.lng,

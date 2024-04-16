@@ -68,5 +68,7 @@
             }
         </div>
     </div>
-    <app-map class="map-container" [devices]="devices"></app-map>
+    @if(devices.length != 0){
+        <app-map class="map-container" [devices]="this.devices"></app-map>
+    }
 </div>
