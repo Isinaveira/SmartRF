@@ -65,12 +65,12 @@ export class DevicesComponent {
     this.deviceService.getDevices().subscribe({
       next: (devices) => {
         this.devices = devices;
+        console.log(devices);
       },
       error: (err) => {
         console.log(err)
       }
     })
-    console.log(this.devices)
   }
 
   generateTime(date: string): string {

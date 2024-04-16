@@ -1,64 +1,72 @@
 <app-navbar></app-navbar>
-<div class="device-form-container">
-    <div class="device-form">
-        <h2>Add device</h2>
-        <form [formGroup]="deviceForm" (ngSubmit)="onSubmit()">
-            @if(isEditing){
-
-            <div>
-                <label for="station_id">Station Id:</label>
-                <input type="text" id="station_id" formControlName="station_id" required readonly>
-            </div>
-            }
-            @else {
-            <div>
-                <label for="station_id">Station Id:</label>
-                <input type="text" id="station_id" formControlName="station_id" required>
-            </div>
-            }
-
-            <div>
-                <label for="coordinate_lat">Latitude:</label>
-                <input type="number" id="coordinate_lat" formControlName="coordinate_lat" required>
-            </div>
-            <div>
-                <label for="coordinate_lon">Longitude:</label>
-                <input type="number" id="coordinate_lon" formControlName="coordinate_lon" required>
-            </div>
-
-            <!-- Otros campos del formulario según el modelo de datos -->
-
-            <button type="submit">Submit</button>
-            <button class="delete-button" type="reset" (click)="clearForm()">Cancel</button>
-        </form>
-    </div>
-</div>
 <div class="devices-container">
-    <h2>List of devices</h2>
-    <div class="devices-list">
-        @for(device of devices; track device.station_id){
-        <div class="device-container" (click)="openDeviceDetail(device.station_id)">
-            <p class="info-data">
-                Id dispositivo: {{device.station_id}}
-            </p>
-            <div class="info-data">
-                Estado: <div [ngClass]="isActive(device.state)"></div>
-
+    <div class="devices-controls-container">
+        <div class="device-form-container">
+            <div class="device-form">
+                <h2>Add device</h2>
+                <form [formGroup]="deviceForm" (ngSubmit)="onSubmit()">
+                    @if(isEditing){
+        
+                    <div>
+                        <label for="station_id">Station Id:</label>
+                        <input type="text" id="station_id" formControlName="station_id" required readonly>
+                    </div>
+                    }
+                    @else {
+                    <div>
+                        <label for="station_id">Station Id:</label>
+                        <input type="text" id="station_id" formControlName="station_id" required>
+                    </div>
+                    }
+        
+                    <div>
+                        <label for="coordinate_lat">Latitude:</label>
+                        <input type="number" id="coordinate_lat" formControlName="coordinate_lat" required>
+                    </div>
+                    <div>
+                        <label for="coordinate_lon">Longitude:</label>
+                        <input type="number" id="coordinate_lon" formControlName="coordinate_lon" required>
+                    </div>
+        
+                    <!-- Otros campos del formulario según el modelo de datos -->
+                    <div class="form-controller">
+                        <button type="submit">Submit</button>
+                        <button class="delete-button" type="reset" (click)="clearForm()">Cancel</button>
+                    </div>
+                </form>
             </div>
-            <p class="info-data">
-                Última lectura: {{generateTime(device.last_lectureAt)}}
-            </p>
         </div>
-        @if (isAdmin) { <div class="cotrollers">
-            <div>
-                <button (click)="deleteDevice(device.station_id)">Delete</button>
+        <div class="devices-list">
+            <h2>List of devices</h2>
+            @for(device of devices; track device.station_id){
+            <div class="device-container" (click)="openDeviceDetail(device.station_id)">
+                <p class="info-data">
+                    Id dispositivo: {{device.station_id}}
+                </p>
+                <div class="info-data">
+                    Estado: <div [ngClass]="isActive(device.state)"></div>
+    
+                </div>
+                <p class="info-data">
+                    Última lectura: {{generateTime(device.last_lectureAt)}}
+                </p>
+                @if (isAdmin) { 
+                <div class="controllers">
+                    <div>
+                        <button class="device-control" (click)="deleteDevice(device.station_id)">
+                            <span class="material-icons">delete</span>
+                        </button>
+                    </div>
+                    <div>
+                        <button class="device-control" (click)="editDevice(device)">
+                            <span class="material-icons">edit</span>
+                        </button>
+                    </div>
+                </div>
+                }
             </div>
-            <div>
-                <button (click)="editDevice(device)">Edit</button>
-            </div>
+            }
         </div>
-        }
-        }
     </div>
     <app-map class="map-container" [devices]="devices"></app-map>
 </div>

@@ -17,6 +17,7 @@ export class MapComponent implements OnInit{
 
   ngOnInit(){
     this.initializeMap();
+    console.log(this.devices);
   }
 
   initializeMap() {

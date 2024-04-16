@@ -15,7 +15,7 @@
 
   <div class="constellations-list">
     @for(constellation of constellations; track constellation){
-    <div class="constellation-card" (click)="goTo(constellation.constellation_id)  " (mouseenter)="showDeleteButton()"">
+    <div class="constellation-card" (click)="goTo(constellation.constellation_id)">
       <div class="constellation-info">
         <div class="constellation-data">
           <h1>{{ $index + 1 }}</h1>
