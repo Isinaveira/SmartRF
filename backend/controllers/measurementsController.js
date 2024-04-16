@@ -32,7 +32,7 @@ exports.startMeasurement = async (req, res) => {
     const {topic, message } =  req.body;    
     let measurement = null;
     // Save the measurement to the database
-    if (!message || !('freqIni'  in message)) {
+    if (!('freqIni'  in message)) {
       measurement = new Measurement({
       ...req.body.message,
         ...default_message,
@@ -44,7 +44,7 @@ exports.startMeasurement = async (req, res) => {
     }
     const savedMeasurement = await measurement.save(); // saving before starting measurement. 
 
-    if (!message || Object.keys(message).length === 0) {
+    if (!('freqIni'  in message)) {
       clientPublisher("0", JSON.stringify(" "), topic);
     } else {
       clientPublisher("1", JSON.stringify(message), topic);

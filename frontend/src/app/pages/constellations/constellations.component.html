@@ -37,7 +37,7 @@
     }
     @if(isAdmin){
       <div>
-        <button class="create-constellation-button" (click)="toggleConstellationForm()">Add</button>
+        <button class="create-constellation-button" (click)="toggleConstellationForm()"><span class="material-icons">add</span></button>
       </div>
       <div class="form-container" [class.open]="showForm">
         <app-constellation-form></app-constellation-form>

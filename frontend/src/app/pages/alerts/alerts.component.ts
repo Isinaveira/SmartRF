@@ -8,14 +8,14 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { Alerts } from '@/models/alerts.model';
 import { AlertsService } from '@/services/alerts.service';
 import { UsersService } from '@/services/users.service';
-import { LogComponent } from './log/log.component';
 import { CookieService } from 'ngx-cookie-service';
+import { Subscription } from 'rxjs';
 
 
 @Component({
   selector: 'app-alerts',
   standalone: true,
-  imports: [NavbarComponent,CommonModule, ReactiveFormsModule, LogComponent],
+  imports: [NavbarComponent,CommonModule, ReactiveFormsModule],
   templateUrl: './alerts.component.html',
   styleUrls: ['./alerts.component.css']
 })
@@ -24,10 +24,10 @@ export class AlertsComponent implements OnInit {
   messageObject!: 'hola';
   alertsForm!: FormGroup;
   alerts: Alerts[] = [];
-
+  messageSubscription: Subscription | undefined;
   constructor(
     private fb: FormBuilder, 
-    private websocketService: WebsocketService,
+    public websocketService: WebsocketService,
     private toastS: ToastrService,
     private alertsService : AlertsService,
     private userService: UsersService,
@@ -47,14 +47,18 @@ export class AlertsComponent implements OnInit {
     this.getAlerts();
   
     //Comporbamos si ya hay abierto un socket para no duplicar mensajes
-    if (!this.websocketService.isConnected) {
-      this.websocketService.connect(); // Conectar al WebSocket si no está conectado
-    
+   
+     // this.websocketService.connect(); // Conectar al WebSocket si no está conectado
+    // if(this.alertsService.isActivated){
 
-    this.websocketService.getMessageUpdates().subscribe(data => {
+    this.alertsService.deactivateAlerts();
+
+    // }
+    this.messageSubscription=this.websocketService.getMessageUpdates().subscribe(data => {
       console.log('Received MQTT message:', data);
       // Add the received message to the array
-      this.mqttMessages.push(data);
+      //this.mqttMessages.push(data);
+      this.websocketService.received_messages.push(data);
       //Manejo de alertas
       const dataSample = JSON.parse(data.message);
       if (this.alerts.length > 0) {
@@ -86,10 +90,16 @@ export class AlertsComponent implements OnInit {
         }
       }
     });
-  }
+  
   }
 
+ngOnDestroy(){
 
+  if(this.messageSubscription){
+    this.messageSubscription.unsubscribe();
+  }
+
+}
 
 
   onSubmit() {
@@ -106,7 +116,6 @@ export class AlertsComponent implements OnInit {
             next: (data) => {
               console.log(ALERT);
               this.getAlerts();
-              this.alertsForm.reset();
 
             },
             error: (error) => {

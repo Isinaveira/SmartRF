@@ -1,9 +1,0 @@
-<h2 class="log-title">Received Messages</h2>
-<div class="message-list-container">
-  @for (message of mqttMessages; track message){
-  <div class="message-container">
-    <p class="message-content"><strong>Received MQTT Topic:</strong> {{ message.topic }}</p>
-    <p class="message-content"><strong>Received MQTT Message:</strong> {{ message.message }}</p>
-  </div>
-  }
-</div>

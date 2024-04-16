@@ -4,6 +4,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { Router } from '@angular/router';
 import { AuthService } from '@/services/auth.service';
 import { WebsocketService } from '@/services/websocket.service';
+import { AlertsService } from '@/services/alerts.service';
 
 @Component({
   selector: 'app-navbar',
@@ -15,10 +16,10 @@ import { WebsocketService } from '@/services/websocket.service';
 export class NavbarComponent {
 
   isAdmin: boolean = false;
-
+  alertsStatus: string= "notifications_off";
  
 
-  constructor(private webSocketService: WebsocketService,private cookieService: CookieService, private router: Router, private authService: AuthService) {}
+  constructor(private alertsService: AlertsService, private webSocketService: WebsocketService,private cookieService: CookieService, private router: Router, private authService: AuthService) {}
 
  
   ngOnInit() {
@@ -36,7 +37,11 @@ export class NavbarComponent {
   }
   
 
-  
+  alerts(){
+    this.alertsService.activateAlerts();
+    console.log(this.alertsService.isActivated);
+    this.alertsStatus= (this.alertsService.isActivated)? "notifications_active":"notifications_off";
+  }
 
   logout() {
     // Borrar la cookie de sesión
@@ -44,6 +49,7 @@ export class NavbarComponent {
 
     //Cerrar el socket
     this.webSocketService.disconnect();
+    console.log('WebSocket closed');
     // Redirigir al usuario a la página de inicio de sesión
     this.router.navigate(['/login']);
   }

@@ -97,7 +97,9 @@ export class ChartsComponent {
 
   ngOnInit(): void {
 
+    // this.websocketService.connect(); // Conectar al WebSocket si no está conectado
 
+    
     // Con el id podremos diferenciar los mensajes que llegan par representar solo los de la estacion correcta
     const id = this.route.snapshot.paramMap.get('id');
     if(id !== null ) {
@@ -122,10 +124,10 @@ export class ChartsComponent {
 
     //////////////////////////////////////////////////////////////
 
-    this.initObjectChannels(10);
-    this.generaDatos();
+    // this.initObjectChannels(10);
+    // this.generaDatos();
     this.websocketService.getMessageUpdates().subscribe(data => {
-      // console.log('Received MQTT message:', data);
+      console.log('Received MQTT message:', data);
 
 
 
@@ -150,13 +152,20 @@ export class ChartsComponent {
       if(this.first){
 
       this.first = false;
-      const num_channels = JSON.parse(data).length;
+      const message_received = JSON.parse(data.message);
+      console.log(message_received);
+      const resultados = message_received.results;
+      console.log(resultados);
+
+      const num_channels = resultados.length;
+      console.log(num_channels);
+
       this.initObjectChannels(num_channels);
 
     }
 
-    this.initObjectChannels(this.nChannels);
-    this.updateChart(JSON.parse(data));
+   // this.initObjectChannels(this.nChannels);
+    this.updateChart((JSON.parse(data.message)).results);
 
 
     });

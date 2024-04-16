@@ -14,3 +14,15 @@ li {
   color: white;
 }
 
+.buttons-navbar{
+
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.navbar-button{
+
+  width: 5rem;
+  height: 2rem;
+}

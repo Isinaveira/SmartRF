@@ -30,9 +30,12 @@
             <a class="nav-link" (click)="showAboutMessage()">About</a>
           </li>       
       </ul>
-      <ul>
+      <ul class="buttons-navbar">
         <li class="nav-item ms-auto ">
-          <button (click)="logout()"><span class="material-icons">logout</span></button>
+          <button class="navbar-button" (click)="alerts()"><span class="material-icons">{{alertsStatus}}</span></button>
+        </li> 
+        <li class="nav-item ms-auto ">
+          <button class="navbar-button"  (click)="logout()"><span class="material-icons">logout</span></button>
         </li> 
       </ul>      
       </div>

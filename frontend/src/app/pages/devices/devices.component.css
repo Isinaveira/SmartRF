@@ -4,13 +4,20 @@
   height: 100vh;
 }
 
-.devices-list {
+.devices-list-container {
   padding: 10px;
   display: flex;
   flex-direction: column;
   background-color: rgb(243, 243, 243);
-  gap: 20px;
-  height: 100%;
+  height: 50%;
+}
+.devices-list{
+  height: 70%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow-y: scroll;
+  margin: 10px 0;
 }
 .map-container {
   width: 100%;
