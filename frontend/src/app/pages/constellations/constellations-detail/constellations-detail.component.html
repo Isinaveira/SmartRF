@@ -1,7 +1,7 @@
 <app-navbar></app-navbar>
 <div class="constellations-detail-container">
     <measurement-form [isConstellation]="true" [constellation_id]="this.constellation_id"></measurement-form>
-    <div>
+    <div class="data-container">
         <div class="devices-container">
             @for(device of devices_list; track device){
                 <div class="device-container" (click)="openDeviceDetail(device.station_id)">
@@ -18,9 +18,8 @@
                 </div>
             }
         </div>
-        @if(devices_list.length != 0){
-            {{devices_list.length}}
-            <app-map [devices]="devices_list"></app-map>
+        @if(devices_list.length !== 0){
+                <app-map [devices]="devices_list"></app-map>
         }
     </div>
 </div>

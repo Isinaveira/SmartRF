@@ -25,7 +25,7 @@ import { MapComponent } from '@/components/shared/map/map.component';
 })
 export class ConstellationsDetailComponent implements OnInit {
   constellation_id!: string;
-  devices_list!: any[];
+  devices_list: any[] = [];
   constructor(
     private route: ActivatedRoute, 
     private constellationService: ConstellationsService,
@@ -37,30 +37,30 @@ export class ConstellationsDetailComponent implements OnInit {
    const id = this.route.snapshot.paramMap.get('id');
    if(id !== null ) {
     this.constellation_id = id;
-    this.constellationService.getConstellation(this.constellation_id).subscribe({
-      next: (constellation) => {
-        const devices_list: any[] = []; 
-        constellation.devices_list.forEach((station_id: string) => {
-          this.devicesService.getDevice(station_id).subscribe({
-            next: (device) => {
-              devices_list.push(device);
-            },
-            error: (error) => {
-              console.log(error);
-            }
-          })
-        });
-        this.devices_list = devices_list;
-      },
-      error: (err) => {
-        console.log(err)
-      }
-    });
+    this.getDevices()
 
    }
    
   }
   
+  getDevices(){
+    this.constellationService.getConstellation(this.constellation_id).subscribe({
+      next: (constellation) => {
+        constellation.devices_list.forEach((device_id:any) => {
+          this.devicesService.getDevice(device_id).subscribe({
+            next: (device)=>{
+              this.devices_list.push(device);
+            },
+            error: (error)=> console.log(error)
+          })
+        });  
+        
+      },
+      error: (err) => {
+        console.log(err)
+      }
+    })
+  }
 
   generateTime(date: string): string {
     // Lógica para formatear la fecha
