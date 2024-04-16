@@ -75,16 +75,16 @@
         <h4>Advanced Options</h4>
         <div class="form-group">
           <label for="threshold">Threshold:</label>
-          <input formControlName="threshold"type="text" id="threshold" name="threshold" required />
+          <input formControlName="threshold"type="text" id="threshold" name="threshold"  value="auto" required />
         </div>
         <div class="form-group">
           <label for="t_capt">Window capture time:</label>
-          <input formControlName="t_capt"type="text" id="t_capt" name="t_capt" required />
+          <input formControlName="t_capt"type="text" id="t_capt" name="t_capt" value="0.25" required />
         </div>
         <div class="form-group">
           <label for="nfft">Number of window points:</label>
           <select formControlName="nfft" id="nfft" name="nfft" required>
-            <option value="1024">1024</option>
+            <option value="1024" selected>1024</option>
             <option value="2048">2048</option>
             <option value="4096">4096</option>
             <option value="8192">8192</option>

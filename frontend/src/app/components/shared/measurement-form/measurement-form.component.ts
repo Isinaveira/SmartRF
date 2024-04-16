@@ -101,8 +101,15 @@ export class MeasurementFormComponent {
 
     console.log(type);
     const result = {
-      topic: 'broadcast',
-      message: (type === 'basic' )? {} : message
+      topic: (this.isConstellation())? `constellation_id_${this.constellation_id()}_pub`: `station_id_${this.station_id()}_pub`,
+      message: (type === 'basic' )? {
+        name: this.measurementForm.value.name,
+        user_dni: this.cookieService.get('dniCookie'), 
+        type: {
+          isConstellation: this.isConstellation(),
+          id: (this.isConstellation() === true )? this.constellation_id() : this.station_id()
+        } 
+      } : message
     };
 
     this.measurementsService.startMeasurement(result)

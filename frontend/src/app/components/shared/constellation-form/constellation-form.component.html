@@ -12,24 +12,9 @@
           <label for="constellation-name">Name:</label>
           <input type="text" id="constellation-name" formControlName="name" required>
         </div>
-        <!-- <div>
-          <label for="constellation_station1">Station 1 Id:</label>
-          <input type="text" id="constellation_station1" formControlName="constellation_station1" required>
-        </div>
-        <div>
-          <label for="constellation_station2">Station 2 Id:</label>
-          <input type="text" id="constellation_station2" formControlName="constellation_station2" required>
-        </div>
-        <div>
-          <label for="constellation_station3">Station 3 Id:</label>
-          <input type="text" id="constellation_station3" formControlName="constellation_station3" required>
-        </div>
-         -->
-
-
          <div class="form-group">
-          <label for="constellation_station1">Predefined Measurements:</label>
-          <select formControlName="constellation_station1" id="constellation_station1">
+          <label for="constellation_station1">Devices: (hold ctrl or cmd to select multiple)</label>
+          <select formControlName="constellation_station1" id="constellation_station1" multiple>
             <option>Select one option below</option>
             @for (device of Devices; track device){
             <option  value="{{device.station_id}}" required>{{device.station_id}}</option>
@@ -37,25 +22,7 @@
           </select>
         </div>
 
-        <div class="form-group">
-          <label for="constellation_station2">Predefined Measurements:</label>
-          <select formControlName="constellation_station2" id="constellation_station2">
-            <option>Select one option below</option>
-            @for (device of Devices; track  device){
-            <option value="{{device.station_id}}" required>{{device.station_id}}</option>
-            }
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label for="constellation_station3">Predefined Measurements:</label>
-          <select formControlName="constellation_station3" id="constellation_station3">
-            <option>Select one option below</option>
-            @for (device of Devices; track device){
-            <option  value="{{device.station_id}}" required>{{device.station_id}}</option>
-            }
-          </select>
-        </div>
+       
   
         <!-- Otros campos del formulario según el modelo de datos -->
         

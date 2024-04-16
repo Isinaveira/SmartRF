@@ -31,6 +31,7 @@
    align-items: center;   
 }
 .constellation-card{
+    position: relative;
     padding: 10px;
     height: 200px;
     width: 200px;
@@ -41,14 +42,6 @@
     color: black;
     background: -webkit-linear-gradient(left,rgb(255, 170, 0), rgb(249, 97, 2));
     cursor: pointer;
-}
-
-.create-constellation-button{
-    position: absolute;
-    top: 0;
-    right: 0;
-    margin: 10px;
-    font-size: 0.9rem;
 }
 
 button {
@@ -68,14 +61,29 @@ button {
     animation: glowAnimation 3s infinite alternate;
   
   }
-  
+.create-constellation-button{
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 10px;
+    width: 3rem;
+    font-size: 0.9rem;
+}
+.delete-constellation-button{
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 10px;
+  width: 3rem;
+  background-color: black;
+}
 
-  .form-container {
-    overflow: hidden;
-    transition: height 0.3s ease;
-    height: 0;
-  }
-  
-  .form-container.open {
-    height: auto;
-  }
+.form-container {
+  overflow: hidden;
+  transition: height 0.3s ease;
+  height: 0;
+}
+
+.form-container.open {
+  height: auto;
+}

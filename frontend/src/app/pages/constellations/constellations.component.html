@@ -14,16 +14,8 @@
   </div>
 
   <div class="constellations-list">
-    @if(isAdmin){
-    <div>
-      <button (click)="toggleConstellationForm()">Add</button>
-    </div>
-    <div class="form-container" [class.open]="showForm">
-      <app-constellation-form></app-constellation-form>
-    </div>
-    }
     @for(constellation of constellations; track constellation){
-    <div class="constellation-card" (click)="goTo(constellation.constellation_id)">
+    <div class="constellation-card" (click)="goTo(constellation.constellation_id)  " (mouseenter)="showDeleteButton()"">
       <div class="constellation-info">
         <div class="constellation-data">
           <h1>{{ $index + 1 }}</h1>
@@ -38,12 +30,18 @@
           Devices: {{ constellation.devices_list.length }}
         </div>
       </div>
+      @if(isAdmin){
+      <button class="delete-constellation-button" (click)="deleteConstellation(constellation.constellation_id)"><span class="material-icons">delete</span></button>
+      }
     </div>
+    }
     @if(isAdmin){
-    <div>
-      <button (click)="deleteConstellation(constellation.constellation_id)">Delete</button>
-    </div>
-    }
-    }
+      <div>
+        <button class="create-constellation-button" (click)="toggleConstellationForm()">Add</button>
+      </div>
+      <div class="form-container" [class.open]="showForm">
+        <app-constellation-form></app-constellation-form>
+      </div>
+      }
   </div>
 </div>

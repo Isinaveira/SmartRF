@@ -37,10 +37,6 @@ export class ConstellationsComponent implements OnInit {
     this.constellationsService.getConstellations().subscribe({
       next: (constellations) => {
         this.constellations = constellations;
-        console.log(constellations);
-        constellations.forEach((element:any) => {
-          console.log(element.devices_list.length);
-        });
       },
       error: (err) => {
         console.log(err)
@@ -66,6 +62,8 @@ export class ConstellationsComponent implements OnInit {
   toggleConstellationForm(): void {
     this.showForm = !this.showForm;
   }
+
+  
 
   deleteConstellation(constellation_id: string) {
 

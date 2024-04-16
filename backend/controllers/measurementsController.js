@@ -17,30 +17,6 @@ let default_message = {
   nfft: 1024,
   mode: "continuous",
 };
-//Example of what should be received in the request body!============>
-/* {
-"topic": "measurement_topic",
-"message": {
-      "name": "Measurement 1",
-      "freqIni": 1000,
-      "freqFinal": 2000,
-      "threshold": "high",
-      "t_capt": 10,
-      "chanBW": 20,
-      "nfft": 1024,
-      "mode": "continuous"
-
-
-
-measurement : {
-  idUser: asdsad,
-  name: asdasda
-}
-
-
-
-}
-} */
 
 /*
   Endpoint to start measurement to any topic, depending on request body.message:(msg_type: 0 or 1)
@@ -53,17 +29,12 @@ exports.startMeasurement = async (req, res) => {
   console.log("Received measurement data:", req.body);
 
   try {
-    const { topic, message } = req.body;
-
-    if (!message || Object.keys(message).length === 0) {
-      clientPublisher("0", JSON.stringify(" "), topic);
-    } else {
-      clientPublisher("1", JSON.stringify(message), topic);
-    }
+    const {topic, message } =  req.body;    
     let measurement = null;
     // Save the measurement to the database
-    if (!message || Object.keys(message).length === 0) {
+    if (!message || !('freqIni'  in message)) {
       measurement = new Measurement({
+      ...req.body.message,
         ...default_message,
       });
     } else {
@@ -71,8 +42,13 @@ exports.startMeasurement = async (req, res) => {
         ...message,
       });
     }
-    const savedMeasurement = await measurement.save(); // saving before starting measuerment. 
+    const savedMeasurement = await measurement.save(); // saving before starting measurement. 
 
+    if (!message || Object.keys(message).length === 0) {
+      clientPublisher("0", JSON.stringify(" "), topic);
+    } else {
+      clientPublisher("1", JSON.stringify(message), topic);
+    }
     // Send a JSON response with the newly created measurement
     res.status(201).json(savedMeasurement); // 201 status code for resource created
   } catch (error) {
