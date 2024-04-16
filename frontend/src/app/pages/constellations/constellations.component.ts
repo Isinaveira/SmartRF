@@ -1,6 +1,7 @@
 import { NavbarComponent } from '@/components/shared/navbar/navbar.component';
 import { Constellation } from '@/models/constellation.model';
 import { ConstellationsService } from '@/services/constellations.service';
+import { MapComponent } from '@/components/shared/map/map.component';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '@/services/auth.service';
@@ -11,7 +12,7 @@ import { ConstellationFormComponent } from '@/components/shared/constellation-fo
 @Component({
   selector: 'app-constellations',
   standalone: true,
-  imports: [NavbarComponent, ConstellationFormComponent],
+  imports: [NavbarComponent, ConstellationFormComponent, MapComponent],
   templateUrl: './constellations.component.html',
   styleUrl: './constellations.component.css'
 })

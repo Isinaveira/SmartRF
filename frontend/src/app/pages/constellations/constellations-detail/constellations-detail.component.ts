@@ -9,16 +9,23 @@ import { DecimalPipe } from '@angular/common';
 import { Router } from '@angular/router';
 import moment from 'moment';
 import { CommonModule } from '@angular/common';
+import { MapComponent } from '@/components/shared/map/map.component';
 @Component({
   selector: 'app-constellations-detail',
   standalone: true,
-  imports: [NavbarComponent, MeasurementFormComponent, DecimalPipe,  CommonModule],
+  imports: [
+    NavbarComponent, 
+    MeasurementFormComponent, 
+    DecimalPipe,  
+    CommonModule, 
+    MapComponent
+  ],
   templateUrl: './constellations-detail.component.html',
   styleUrl: './constellations-detail.component.css'
 })
 export class ConstellationsDetailComponent implements OnInit {
   constellation_id!: string;
-  devices_list: Device[] = [];
+  devices_list!: any[];
   constructor(
     private route: ActivatedRoute, 
     private constellationService: ConstellationsService,
@@ -30,31 +37,30 @@ export class ConstellationsDetailComponent implements OnInit {
    const id = this.route.snapshot.paramMap.get('id');
    if(id !== null ) {
     this.constellation_id = id;
-   }
-   this.getDevicesOfConstellation(this.constellation_id);
-  }
-  getDevicesOfConstellation(constellation_id: string){
-   
-    this.constellationService.getConstellation(constellation_id).subscribe({
+    this.constellationService.getConstellation(this.constellation_id).subscribe({
       next: (constellation) => {
-        this.devices_list = []; 
+        const devices_list: any[] = []; 
         constellation.devices_list.forEach((station_id: string) => {
           this.devicesService.getDevice(station_id).subscribe({
             next: (device) => {
-              this.devices_list.push(device)
+              devices_list.push(device);
             },
             error: (error) => {
               console.log(error);
             }
           })
         });
+        this.devices_list = devices_list;
       },
       error: (err) => {
         console.log(err)
       }
     });
-    
+
+   }
+   
   }
+  
 
   generateTime(date: string): string {
     // Lógica para formatear la fecha

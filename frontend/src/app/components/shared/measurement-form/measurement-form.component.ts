@@ -101,7 +101,7 @@ export class MeasurementFormComponent {
 
     console.log(type);
     const result = {
-      topic: (this.isConstellation())? `constellation_id_${this.constellation_id()}_pub`: `station_id_${this.station_id()}_pub`,
+      topic: (this.isConstellation())? `constellation_id_pub_${this.constellation_id()}`: `station_id_pub_${this.station_id()}`,
       message: (type === 'basic' )? {
         name: this.measurementForm.value.name,
         user_dni: this.cookieService.get('dniCookie'), 
