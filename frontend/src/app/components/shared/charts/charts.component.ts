@@ -12,6 +12,7 @@ import { WebsocketService } from '@/services/websocket.service';
 import { ChartsService } from '@/services/charts.service';
 import { Measurement } from '@/models/measurement.model';
 import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -44,7 +45,7 @@ export class ChartsComponent {
 
   //Socket
   mqttMessages: any[] = []; // Array to store all MQTT messages
-  maxMessages = 9;
+  messageSubscription: Subscription | undefined;
 
 
   //Channels
@@ -119,57 +120,41 @@ export class ChartsComponent {
         }
       })
 
-      
-
-
     //////////////////////////////////////////////////////////////
 
     // this.initObjectChannels(10);
     // this.generaDatos();
-    this.websocketService.getMessageUpdates().subscribe(data => {
-      console.log('Received MQTT message:', data);
-
-
-
-      //Tranforma el entero que se recibe en un array binario que represente la ocupación de los diferentes canales
-
-      // const binaryArray = [];
-
-      // // Convertir el número decimal a binario
-      // let num = data;
-      // while (num > 0) {
-      //     // Obtener el bit menos significativo (resto de la división por 2)
-      //     const bit = num % 2;
-      //     binaryArray.unshift(bit); // Agregar el bit al principio del array
-  
-      //     // Dividir el número por 2 (división entera)
-      //     num = Math.floor(num / 2);
-      // }
-
+    this.messageSubscription = this.websocketService.getMessageUpdates().subscribe(data => {
       
-      // No hace falta cuando se recuperen los datos de la base de datos
+      console.log('Received MQTT message:', data); 
+
+      if((JSON.parse(data.message)).station_id == this.device_id){
+      
     
       if(this.first){
 
       this.first = false;
-      const message_received = JSON.parse(data.message);
-      console.log(message_received);
-      const resultados = message_received.results;
-      console.log(resultados);
+   
+      console.log((JSON.parse(data.message)).results);
 
-      const num_channels = resultados.length;
-      console.log(num_channels);
+      
+      console.log(((JSON.parse(data.message)).results).length);
 
-      this.initObjectChannels(num_channels);
+      // Inicializamos la estructura de las graficas pasando el numero de canales
+      this.initObjectChannels(((JSON.parse(data.message)).results).length);
 
     }
 
    // this.initObjectChannels(this.nChannels);
+   // Pasamos los resultados de las mediciones
     this.updateChart((JSON.parse(data.message)).results);
-
+    
+  }
 
     });
+
   }
+  
 
 
   initObjectChannels(num_channels: number) {
@@ -195,11 +180,11 @@ export class ChartsComponent {
     console.log(data);
     this.total++;
     this.mqttMessages.fill(0);
-    console.log(data);
+    console.log(this.mqttMessages);
 
     // Agrega el mensaje recibido al array
     this.mqttMessages.push(data);
-
+    console.log(this.mqttMessages);
     for (let i = 0; i < this.mqttMessages.length; i++) {
       for (let j = 0; j < this.mqttMessages[i].length; j++) {
         if (this.mqttMessages[i][j] === 1) {
@@ -225,6 +210,14 @@ export class ChartsComponent {
      this.updateChart(this.testData);
 
    }
+  }
+
+  ngOnDestroy(){
+
+    if(this.messageSubscription){
+      this.messageSubscription.unsubscribe();
+    }
+  
   }
 
   // setCustom(){
