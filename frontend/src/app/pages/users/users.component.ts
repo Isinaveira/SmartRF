@@ -84,7 +84,7 @@ export class UsersComponent  {
 
           next: (data) => {
 
-            location.reload();
+          this.getUsers();
           },
 
           error: (error) => {
@@ -113,7 +113,7 @@ export class UsersComponent  {
         console.log(USER);
         this.usersService.saveUser(USER).subscribe({
           next: (data) => {
-            location.reload();
+          this.getUsers();
           },
           error: (error) => {
             console.log(error);
@@ -147,7 +147,7 @@ deleteUser(user: User) {
   this.usersService.deleteUser(user.dni).subscribe(data => {
     
     alert('User ' + user.name + ' was removed');
-    location.reload();
+    this.getUsers();
   }, error => {
     console.log(error)
   })

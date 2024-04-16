@@ -103,7 +103,7 @@ export class ConstellationFormComponent {
         console.log(CONSTELLATION);
         this.constellationsService.createConstellations(CONSTELLATION).subscribe({
           next: (data) => {
-            location.reload();
+          this.getConstellations();
           },
           error: (error) => {
             console.log(error);
@@ -120,6 +120,18 @@ else{
   console.log('Maximum number of constellations is 6');
   this.closeForm();
 }
+  }
+
+  getConstellations() {
+
+    this.constellationsService.getConstellations().subscribe({
+      next: (constellations) => {
+        this.Constellations = constellations
+      },
+      error: (err) => {
+        console.log(err)
+      }
+    })
   }
 
 

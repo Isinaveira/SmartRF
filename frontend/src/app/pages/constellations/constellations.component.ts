@@ -64,6 +64,17 @@ export class ConstellationsComponent implements OnInit {
     this.showForm = !this.showForm;
   }
 
+  getConstellations() {
+
+    this.constellationsService.getConstellations().subscribe({
+      next: (constellations) => {
+        this.constellations = constellations
+      },
+      error: (err) => {
+        console.log(err)
+      }
+    })
+  }
   
 
   deleteConstellation(constellation_id: string) {
@@ -72,7 +83,7 @@ export class ConstellationsComponent implements OnInit {
     this.constellationsService.deleteConstellation(constellation_id).subscribe(data => {
 
       alert('Constellation ' + constellation_id + ' was removed');
-      location.reload();
+      this.getConstellations();
     }, error => {
       console.log(error)
     })

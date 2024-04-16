@@ -1,7 +1,6 @@
 import { Device } from '@/models/device.model';
 import { NavbarComponent } from '@/components/shared/navbar/navbar.component';
 import { Component, OnInit, AfterViewInit } from '@angular/core';
-import { Location } from '@angular/common';
 import { ChartsComponent } from '@/components/shared/charts/charts.component';
 import { MeasurementFormComponent } from '@/components/shared/measurement-form/measurement-form.component';
 import { ActivatedRoute } from '@angular/router';

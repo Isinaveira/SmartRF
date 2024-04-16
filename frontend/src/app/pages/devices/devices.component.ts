@@ -93,7 +93,7 @@ export class DevicesComponent {
     this.deviceService.deleteDevice(station_id).subscribe(data => {
 
       alert('Device ' + station_id + ' was removed');
-      location.reload();
+      this.getDevices();
     }, error => {
       console.log(error)
     })
@@ -125,7 +125,7 @@ export class DevicesComponent {
 
         next: (data) => {
 
-          location.reload();
+          this.getDevices();
         },
 
         error: (error) => {
@@ -153,7 +153,7 @@ export class DevicesComponent {
         console.log(DEVICE);
         this.deviceService.saveDevice(DEVICE).subscribe({
           next: (data) => {
-            location.reload();
+          this.getDevices();
           },
           error: (error) => {
             console.log(error);
@@ -173,6 +173,18 @@ export class DevicesComponent {
     this.deviceForm.patchValue(device);
 
 
+  }
+
+  getDevices(){
+
+    this.deviceService.getDevices().subscribe({
+      next: (devices) => {
+        this.devices = devices;
+      },
+      error: (err) => {
+        console.log(err)
+      }
+    })
   }
 
 
