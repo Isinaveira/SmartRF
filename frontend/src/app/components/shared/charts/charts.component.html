@@ -72,7 +72,24 @@
 -->
 
 <h2>Charts</h2>
-<div class="charts-container">
+
+<ngx-charts-line-chart
+[view]="view"
+[scheme]="colorScheme"
+[results]="multi"
+[gradient]="gradient"
+[xAxis]="showXAxis"
+[yAxis]="showYAxis"
+[legend]="showLegend"
+[showXAxisLabel]="showXAxisLabel"
+[showYAxisLabel]="showYAxisLabel"
+[xAxisLabel]="xAxisLabel"
+[yAxisLabel]="yAxisLabel"
+[autoScale]="autoScale"
+[animations]="false"
+>
+</ngx-charts-line-chart>
+<!-- <div class="charts-container">
   <div class="tarjetas">
     <ngx-charts-number-card 
      [animations]="animationsNC" [results]="samplesPerChannel"
@@ -99,4 +116,4 @@
     </ngx-charts-bar-vertical>
   </div>
 
-</div>
+</div> -->
