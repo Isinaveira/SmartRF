@@ -8,14 +8,13 @@ const {
 
 //This function modifies the current parameter of the stations measurements
 let default_message = {
-  name: "Measurement 1",
-  freqIni: 1000,
-  freqFinal: 2000,
-  threshold: "high",
-  t_capt: 10,
-  chanBW: 20,
-  nfft: 1024,
-  mode: "continuous",
+  freqIni : 758, 
+  freqFinal : 768.77, 
+  t_capt : 0.25, 
+  threshold : "auto",
+  nfft : 1024, 
+  mode : "avg", 
+  chanBW : 500,
 };
 
 /*
