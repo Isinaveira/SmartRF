@@ -2,6 +2,11 @@
 <div class="constellations-detail-container">
     <measurement-form [isConstellation]="true" [constellation_id]="this.constellation_id"></measurement-form>
     <div class="data-container">
+        @if(!loadingDevices){
+        <div class="map-container">
+            <app-map [devices]="devices_list"></app-map>
+        </div>
+        }
         <div class="devices-container">
             @for(device of devices_list; track device){
                 <div class="device-container" (click)="openDeviceDetail(device.station_id)">
@@ -18,8 +23,6 @@
                 </div>
             }
         </div>
-        @if(devices_list.length !== 0){
-                <app-map [devices]="devices_list"></app-map>
-        }
+        
     </div>
 </div>

@@ -43,9 +43,10 @@ exports.startMeasurement = async (req, res) => {
       });
     }
     const savedMeasurement = await measurement.save(); // saving before starting measurement. 
-
+    console.log(savedMeasurement);
+    message['measurement_id'] = savedMeasurement._id;
     if (!('freqIni'  in message)) {
-      clientPublisher("0", JSON.stringify(" "), topic);
+      clientPublisher("0", JSON.stringify(message.measurement_id), topic);
     } else {
       clientPublisher("1", JSON.stringify(message), topic);
     }

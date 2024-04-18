@@ -17,7 +17,7 @@
     flex-wrap: wrap;
     gap: 10px;
     width: 100%;
-    height: 10%;
+    height: 20%;
 }
 .device-container{
     display: flex;
@@ -36,6 +36,12 @@
     color: black;
     background: -webkit-linear-gradient(left,rgb(255, 170, 0), rgb(249, 97, 2));
     cursor: pointer;
+}
+.map-container{
+    margin: 10px;
+    width: 100%;
+    height: 50%;
+    border-radius: 10px;
 }
 .inactive{
     margin-left: 5px;

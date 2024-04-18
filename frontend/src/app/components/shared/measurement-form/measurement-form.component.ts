@@ -1,11 +1,11 @@
-import { AuthService } from '@/services/auth.service';
 import { MeasurementsService } from '@/services/measurements.service';
 import { PredefinedMeasurementsService } from '@/services/predefined-measurements.service';
 import { UsersService } from '@/services/users.service';
-import { Component, Input, input } from '@angular/core';
+import { Component, EventEmitter, Output, input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { predefinedMeasurements } from '@/models/predefinedMeasurement.model';
 import { CookieService } from 'ngx-cookie-service';
+import { DataService } from '@/services/data.service';
 
 @Component({
   selector: 'measurement-form',
@@ -26,13 +26,15 @@ export class MeasurementFormComponent {
   measurementForm: FormGroup;
   predefinedMeasurements: predefinedMeasurements[] = [];
   predefinedView: boolean = false;
+  @Output() measurementReady = new EventEmitter<boolean>();
 
   constructor(
     private formBuilder: FormBuilder, 
     private measurementsService: MeasurementsService, 
     private predefinedMeasurementService : PredefinedMeasurementsService,
     private usersService: UsersService,
-    private cookieService: CookieService
+    private cookieService: CookieService,
+    private dataService: DataService
   ) {
     this.measurementForm = this.formBuilder.group({
       type: ['basic', Validators.required], // Default type is 'predefined'
@@ -116,10 +118,12 @@ export class MeasurementFormComponent {
     .subscribe({
       next: (response) => {
         console.log('Measurement started successfully:', response);
+        this.dataService.changeMeasurementState(true);
       },
       error: (err) => {
         console.error('Error starting measurement:', err);
       }});
+
   }
 
   onReset() {

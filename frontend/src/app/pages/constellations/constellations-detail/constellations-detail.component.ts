@@ -4,7 +4,6 @@ import { MeasurementFormComponent } from '@/components/shared/measurement-form/m
 import { ActivatedRoute } from '@angular/router';
 import { ConstellationsService } from '@/services/constellations.service';
 import { DevicesService } from '@/services/devices.service';
-import { Device } from '@/models/device.model';
 import { DecimalPipe } from '@angular/common';
 import { Router } from '@angular/router';
 import moment from 'moment';
@@ -26,6 +25,7 @@ import { MapComponent } from '@/components/shared/map/map.component';
 export class ConstellationsDetailComponent implements OnInit {
   constellation_id!: string;
   devices_list: any[] = [];
+  loadingDevices: boolean = false;
   constructor(
     private route: ActivatedRoute, 
     private constellationService: ConstellationsService,
@@ -44,24 +44,36 @@ export class ConstellationsDetailComponent implements OnInit {
   }
   
   getDevices(){
+    this.loadingDevices = true; // Establecer el indicador de carga a verdadero
     this.constellationService.getConstellation(this.constellation_id).subscribe({
       next: (constellation) => {
-        constellation.devices_list.forEach((device_id:any) => {
-          this.devicesService.getDevice(device_id).subscribe({
-            next: (device)=>{
-              this.devices_list.push(device);
-            },
-            error: (error)=> console.log(error)
-          })
-        });  
-        
+        const devicePromises = constellation.devices_list.map((device_id: any) => {
+          return new Promise<void>((resolve, reject) => {
+            this.devicesService.getDevice(device_id).subscribe({
+              next: (device) => {
+                this.devices_list.push(device);
+                resolve(); // Resolvemos la promesa una vez que se ha obtenido el dispositivo
+              },
+              error: (error) => {
+                console.log(error);
+                reject(error); // Rechazamos la promesa en caso de error
+              }
+            });
+          });
+        });
+
+        // Esperamos a que todas las promesas se completen antes de acceder a devices_list
+        Promise.all(devicePromises).then(() => {
+          this.loadingDevices = false; // Establecer el indicador de carga a falso una vez que se han obtenido todos los dispositivos
+          console.log(this.devices_list);
+        });
       },
       error: (err) => {
-        console.log(err)
+        console.log(err);
+        this.loadingDevices = false; // Establecer el indicador de carga a falso en caso de error
       }
-    })
+    });
   }
-
   generateTime(date: string): string {
     // Lógica para formatear la fecha
     return moment(date).format('DD/MM/YYYY HH:mm:ss');
