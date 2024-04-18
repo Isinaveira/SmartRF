@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable, BehaviorSubject, fromEvent } from 'rxjs';
 import { io } from 'socket.io-client';
 
 @Injectable({
@@ -28,19 +28,23 @@ export class WebsocketService {
   getMessageUpdates(): Observable<any> {
     return new Observable(observer => {
       this.socket.on('mqtt_message', (data: any) => {
-        console.log(data);
+        const message = JSON.parse(data.message);
         this.handleMessage(data);
+        observer.next(this.dataForLineChart$.getValue());
       });
     });
   }
 
-  handleMessage(data: any): void {
+  handleMessage(d: any): void {
+    const data = JSON.parse(d.message);
+    const information = data.payload;
     console.log('Received MQTT message:', data);
-    const message_data = JSON.parse(data);
-    this.mqttMessages.push(message_data.payload);
-    console.log(this.mqttMessages);
-    let nChannels = message_data.payload.results.length;
-    const newDataForLineChart = [...this.dataForLineChart$.getValue()]; // Obtenemos una copia actual de los datos
+    this.mqttMessages.push(information);
+    //console.log(this.mqttMessages.length);
+    
+    let nChannels = information.results.length;
+    
+    const newDataForLineChart = this.dataForLineChart$.getValue(); // Obtenemos una copia actual de los datos
 
     if (newDataForLineChart.length === 0) {
       for (let i = 0; i < nChannels; i++) {
@@ -50,10 +54,15 @@ export class WebsocketService {
         });
       }
     }
+    console.log(this.mqttMessages.length);
     for (let i = 0; i < nChannels; i++) {
       newDataForLineChart[i].series.push({
-        name: message_data.payload.date,
-        value: this.mqttMessages[i].results[i], //probar con el spread operator [...this.samplesPerChannel[i].series.value, this.mqttMessages[i].results[i]];
+        name: new Date(information.date).toLocaleString('es-ES', {
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit'
+        }),
+        value: information.results[i], //probar con el spread operator [...this.samplesPerChannel[i].series.value, this.mqttMessages[i].results[i]];
       });
     }
 

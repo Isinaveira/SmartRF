@@ -1,4 +1,4 @@
-import { Component, ViewChild, input } from '@angular/core';
+import { ChangeDetectorRef, Component, ViewChild, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { MatSliderModule } from '@angular/material/slider';
@@ -83,7 +83,8 @@ export class ChartsComponent {
     private websocketService: WebsocketService,
     private ChartsService: ChartsService,
     private route: ActivatedRoute,
-    private dataService: DataService
+    private dataService: DataService,
+    private cdRef: ChangeDetectorRef
   ) {
     // this.chartForm = this.fb.group({
     //   startDate: ['', Validators.required],
@@ -101,6 +102,7 @@ export class ChartsComponent {
 
   ngOnInit(){
     this.dataService.currentMessage.subscribe((message:boolean) => {
+      console.log(message);
       if(message){
         this.measurementReady()
       }
@@ -108,14 +110,21 @@ export class ChartsComponent {
   }
 
   measurementReady(){
+     this.websocketService.getMessageUpdates().subscribe( data => {
+      this.samplesPerChannel = [...data];
+      this.cdRef.detectChanges(); // Forzar la detección de cambios
+      console.log(this.samplesPerChannel);    
+    });
+    /*
     this.messageSubscription = this.websocketService
           .dataForLineChart$.subscribe({
             next: (data) => {
+              console.log(data);
               this.samplesPerChannel = data
             }, error: (err) => {
               console.log(err);
             }
-          });
+          }); */
   }
 
   ngOnDestroy() {

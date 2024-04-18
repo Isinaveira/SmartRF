@@ -135,7 +135,7 @@ client.on('message', function(topic, message) {
                 }
             });
         }
-    }, 15000);
+    }, 1000);
 }
 
 

@@ -1,23 +1,9 @@
 
 <h2>Charts</h2>
 
-<ngx-charts-line-chart
-[view]="view"
-[scheme]="colorScheme"
-[results]="multi"
-[gradient]="gradient"
-[xAxis]="showXAxis"
-[yAxis]="showYAxis"
-[legend]="showLegend"
-[showXAxisLabel]="showXAxisLabel"
-[showYAxisLabel]="showYAxisLabel"
-[xAxisLabel]="xAxisLabel"
-[yAxisLabel]="yAxisLabel"
-[autoScale]="autoScale"
-[animations]="false"
->
-</ngx-charts-line-chart>
-<!-- <div class="charts-container">
+
+<div class="charts-container">
+  <!--
   <div class="tarjetas">
     <ngx-charts-number-card 
      [animations]="animationsNC" [results]="samplesPerChannel"
@@ -29,19 +15,22 @@
       [scheme]="colorSchemeNC">
     </ngx-charts-pie-grid>
   </div>
-  <div class="barras"><ngx-charts-bar-vertical 
+  -->
+  <div class="barras">
+    <ngx-charts-line-chart 
     [results]="samplesPerChannel"
-    [animations]="animationsNC"
+    [animations]="true"
     [scheme]="colorSchemeNC"
     [xAxisLabel]="'Channels'"
+    [rotateXAxisTicks]="true"
     [xAxis]="true"
     [yAxisLabel]="'Ocupation'"
+    [timeline]="true"
     [yAxis]="true"
     [legend]="true"
-    [legendTitle]="'Bars'"
+    [legendTitle]="'Potencia media canal'"
     > 
-    
-    </ngx-charts-bar-vertical>
+    </ngx-charts-line-chart>
   </div>
 
-</div> -->
+</div>
