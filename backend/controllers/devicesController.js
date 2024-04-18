@@ -24,6 +24,7 @@ exports.createDevice = async (req, res) => {
 // Método para obtener un usuario
 
 exports.getDevice = async (req, res) => {
+  
   try {
     let device = await Device.findOne({ station_id: req.params.station_id });
 

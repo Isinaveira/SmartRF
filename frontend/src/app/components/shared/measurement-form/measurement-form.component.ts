@@ -6,6 +6,9 @@ import { Component, Input, input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { predefinedMeasurements } from '@/models/predefinedMeasurement.model';
 import { CookieService } from 'ngx-cookie-service';
+import { DevicesService } from '@/services/devices.service';
+import { Device } from '@/models/device.model';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'measurement-form',
@@ -26,13 +29,18 @@ export class MeasurementFormComponent {
   measurementForm: FormGroup;
   predefinedMeasurements: predefinedMeasurements[] = [];
   predefinedView: boolean = false;
+  device!: Device;
+  deviceId!: string;
+  private measurementStopped = true;  
 
   constructor(
     private formBuilder: FormBuilder, 
     private measurementsService: MeasurementsService, 
     private predefinedMeasurementService : PredefinedMeasurementsService,
     private usersService: UsersService,
-    private cookieService: CookieService
+    private cookieService: CookieService,
+    private deviceService: DevicesService,
+    private route: ActivatedRoute
   ) {
     this.measurementForm = this.formBuilder.group({
       type: ['basic', Validators.required], // Default type is 'predefined'
@@ -44,7 +52,10 @@ export class MeasurementFormComponent {
       t_capt: [''],
       nfft: ['1024'],
     });
-
+     const id = this.route.snapshot.paramMap.get('station_id');
+     if(id !== null ) {
+      this.deviceId = id;
+     }
    
   }
 
@@ -58,6 +69,15 @@ export class MeasurementFormComponent {
       }
       
     })
+
+    this.deviceService.getDevice(this.deviceId).subscribe({
+      next: (data) => {
+
+        this.device = data;
+        
+      },
+      error: (error) => {   }
+        });
 
 
     
@@ -111,11 +131,26 @@ export class MeasurementFormComponent {
         } 
       } : message
     };
+    
+
+      
+
+    
 
     this.measurementsService.startMeasurement(result)
     .subscribe({
       next: (response) => {
         console.log('Measurement started successfully:', response);
+        // Actualizar el estado del dispostivo
+   
+    if(result.message.type.id){
+      this.device.state = "activated";
+      this.device.last_lectureAt= (Date.now()).toString();
+      this.edit(this.device)
+  
+        }
+     
+        this.measurementStopped = false;
       },
       error: (err) => {
         console.error('Error starting measurement:', err);
@@ -124,6 +159,55 @@ export class MeasurementFormComponent {
 
   onReset() {
     this.measurementForm.reset();
+  }
+
+  
+  edit(DEVICE: Device){
+
+    this.deviceService.editDevice(this.deviceId, DEVICE).subscribe({
+      next: (data) => {
+        console.log(data);
+        // Lógica adicional si es necesario
+      },
+      error: (error) => {
+        console.error('Error editing device:', error);
+      }
+    });
+
+  }
+  stopMeasurement() {
+    if (this.measurementStopped) {
+      return; // Evitar ejecución múltiple
+    }
+  
+    this.measurementStopped = true;
+  
+    this.deviceService.getDevice(this.deviceId).subscribe({
+      next: (data) => {
+        this.device = data;
+        if (this.device.state !== "deactivated") {
+          this.device.state = "deactivated";
+          this.device.last_lectureAt = Date.now().toString();
+          
+          this.edit(this.device);
+        }
+        
+        const result = {
+          topic: 'station_id_pub_'+this.deviceId,
+        }
+        this.measurementsService.stopMeasurement(result).subscribe({
+          next: (data) => {
+            // Lógica adicional si es necesario
+          },
+          error: (error) => {
+            console.error('Error stopping measurement:', error);
+          }
+        });
+      },
+      error: (error) => {
+        console.error('Error getting device:', error);
+      }
+    });
   }
 
   onPredefinedChange(event: any){

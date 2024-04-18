@@ -28,7 +28,8 @@ exports.startMeasurement = async (req, res) => {
   console.log("Received measurement data:", req.body);
 
   try {
-    const {topic, message } =  req.body;    
+    const {topic, message } =  req.body; 
+    console.log(topic);
     let measurement = null;
     // Save the measurement to the database
     if (!('freqIni'  in message)) {

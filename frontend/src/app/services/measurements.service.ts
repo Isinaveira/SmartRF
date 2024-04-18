@@ -19,7 +19,10 @@ export class MeasurementsService {
     return this.http.post(`${this.url}/start`,data);
   }
   //para medición
-  stopMeasurement(){};
+  stopMeasurement(data:any): Observable<any>{
+
+    return this.http.post(`${this.url}/stop`,data);
+  }
   //obtener mediciones
   getMeasurements(){};
   //realizar cálculos

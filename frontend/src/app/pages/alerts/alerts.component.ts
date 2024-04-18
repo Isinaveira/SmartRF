@@ -73,7 +73,7 @@ export class AlertsComponent implements OnInit {
               const channelNumber = alerta.channel_number;
               const sampleValue = dataSample.results[channelNumber];
 
-              if (sampleValue === 1) {
+              if (sampleValue > 0) {
                 this.toastS.warning(`Message: ${JSON.stringify(dataSample)}`, 'Busy',{ "positionClass" : "toast-bottom-left"});
               }
             } else if(alerta.type_alert === 'free'){
@@ -81,7 +81,7 @@ export class AlertsComponent implements OnInit {
                 const channelNumber = alerta.channel_number;
                 const sampleValue = dataSample.sample[channelNumber];
   
-                if (sampleValue === 0) {
+                if (sampleValue < 0) {
 
                   this.toastS.success(`Message: ${JSON.stringify(dataSample)}`, 'Free',{ "positionClass" : "toast-bottom-right"});
                 }      
