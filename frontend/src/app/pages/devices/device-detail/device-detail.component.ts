@@ -1,6 +1,6 @@
 import { Device } from '@/models/device.model';
 import { NavbarComponent } from '@/components/shared/navbar/navbar.component';
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, EventEmitter, Output } from '@angular/core';
 import { ChartsComponent } from '@/components/shared/charts/charts.component';
 import { MeasurementFormComponent } from '@/components/shared/measurement-form/measurement-form.component';
 import { ActivatedRoute } from '@angular/router';
@@ -15,6 +15,9 @@ import { DevicesService } from '@/services/devices.service';
 export class DeviceDetailComponent implements OnInit {
   device!: Device;
   station_id!: string;
+  @Output() measurementStartedReceived = new EventEmitter<boolean>();
+
+
   constructor(private route: ActivatedRoute, private devicesService: DevicesService){}
 
   ngOnInit(){
@@ -27,19 +30,20 @@ export class DeviceDetailComponent implements OnInit {
 
     const id = this.route.snapshot.paramMap.get('station_id');
     if(id !== null ) {
-     this.station_id = id;
+      this.station_id = id;
 
-    this.devicesService.getDevice(id).subscribe({
-      next: (device) => {
-        this.device = device;
-      },
-      error: (err) => {
-        console.log(err)
-      }
-    })
+      this.devicesService.getDevice(id).subscribe({
+          next: (device) => {
+            this.device = device;
+          },
+          error: (err) => {
+            console.log(err)
+          }
+        });
+    }
+
+  
+  
   }
-
-
-
-  }
+  
 }

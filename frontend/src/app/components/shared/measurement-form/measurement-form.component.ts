@@ -1,14 +1,10 @@
-import { AuthService } from '@/services/auth.service';
 import { MeasurementsService } from '@/services/measurements.service';
 import { PredefinedMeasurementsService } from '@/services/predefined-measurements.service';
 import { UsersService } from '@/services/users.service';
-import { Component, Input, input } from '@angular/core';
+import { Component, EventEmitter, Output, input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { predefinedMeasurements } from '@/models/predefinedMeasurement.model';
 import { CookieService } from 'ngx-cookie-service';
-import { DevicesService } from '@/services/devices.service';
-import { Device } from '@/models/device.model';
-import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'measurement-form',
@@ -29,18 +25,13 @@ export class MeasurementFormComponent {
   measurementForm: FormGroup;
   predefinedMeasurements: predefinedMeasurements[] = [];
   predefinedView: boolean = false;
-  device!: Device;
-  deviceId!: string;
-  private measurementStopped = true;  
 
   constructor(
     private formBuilder: FormBuilder, 
     private measurementsService: MeasurementsService, 
     private predefinedMeasurementService : PredefinedMeasurementsService,
     private usersService: UsersService,
-    private cookieService: CookieService,
-    private deviceService: DevicesService,
-    private route: ActivatedRoute
+    private cookieService: CookieService
   ) {
     this.measurementForm = this.formBuilder.group({
       type: ['basic', Validators.required], // Default type is 'predefined'
@@ -141,20 +132,11 @@ export class MeasurementFormComponent {
     .subscribe({
       next: (response) => {
         console.log('Measurement started successfully:', response);
-        // Actualizar el estado del dispostivo
-   
-    if(result.message.type.id){
-      this.device.state = "activated";
-      this.device.last_lectureAt= (Date.now()).toString();
-      this.edit(this.device)
-  
-        }
-     
-        this.measurementStopped = false;
       },
       error: (err) => {
         console.error('Error starting measurement:', err);
       }});
+
   }
 
   onReset() {

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ReportComponent } from './report/report.component';
-import  jsPDF from 'jspdf';
-import  html2canvas from 'html2canvas';
+//import  jsPDF from 'jspdf';
+//import  html2canvas from 'html2canvas';
 import { NavbarComponent } from '@/components/shared/navbar/navbar.component';
 
 @Component({
@@ -23,10 +23,9 @@ export class WorkspaceComponent {
   }
 
   cancel(){
-
     this.isActive = false;
   }
-
+  /*
   generateReport(){
 
     const DATA = document.getElementById('report');

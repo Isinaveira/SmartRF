@@ -16,8 +16,8 @@ export class MapComponent implements OnInit{
   map!: mapboxgl.Map
 
   ngOnInit(){
+    console.log(this.devices());
     this.initializeMap();
-    console.log(this.devices);
   }
 
   initializeMap() {
