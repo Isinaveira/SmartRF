@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ReportComponent } from './report/report.component';
-//import  jsPDF from 'jspdf';
-//import  html2canvas from 'html2canvas';
+import  jsPDF from 'jspdf';
+import  html2canvas from 'html2canvas';
 import { NavbarComponent } from '@/components/shared/navbar/navbar.component';
 
 @Component({
@@ -25,11 +25,11 @@ export class WorkspaceComponent {
   cancel(){
     this.isActive = false;
   }
-  /*
+ 
   generateReport(){
 
     const DATA = document.getElementById('report');
-    // Crear un nuevo documento PDF
+    //Crear un nuevo documento PDF
     const doc = new jsPDF('p', 'pt', 'a4');
     const options = {
       background: 'white',
@@ -40,7 +40,7 @@ export class WorkspaceComponent {
 
       const img = canvas.toDataURL('image/PNG');
       
-      // Añadir imagen Canvas a PDF
+      //Añadir imagen Canvas a PDF
       const bufferX = 15;
       const bufferY = 15;
       const imgProps = (doc as any).getImageProperties(img);
@@ -52,18 +52,13 @@ export class WorkspaceComponent {
       docResult.save('informe.pdf');
       });
 
-
-
-  }
-
-
-
-
-  listSessions(){
-
-    
-
+    }
 
   }
 
-}
+
+
+
+
+
+
