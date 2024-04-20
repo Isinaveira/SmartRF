@@ -49,7 +49,7 @@
     width: 15px;
     background-color: red;
     border-radius: 50%;
-    
+
 }
 .active{
     margin-left: 5px;
@@ -65,3 +65,29 @@
     align-items: center;
 }
 
+.map-refresh-button button {
+  font-size: 16px;    /* Set the font size */
+  font-weight: bold;  /* Make the font bold */
+  color: #ffffff;    /* Set the text color to white */
+  background-color: #007bff; /* Set background color to a shade of blue */
+  border: none;      /* Remove border */
+  padding: 10px 20px; /* Add padding to increase the size and improve spacing */
+  border-radius: 5px; /* Optional: rounded corners for the button */
+  cursor: pointer;   /* Change cursor to pointer to indicate it's clickable */
+  transition: background-color 0.3s; /* Smooth transition for hover effect */
+}
+
+.map-refresh-button button:hover {
+  background-color: #0056b3; /* Darker shade of blue on hover */
+}
+.map-refresh-buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  flex-wrap: wrap; /* Allow buttons to wrap in smaller screens */
+  align-items: center; /* Align buttons vertically in the center */
+}
+
+.map-refresh-button {
+  flex: none; /* Do not allow the button containers to grow or shrink */
+}

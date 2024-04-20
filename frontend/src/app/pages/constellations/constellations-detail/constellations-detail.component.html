@@ -3,9 +3,14 @@
     <measurement-form [isConstellation]="true" [constellation_id]="this.constellation_id"></measurement-form>
     <div class="data-container">
         @if(!loadingDevices){
-        <div class="map-container">
-            <app-map [devices]="devices_list"></app-map>
-        </div>
+          <div class="map-refresh-buttons">
+            <div *ngFor="let i of [].constructor(numberOfButtons); let index = index" class="map-refresh-button">
+              <button (click)="reloadMap(index+1)">Channel{{index + 1}}</button>
+            </div>
+          </div>
+          <div class="map-container">
+            <app-map [devices]="devices_list" [power]="power_list" [channel] = "currentChannel"></app-map>
+          </div>
         }
         <div class="devices-container">
             @for(device of devices_list; track device){
@@ -15,7 +20,6 @@
                     </p>
                     <div class="info-data">
                         Estado: <div [ngClass]="isActive(device.state)"></div>
-                        
                     </div>
                     <p class="info-data">
                         Última lectura: {{device.last_lectureAt}}
@@ -23,6 +27,5 @@
                 </div>
             }
         </div>
-        
     </div>
 </div>
