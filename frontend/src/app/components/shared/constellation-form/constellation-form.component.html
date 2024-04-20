@@ -13,8 +13,8 @@
           <input type="text" id="constellation-name" formControlName="name" required>
         </div>
          <div class="form-group">
-          <label for="constellation_station1">Devices: (hold ctrl or cmd to select multiple)</label>
-          <select formControlName="constellation_station1" id="constellation_station1" multiple>
+          <label for="constellation_stations">Devices: (hold ctrl or cmd to select multiple)</label>
+          <select formControlName="constellation_stations" id="constellation_stations" multiple>
             <option>Select one option below</option>
             @for (device of Devices; track device){
             <option  value="{{device.station_id}}" required>{{device.station_id}}</option>

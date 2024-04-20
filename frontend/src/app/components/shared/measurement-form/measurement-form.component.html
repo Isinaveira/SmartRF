@@ -13,7 +13,7 @@
       <div class="form-group">
         <label for="newMeasurement">Is new measurement:</label>
         <select id="newMeasurement" (change)="onNewChange($event)" required>
-          <option>Select one option below</option>
+          <option disabled selected>Select one option below</option>
           <option value="yes">Yes</option>
           <option value="no">No</option>
         </select>
@@ -54,7 +54,7 @@
       <div class="form-group">
         <label for="predefined">Predefined Measurements:</label>
         <select id="predefined" (change)="onPredefinedChange($event)">
-          <option>Select one option below</option>
+          <option disabled selected>Select one option below</option>
           @for (predefinedMeasurement of predefinedMeasurements; track predefinedMeasurement){
           <option value="{{predefinedMeasurement.name}}">{{predefinedMeasurement.name}}</option>
           }

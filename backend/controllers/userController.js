@@ -8,11 +8,12 @@ exports.createUser = async (req, res) => {
 
     // Encriptar la contraseña antes de guardarla en la base de datos
     const hashedPassword = await bcrypt.hash(password, 10);
-
+    const now = formatDateTime(new Date(), 'es-ES');
     // Crear un nuevo usuario con la contraseña encriptada
     const newUser = new User({
       ...req.body,
       password: hashedPassword, // Reemplazar la contraseña sin encriptar por la encriptada
+      createdAt: now,
     });
 
     // Guardar el nuevo usuario en la base de datos
@@ -117,3 +118,18 @@ exports.checkUser = async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 };
+
+
+function formatDateTime(date, locale) {
+  const options = { 
+      day: '2-digit', 
+      month: '2-digit', 
+      year: 'numeric', 
+      hour: '2-digit', 
+      minute: '2-digit', 
+      second: '2-digit',
+      hour12: false // Usar formato de 24 horas
+  };
+
+  return date.toLocaleString(locale, options);
+}

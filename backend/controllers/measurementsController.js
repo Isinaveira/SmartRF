@@ -49,6 +49,7 @@ exports.startMeasurement = async (req, res) => {
     m['type.id']=message.type.id;
     m['type.isConstellation']=message.type.isConstellation;
     m['dni_user']= message.user_dni;
+    m['startedAt']= formatDateTime(new Date(), 'es-ES');
 
     if(message.name == ""){
       m['name']="Default";
@@ -184,3 +185,19 @@ exports.getMeasurementByName = async (req, res) => {
     res.status(500).send("Se ha producido un error en el servidor.");
   }
 };
+
+function formatDateTime(date, locale) {
+  const options = { 
+      day: '2-digit', 
+      month: '2-digit', 
+      year: 'numeric', 
+      hour: '2-digit', 
+      minute: '2-digit', 
+      second: '2-digit',
+      hour12: false // Usar formato de 24 horas
+  };
+
+  return date.toLocaleString(locale, options);
+}
+
+

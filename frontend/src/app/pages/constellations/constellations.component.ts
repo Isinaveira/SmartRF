@@ -45,10 +45,8 @@ export class ConstellationsComponent implements OnInit {
     });
   }
 
-  generateTime(date: string): string {
-    // Lógica para formatear la fecha
-    return moment(date).format('DD/MM/YYYY');
-  }
+
+  
   goTo(constellation_id: string){
     this.router.navigate(['constellations/'+constellation_id])
   }

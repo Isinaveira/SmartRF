@@ -73,10 +73,7 @@ export class DevicesComponent {
     })
   }
 
-  generateTime(date: string): string {
-    // Lógica para formatear la fecha
-    return moment(date).format('DD/MM/YYYY HH:mm:ss');
-  }
+  
 
 
   isActive(estado: string) {

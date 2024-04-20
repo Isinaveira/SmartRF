@@ -74,14 +74,10 @@ export class ConstellationsDetailComponent implements OnInit {
       }
     });
   }
-  generateTime(date: string): string {
-    // Lógica para formatear la fecha
-    return moment(date).format('DD/MM/YYYY HH:mm:ss');
-  }
-
+ 
 
   isActive(estado: string){
-    return (estado == 'activo')? 'active' : 'inactive';
+    return (estado == 'activated')? 'active' : 'inactive';
   }
 
   openDeviceDetail(id: string){

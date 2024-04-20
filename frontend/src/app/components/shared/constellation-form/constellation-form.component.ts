@@ -5,6 +5,7 @@ import { ConstellationsService } from '@/services/constellations.service';
 import { Constellation } from '@/models/constellation.model';
 import { DevicesService } from '@/services/devices.service';
 import { Device } from '@/models/device.model';
+import { Console } from 'console';
 
 @Component({
   selector: 'app-constellation-form',
@@ -26,9 +27,8 @@ export class ConstellationFormComponent {
       
       constellation_id: ['', Validators.required],
       name: ['', Validators.required],
-      constellation_station1: ['', Validators.required],
-      constellation_station2: ['', Validators.required],
-      constellation_station3: ['', Validators.required],
+      constellation_stations: ['', Validators.required],
+    
 
 
     })
@@ -71,10 +71,15 @@ export class ConstellationFormComponent {
 
     const constellation_id = this.constellationForm.get('constellation_id')?.value;
     const name = this.constellationForm.get('name')?.value;
-    const station1 = this.constellationForm.get('constellation_station1')?.value;
-    const station2 = this.constellationForm.get('constellation_station2')?.value;
-    const station3 = this.constellationForm.get('constellation_station3')?.value;
+    const stations = this.constellationForm.get('constellation_stations')?.value;
+    if(stations.length == 3){
 
+      
+    
+    const station1 = stations[0];
+    const station2 = stations[1];
+    const station3 = stations[2];
+  
     if(station1 == station2 || station1 == station3 || station2 == station3){
       console.log('Do not repeat stations');
       alert('Do not repeat stations');
@@ -85,7 +90,7 @@ export class ConstellationFormComponent {
       constellation_id:  constellation_id,
       name: name,
       devices_list:[station1,station2,station3],
-      createdAt: '',  
+      createdAt: this.formatDateTime(new Date(), 'es-ES'),  
       isActive: false  
     };
 
@@ -97,13 +102,12 @@ export class ConstellationFormComponent {
         this.constellationForm.reset();
       },
       error: (error) => {
-        // console.log(error);
-
+        
         // Si no existe en la base de datos lo creamos
         console.log(CONSTELLATION);
         this.constellationsService.createConstellations(CONSTELLATION).subscribe({
           next: (data) => {
-          this.getConstellations();
+            location.reload();
           },
           error: (error) => {
             console.log(error);
@@ -113,6 +117,12 @@ export class ConstellationFormComponent {
       }
     });
   }
+}
+else{
+  alert('Select 3 devices');
+  console.log('Select 3 devices');
+  this.closeForm();
+}
 }
 else{
 
@@ -134,6 +144,18 @@ else{
     })
   }
 
+  formatDateTime(date: Date, locale: string): string {
+    const options: Intl.DateTimeFormatOptions = { 
+        day: '2-digit', 
+        month: '2-digit', 
+        year: 'numeric', 
+        hour: '2-digit', 
+        minute: '2-digit', 
+        second: '2-digit',
+        hour12: false // Usar formato de 24 horas
+    };
+    return date.toLocaleString(locale, options);
+}
 
   closeForm(){
 
