@@ -4,7 +4,6 @@ import DepthMode from '../gl/depth_mode.js';
 import CullFaceMode from '../gl/cull_face_mode.js';
 import {terrainRasterUniformValues} from './terrain_raster_program.js';
 import {globeRasterUniformValues} from './globe_raster_program.js';
-import {Terrain} from './terrain.js';
 import Tile from '../source/tile.js';
 import assert from 'assert';
 import {easeCubicInOut} from '../util/util.js';
@@ -30,6 +29,7 @@ import {
 import extend from '../style-spec/util/extend.js';
 import type Program from '../render/program.js';
 import type VertexBuffer from "../gl/vertex_buffer.js";
+import type {Terrain} from './terrain.js';
 import {calculateGroundShadowFactor} from "../../3d-style/render/shadow_renderer.js";
 import {getCutoffParams} from '../render/cutoff.js';
 
@@ -209,7 +209,7 @@ function drawTerrainForGlobe(painter: Painter, terrain: Terrain, sourceCache: So
             const uniformValues = globeRasterUniformValues(
                 tr.expandedFarZProjMatrix, globeMatrix, globeMercatorMatrix, normalizeMatrix, globeToMercatorTransition(tr.zoom),
                 mercatorCenter, tr.frustumCorners.TL, tr.frustumCorners.TR, tr.frustumCorners.BR,
-                tr.frustumCorners.BL, tr.globeCenterInViewSpace, tr.globeRadius, viewport, skirtHeightValue, gridMatrix);
+                tr.frustumCorners.BL, tr.globeCenterInViewSpace, tr.globeRadius, viewport, skirtHeightValue, tr._farZ, gridMatrix);
 
             setShaderMode(coord, shaderMode);
             if (!program) {
@@ -259,7 +259,7 @@ function drawTerrainForGlobe(painter: Painter, terrain: Terrain, sourceCache: So
                     painter, gl.TRIANGLES, depthMode, StencilMode.disabled, colorMode, CullFaceMode.disabled,
                     globeRasterUniformValues(tr.expandedFarZProjMatrix, poleMatrix, poleMatrix, normalizeMatrix, 0.0, mercatorCenter,
                     tr.frustumCorners.TL, tr.frustumCorners.TR, tr.frustumCorners.BR, tr.frustumCorners.BL,
-                    tr.globeCenterInViewSpace, tr.globeRadius, viewport, 0), "globe_pole_raster", vertexBuffer,
+                    tr.globeCenterInViewSpace, tr.globeRadius, viewport, 0, tr._farZ), "globe_pole_raster", vertexBuffer,
                     indexBuffer, segment);
 
                 terrain.setupElevationDraw(tile, program, elevationOptions);
