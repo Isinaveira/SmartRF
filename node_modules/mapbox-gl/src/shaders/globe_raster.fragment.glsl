@@ -2,6 +2,8 @@
 #include "_prelude_lighting.glsl"
 
 uniform sampler2D u_image0;
+uniform float u_far_z_cutoff;
+
 in vec2 v_pos0;
 
 #ifndef FOG
@@ -59,6 +61,7 @@ void main() {
 #ifdef FOG
     color = fog_dither(fog_apply_premultiplied(color, v_fog_pos));
 #endif
+    color *= 1.0 - step(u_far_z_cutoff, 1.0 / gl_FragCoord.w);
     glFragColor = color;
 #ifdef OVERDRAW_INSPECTOR
     glFragColor = vec4(1.0);
