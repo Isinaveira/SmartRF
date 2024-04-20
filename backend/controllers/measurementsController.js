@@ -59,17 +59,25 @@ exports.startMeasurement = async (req, res) => {
     console.log(m);
     const measurement = new Measurement({ ...m })
 
-
-
-  
-
     const savedMeasurement = await measurement.save(); // saving before starting measurement. 
     console.log(savedMeasurement);
-    message['measurement_id'] = savedMeasurement._id;
-    if (!('freqIni' in message)) {
-      clientPublisher("0", JSON.stringify(message), topic);
+    
+    let msg = {
+        freqIni: m.freqIni,
+        freqFinal: m.freqFinal,
+        t_capt: m.t_capt,
+        threshold: m.threshold,
+        nfft: m.nfft,
+        mode: m.mode,
+        chanBW: m.chanBW,
+        measurement_id: savedMeasurement._id
+    };
+ 
+
+    if ((message['freqIni']) == "") {
+      clientPublisher("0", JSON.stringify(msg.measurement_id), topic);
     } else {
-      clientPublisher("1", JSON.stringify(message), topic);
+      clientPublisher("1", JSON.stringify(msg), topic);
     }
     // Send a JSON response with the newly created measurement
     res.status(201).json(savedMeasurement); // 201 status code for resource created
