@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const measurementSchema = new mongoose.Schema({
   name: { type: String },
-  dni_user: { type: String},
+  dni_user: { type: String, required: true},
   type: {
     isConstellation: { type: Boolean, required: true },
     id: { type: String, required: true }
@@ -15,7 +15,7 @@ const measurementSchema = new mongoose.Schema({
   nfft: { type: Number, required: true },
   mode: { type: String, required: true },
   startedAt: { type: Date, default: Date.now() },
-  finishedAt: { type: Date },
+  //finishedAt: { type: Date },
 });
 
 const Measurement = mongoose.model(

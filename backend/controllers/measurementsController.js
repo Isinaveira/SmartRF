@@ -8,13 +8,13 @@ const {
 
 //This function modifies the current parameter of the stations measurements
 let default_message = {
-  freqIni : 758, 
-  freqFinal : 768.77, 
-  t_capt : 0.25, 
-  threshold : "auto",
-  nfft : 1024, 
-  mode : "avg", 
-  chanBW : 500,
+  freqIni: 758,
+  freqFinal: 768.77,
+  t_capt: 0.25,
+  threshold: "auto",
+  nfft: 1024,
+  mode: "avg",
+  chanBW: 500,
 };
 
 /*
@@ -28,25 +28,46 @@ exports.startMeasurement = async (req, res) => {
   console.log("Received measurement data:", req.body);
 
   try {
-    const {topic, message } =  req.body; 
+    const { topic, message } = req.body;
     console.log(topic);
-    let measurement = null;
-    // Save the measurement to the database
-    if (!('freqIni'  in message)) {
-      measurement = new Measurement({
-      ...req.body.message,
-        ...default_message,
-      });
-    } else {
-      measurement = new Measurement({
-        ...message,
-      });
+  
+    let m = {};
+    Object.keys(default_message).forEach((key) => {
+
+      if (!(key in message) || message[key]=="") {
+        m[key] = default_message[key];
+        console.log(m[key]);
+      } else {
+       
+          m[key] = message[key];
+          
+       
+      }
+    })
+
+
+    m['type.id']=message.type.id;
+    m['type.isConstellation']=message.type.isConstellation;
+    m['dni_user']= message.user_dni;
+
+    if(message.name == ""){
+      m['name']="Default";
+    }else{
+      m['name']=message.name;
     }
+    // Save the measurement to the database
+    console.log(m);
+    const measurement = new Measurement({ ...m })
+
+
+
+  
+
     const savedMeasurement = await measurement.save(); // saving before starting measurement. 
     console.log(savedMeasurement);
     message['measurement_id'] = savedMeasurement._id;
-    if (!('freqIni'  in message)) {
-      clientPublisher("0", JSON.stringify(message.measurement_id), topic);
+    if (!('freqIni' in message)) {
+      clientPublisher("0", JSON.stringify(message), topic);
     } else {
       clientPublisher("1", JSON.stringify(message), topic);
     }
@@ -129,21 +150,29 @@ exports.changeDefoParameters = async (req, res) => {
   }
 };
 
-exports.getMeasurement = async (req, res) => {
-    try {
-      let lastMeasureConf = await Measurement.findOne().sort({_id:-1});
-  
-      if (!lastMeasureConf) {
-        res.status(404).json({
-          msg: "No se ha encontrado en la BD, inténtelo de nuevo.",
-        });
-      } else if (lastMeasureConf) {
-        res.json(lastMeasureConf);
-      }
-    } catch (error) {
-      console.log(error);
-      res.status(500).send("Se ha producido un error en el servidor.");
-    }
+exports.getMeasurements = async (req, res) => {
+  try {
+    const measurements = await Measurement.find();
+    console.log(measurements);
+    res.json(measurements);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 };
 
+exports.getMeasurementByName = async (req, res) => {
+  try {
+    let measureConf = await Measurement.findOne({ name: req.params.name});
 
+    if (!measureConf) {
+      res.status(404).json({
+        msg: "No se ha encontrado en la BD, inténtelo de nuevo.",
+      });
+    } else if (measureConf) {
+      res.json(measureConf);
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Se ha producido un error en el servidor.");
+  }
+};

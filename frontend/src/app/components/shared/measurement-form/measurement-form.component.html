@@ -6,6 +6,35 @@
 
 
     <div form-fields>
+
+
+
+
+      <div class="form-group">
+        <label for="newMeasurement">Is new measurement:</label>
+        <select id="newMeasurement" (change)="onNewChange($event)" required>
+          <option>Select one option below</option>
+          <option value="yes">Yes</option>
+          <option value="no">No</option>
+        </select>
+        @if(isSelected){
+        @if(new){
+        <label for="name">Name:</label>
+        <input formControlName="name" type="text" name="name" id="name" placeholder="introduce new name" required>
+        }
+        @else{
+        <label for="name">Name:</label>
+        <select id="name" formControlName="name" (change)="onNameChange($event)" required="">
+          <option>Select one option below</option>
+          @for (measurement of measurements; track measurement){
+          <option value="{{measurement.name}}">{{measurement.name}}</option>
+          }
+        </select>
+        }
+      }
+      </div>
+
+
       <div class="form-group">
         <label for="type">Type of measurement:</label>
         <select id="type" formControlName="type" (change)="onChangeTypeOfMeasurement($event)" required>
@@ -36,11 +65,13 @@
 
       <div class="form-group">
         <label for="freqIni">Initial Frequency (MHz):</label>
-        <input formControlName="freqIni"  type="number" id="freqIni" name="freqIni" min="25" max="1750" step="any" required />
+        <input formControlName="freqIni" type="number" id="freqIni" name="freqIni" min="25" max="1750" step="any"
+          required />
       </div>
       <div class="form-group">
         <label for="freqFinal">Final Frequency (MHz):</label>
-        <input formControlName="freqFinal" type="number" id="freqFinal" name="freqFinal" min="25" max="1750" step="any" required />
+        <input formControlName="freqFinal" type="number" id="freqFinal" name="freqFinal" min="25" max="1750" step="any"
+          required />
       </div>
 
       }
@@ -49,22 +80,24 @@
 
       <div class="form-group">
         <label for="freqIni">Initial Frequency (MHz):</label>
-        <input formControlName="freqIni" type="number" id="freqIni" name="freqIni" min="25" max="1750" step="any" required />
+        <input formControlName="freqIni" type="number" id="freqIni" name="freqIni" min="25" max="1750" step="any"
+          required />
       </div>
       <div class="form-group">
         <label for="freqFinal">Final Frequency (MHz):</label>
-        <input formControlName="freqFinal" type="number" id="freqFinal" name="freqFinal" min="25" max="1750" step="any" required />
+        <input formControlName="freqFinal" type="number" id="freqFinal" name="freqFinal" min="25" max="1750" step="any"
+          required />
       </div>
 
       }
-
+      <!-- 
       <div class="form-group">
         <label for="decision_type">Decision type:</label>
         <select formControlName="mode"id="mode" name="mode" required>
           <option value="1">Estimation to the maximum</option>
           <option value="2">Estimation to the minimum</option>
         </select>
-      </div>
+      </div> -->
 
       <div class="form-group">
         <label for="bandwidth">Bandwidth (kHz):</label>
@@ -75,11 +108,11 @@
         <h4>Advanced Options</h4>
         <div class="form-group">
           <label for="threshold">Threshold:</label>
-          <input formControlName="threshold"type="text" id="threshold" name="threshold"  value="auto" required />
+          <input formControlName="threshold" type="text" id="threshold" name="threshold" value="auto" required />
         </div>
         <div class="form-group">
           <label for="t_capt">Window capture time:</label>
-          <input formControlName="t_capt"type="text" id="t_capt" name="t_capt" value="0.25" required />
+          <input formControlName="t_capt" type="text" id="t_capt" name="t_capt" value="0.25" required />
         </div>
         <div class="form-group">
           <label for="nfft">Number of window points:</label>
@@ -97,7 +130,7 @@
     </div>
     <div class="form-controllers">
       <button type="submit" class="init-button">Start</button>
-     
+
       <button type="reset" class="clear-button">Clear</button>
     </div>
   </form>

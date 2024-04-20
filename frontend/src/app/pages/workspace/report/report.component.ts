@@ -25,7 +25,7 @@ export class ReportComponent {
     const fechaActual = new Date();
 
 
-    this.currentDate = formatDate(fechaActual, 'dd/MM/yyyy', 'en-US');
+    this.currentDate = formatDate(fechaActual, 'dd/MM/yyyy', 'es-ES');
     this.userService.getUser(this.dni).subscribe({
       next: (data) => { 
         console.log(data);

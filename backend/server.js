@@ -12,6 +12,7 @@ const constellationRoutes = require("./routes/constellationRoutes");
 const predefinedMeasurementRoutes = require("./routes/predefinedMeasurementsRoutes");
 const alertRoutes = require("./routes/alertRoutes");
 const documentationRoutes = require("./routes/documentationRoutes");
+const sessionRoutes = require("./routes/sessionRoutes");
 const {
   setupSocketIO,
   clientSubscriber,
@@ -46,6 +47,7 @@ app.use("/measurements", measurementRoutes);
 app.use("/alerts", alertRoutes)
 app.use("/predefinedMeasurements", predefinedMeasurementRoutes);
 app.use("/documentations", documentationRoutes);
+app.use("/sessions", sessionRoutes);
 
 app.listen(PORT, () => {
   console.log("Successful server initialization!");

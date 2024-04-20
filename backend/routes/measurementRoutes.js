@@ -2,12 +2,13 @@ const express = require("express");
 const router = express.Router();
 const measurementsController = require("../controllers/measurementsController");
 
-router.get("",measurementsController.getMeasurement);
+router.get("",measurementsController.getMeasurements);
 router.post("/start", measurementsController.startMeasurement);
-router.post("/join", measurementsController.joinConstellation);
-router.post("/changeDefo", measurementsController.changeDefoParameters);
+// router.post("/join", measurementsController.joinConstellation);
+// router.post("/changeDefo", measurementsController.changeDefoParameters);
 router.post("/stop", measurementsController.stopMeasurement); // Iniciar medición y guardarla
-router.get(":/id", measurementsController.getMeasurement);
+// router.get(":/id", measurementsController.getMeasurement);
+router.get("/:name",measurementsController.getMeasurementByName);
 // Listar todas los usuarios de la BD
 /*
 router.delete('/:name', measurementsController.deleteConstellation);             // Metodo para borrar un usuario de la BD

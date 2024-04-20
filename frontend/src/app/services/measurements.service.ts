@@ -24,7 +24,11 @@ export class MeasurementsService {
     return this.http.post(`${this.url}/stop`,data);
   }
   //obtener mediciones
-  getMeasurements(){};
-  //realizar cálculos
-  calculateResults(){};
+  getMeasurementByName(name: string): Observable<any> {
+    return this.http.get(`${this.url}/${name}`);
+  }
+  
+  getMeasurements(): Observable<any> {
+    return this.http.get(this.url);
+  }
 }

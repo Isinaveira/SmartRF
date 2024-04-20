@@ -2,6 +2,7 @@ const socketIo = require("socket.io");
 const mqttClient = require("./mqttClient");
 const crypto = require('crypto');
 const fs = require('fs');
+//const Session = require("../models/session");
 
 
 let io;
@@ -23,13 +24,14 @@ function setupSocketIO(server) {
   mqttClient.on("message", (topic, message) => {
     const msg = message.toString();
     console.log(`Received message on topic ${topic}: ${message.toString()}`);
-    io.emit("mqtt_message", { message: msg });
-    /*
+  
+    
     validation = validateHashSignature(message);
     if(validation) {
       console.log(`Emitted MQTT message: ${msg}`);
+      io.emit("mqtt_message", { message: msg });
     }
-    */
+    
   });
   return io;
 }

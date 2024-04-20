@@ -8,6 +8,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { ActivatedRoute } from '@angular/router';
 import { DevicesService } from '@/services/devices.service';
 import { Device } from '@/models/device.model';
+import { Measurement } from '@/models/measurement.model';
 
 @Component({
   selector: 'measurement-form',
@@ -31,6 +32,9 @@ export class MeasurementFormComponent {
   deviceId!: string;
   device!: Device;
   measurementStopped!: boolean;
+  isSelected: boolean = false;
+  new!: boolean;
+  measurements: Measurement[]= [];
 
   constructor(
     private formBuilder: FormBuilder, 
@@ -42,14 +46,15 @@ export class MeasurementFormComponent {
     private deviceService: DevicesService
   ) {
     this.measurementForm = this.formBuilder.group({
+      name: ['', Validators.required],
       type: ['basic', Validators.required], // Default type is 'predefined'
-      mode: ['1', Validators.required],
+      mode: ['avg', Validators.required],
       freqIni: ['', [Validators.required, Validators.min(25), Validators.max(1750)]],
       freqFinal: ['', [Validators.required, Validators.min(25), Validators.max(1750)]],
       bandwidth: ['', [Validators.required, Validators.min(0)]],
       threshold: [''],
       t_capt: [''],
-      nfft: ['1024'],
+      nfft: [''],
     });
      const id = this.route.snapshot.paramMap.get('station_id');
      if(id !== null ) {
@@ -83,6 +88,14 @@ export class MeasurementFormComponent {
       },
       error: (error) => {   }
         });
+
+        this.measurementsService.getMeasurements().subscribe({
+
+          next: (data) => {
+
+            this.measurements = data;
+          }
+        })
 
 
     
@@ -121,7 +134,8 @@ export class MeasurementFormComponent {
       bandwidth: this.measurementForm.value.bandwidth,
       threshold: this.measurementForm.value.threshold,
       t_capt: this.measurementForm.value.t_capt,
-      nfft: this.measurementForm.value.nfft
+      nfft: this.measurementForm.value.nfft,
+      mode: this.measurementForm.value.mode
     };
 
     console.log(type);
@@ -141,7 +155,7 @@ export class MeasurementFormComponent {
       
 
     
-
+    console.log(result);
     this.measurementsService.startMeasurement(result)
     .subscribe({
       next: (response) => {
@@ -194,8 +208,7 @@ export class MeasurementFormComponent {
 
         if (this.device.state !== "deactivated") {
           this.device.state = "deactivated";
-          this.device.last_lectureAt = Date.now().toString();
-
+          this.device.last_lectureAt=this.formatDateTime(new Date(), 'es-ES');
           this.edit(this.device);
         }
           },
@@ -210,6 +223,19 @@ export class MeasurementFormComponent {
     // });
   }
 
+  formatDateTime(date: Date, locale: string): string {
+    const options: Intl.DateTimeFormatOptions = { 
+        day: '2-digit', 
+        month: '2-digit', 
+        year: 'numeric', 
+        hour: '2-digit', 
+        minute: '2-digit', 
+        second: '2-digit',
+        hour12: false // Usar formato de 24 horas
+    };
+    return date.toLocaleString(locale, options);
+}
+
   onPredefinedChange(event: any){
 
     const selectedPredefined = event.target.value;
@@ -217,6 +243,34 @@ export class MeasurementFormComponent {
     if(selectedPredefined){
       this.isPredefined(selectedPredefined);
     }
+
+  }
+
+  onNameChange(event: any){
+
+    const selectedName = event.target.value;
+
+
+    this.measurementsService.getMeasurementByName(selectedName).subscribe((data) => {
+      
+      this.measurementForm.patchValue({data});
+
+    });
+   
+
+  }
+
+  onNewChange(event: any){
+
+
+    const selectNew = event.target.value;
+    this.isSelected = true;
+    if(selectNew == "yes"){
+      this.new = true;
+    } else{
+      this.new = false;
+    }
+
 
   }
 
@@ -228,7 +282,8 @@ export class MeasurementFormComponent {
       this.measurementForm.patchValue({
         type: "predefined",
         freqIni: data.freqIni,
-        freqFinal: data.freqFinal
+        freqFinal: data.freqFinal,
+        // name: data.name
       });
 
     });
