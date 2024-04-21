@@ -48,7 +48,7 @@ export class ConstellationsComponent implements OnInit {
 
   
   goTo(constellation_id: string){
-    this.router.navigate(['constellations/'+constellation_id])
+    this.router.navigate(["constellations/" + constellation_id])
   }
 
   // openCreateConstellationFormDialog(): void {

@@ -9,6 +9,8 @@ import { ActivatedRoute } from '@angular/router';
 import { DevicesService } from '@/services/devices.service';
 import { Device } from '@/models/device.model';
 import { Measurement } from '@/models/measurement.model';
+import { ConstellationsService } from '@/services/constellations.service';
+import { Constellation } from '@/models/constellation.model';
 
 @Component({
   selector: 'measurement-form',
@@ -35,6 +37,9 @@ export class MeasurementFormComponent {
   isSelected: boolean = false;
   new!: boolean;
   measurements: Measurement[]= [];
+  constellation!: Constellation;
+  constellationDevices: string[] = [];
+  constellationId!: string;
 
   constructor(
     private formBuilder: FormBuilder, 
@@ -43,7 +48,8 @@ export class MeasurementFormComponent {
     private usersService: UsersService,
     private cookieService: CookieService,
     private route: ActivatedRoute,
-    private deviceService: DevicesService
+    private deviceService: DevicesService,
+    private constellationService: ConstellationsService
   ) {
     this.measurementForm = this.formBuilder.group({
       name: ['', Validators.required],
@@ -56,14 +62,22 @@ export class MeasurementFormComponent {
       t_capt: [''],
       nfft: [''],
     });
-     const id = this.route.snapshot.paramMap.get('station_id');
-     if(id !== null ) {
-      this.deviceId = id;
+     const idD = this.route.snapshot.paramMap.get('station_id');
+     if(idD !== null ) {
+      this.deviceId = idD;
+     }
+
+     const idC = this.route.snapshot.paramMap.get('id');
+     if(idC !== null ) {
+      this.constellationId = idC;
      }
    
   }
 
   ngOnInit(){
+
+
+
     this.predefinedMeasurementService.getPredefinedMeasurements().subscribe({
       next: (predefinedMeasurements) => {
         this.predefinedMeasurements = predefinedMeasurements
@@ -74,6 +88,29 @@ export class MeasurementFormComponent {
       
     })
 
+    if ( (window.location.href).includes('/constellations/')) {
+      console.log('Constelation');
+      
+      this.constellationService.getConstellation(this.constellationId).subscribe({
+        next: (constellation) => {
+          this.constellation = constellation;
+          for(let i=0; i<(this.constellation.devices_list).length; i++){ 
+            this.constellationDevices[i]=this.constellation.devices_list[i];
+          
+
+          }
+        },
+        error: (err) => {
+          console.log(err);
+        }
+        
+      })
+
+
+  } else {
+  
+  
+    console.log('Devices');
     this.deviceService.getDevice(this.deviceId).subscribe({
       next: (data) => {
 
@@ -97,7 +134,7 @@ export class MeasurementFormComponent {
           }
         })
 
-
+      }
     
   }
   onChangeTypeOfMeasurement(event: any){    
@@ -160,9 +197,31 @@ export class MeasurementFormComponent {
     .subscribe({
       next: (response) => {
         console.log('Measurement started successfully:', response);
+        if(!this.isConstellation){
         this.measurementStopped = false;
         this.device.state = "activated";
         this.edit(this.device);
+        } else {
+          this.measurementStopped = false;
+          for(let j=0; j<this.constellationDevices.length; j++){
+
+
+            this.deviceService.getDevice(this.constellationDevices[j]).subscribe({
+              next: (data) => {
+        
+                this.device = data;
+                this.device.state = "activated";
+                this.editDevicesConstellation(this.constellationDevices[j], this.device);
+                
+              },
+              error: (error) => {   }
+                });
+
+
+          }
+
+          
+        }
       },
       error: (err) => {
         console.error('Error starting measurement:', err);
@@ -186,8 +245,21 @@ export class MeasurementFormComponent {
         console.error('Error editing device:', error);
       }
     });
-
   }
+
+  editDevicesConstellation(deviceConstellationId: string, DEVICE: Device){
+
+    this.deviceService.editDevice(deviceConstellationId, DEVICE).subscribe({
+      next: (data) => {
+        console.log(data);
+        // Lógica adicional si es necesario
+      },
+      error: (error) => {
+        console.error('Error editing device:', error);
+      }
+    });
+  }
+
   stopMeasurement() {
     if (this.measurementStopped) {
       return; // Evitar ejecución múltiple
