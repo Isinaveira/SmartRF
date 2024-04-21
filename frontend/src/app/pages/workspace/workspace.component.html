@@ -1,55 +1,13 @@
 <app-navbar></app-navbar>
 
-@if (!isActive) {
-<button class="visulize_button" (click)="visualizeReport()">Visualize report</button>
-<!-- 
-
-<div class="constellations-list">
-    @for(constellation of constellations; track constellation){
-    <div class="constellation-card" (click)="goTo(constellation.constellation_id)">
-      <div class="constellation-info">
-        <div class="constellation-data">
-          <h1>{{ $index + 1 }}</h1>
-        </div>
-        <div class="constellation-data">
-          <h3>{{ constellation.name }}</h3>
-        </div>
-        <div class="constellation-data">
-          Created At: {{ generateTime(constellation.createdAt) }}
-        </div>
-        <div class="constellation-data">
-          Devices: {{ constellation.devices_list.length }}
-        </div>
-      </div>
-      @if(isAdmin){
-      <button class="delete-constellation-button" (click)="deleteConstellation(constellation.constellation_id)"><span class="material-icons">delete</span></button>
-      }
-    </div>
-    }
-    @if(isAdmin){
-      <div>
-        <button class="create-constellation-button" (click)="toggleConstellationForm()"><span class="material-icons">add</span></button>
-      </div>
-      <div class="form-container" [class.open]="showForm">
-        <app-constellation-form></app-constellation-form>
-      </div>
-      }
-  </div> -->
-
-
-}
-@else {
-
 <div class="button-container">
-    <button (click)="cancel()">Cancel</button>
-
     <button (click)="generateReport()">Generate</button>
 </div>
 <div id="report">
     <app-report></app-report>
-</div> 
+</div>
 
 
 
 
-}
+
