@@ -29,7 +29,7 @@ export class ConstellationsDetailComponent implements OnInit {
   devices_list: any[] = [];
   power_list: any[] = [];
   loadingDevices: boolean = false;
-  currentChannel: Number = 1;
+  currentChannel: number = 1;
   constructor(
     private route: ActivatedRoute,
     private constellationService: ConstellationsService,
@@ -142,7 +142,7 @@ export class ConstellationsDetailComponent implements OnInit {
     this.router.navigate(['devices/' + id]);
   }
 
-  reloadMap(i: Number): void {
+  reloadMap(i: number): void {
     this.getDevices(); // This method fetches the devices and updates devices_list
     this.getPowers();
     this.currentChannel = i;
