@@ -91,7 +91,8 @@ export class DevicesComponent {
     this.router.navigate(['devices/' + id]);
   }
 
-  deleteDevice(station_id: string) {
+  deleteDevice(event: Event, station_id: string) {
+    event.stopPropagation();
     this.deviceService.deleteDevice(station_id).subscribe(
       (data) => {
         alert('Device ' + station_id + ' was removed');
