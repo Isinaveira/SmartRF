@@ -3,28 +3,15 @@
 
 
 <div class="charts-container">
-  <!--
-  <div class="tarjetas">
-    <ngx-charts-number-card 
-     [animations]="animationsNC" [results]="samplesPerChannel"
-      [scheme]="colorSchemeNC">
-    </ngx-charts-number-card>
-  </div>
-  <div class="tartas"><ngx-charts-pie-grid
-     [results]="samplesPerChannel"  [animations]="animationsNC"
-      [scheme]="colorSchemeNC">
-    </ngx-charts-pie-grid>
-  </div>
-  -->
+  
   <div class="barras">
     <ngx-charts-line-chart 
     [results]="samplesPerChannel"
     [animations]="true"
     [scheme]="colorSchemeNC"
-    [xAxisLabel]="'Channels'"
     [rotateXAxisTicks]="true"
     [xAxis]="true"
-    [yAxisLabel]="'Ocupation'"
+    [yAxisLabel]="'Power'"
     [timeline]="true"
     [yAxis]="true"
     [legend]="true"

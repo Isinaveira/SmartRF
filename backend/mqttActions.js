@@ -24,22 +24,27 @@ function setupSocketIO(server) {
     const msg = message.toString();
     console.log(`Received message on topic ${topic}: ${message.toString()}`);
 
+
+    console.log(`Emitted MQTT message: ${msg}`);
+
+    try {
+      const msg = JSON.parse(message);
+
+      const datos = msg.payload;
+      const newSample = Session(datos);
+
+      newSample.save();
+    } catch (error) {
+      console.log(error);
+    }
+    io.emit("mqtt_message", { message: msg });
+
+    /*
     validation = validateHashSignature(message);
     if (validation) {
-      console.log(`Emitted MQTT message: ${msg}`);
-
-      try {
-        const msg = JSON.parse(message);
-
-        const datos = msg.payload;
-        const newSample = Session(datos);
-
-        newSample.save();
-      } catch (error) {
-        console.log(error);
-      }
-      io.emit("mqtt_message", { message: msg });
+      
     }
+    */
   });
   return io;
 }

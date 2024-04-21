@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ViewChild, input } from '@angular/core';
+import { ChangeDetectorRef, Component, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { MatSliderModule } from '@angular/material/slider';
@@ -86,25 +86,13 @@ export class ChartsComponent {
     private dataService: DataService,
     private cdRef: ChangeDetectorRef
   ) {
-    // this.chartForm = this.fb.group({
-    //   startDate: ['', Validators.required],
-    //   finishDate: ['', Validators.required],
-    //   channelBW: ['', Validators.required],
-    //   startFreq: ['', Validators.required],
-    //   finishFreq: ['', Validators.required],
-    //   amplitudeTreshold: ['', Validators.required],
-    // });
-    //     // Obtiene la fecha de hoy en formato ISO (YYYY-MM-DD)
-    //     const today = new Date().toISOString().split('T')[0];
-    //     // Establece la fecha máxima como la fecha de hoy
-    //     this.maxDate = today;
+    
   }
 
   ngOnInit(){
     this.dataService.currentMessage.subscribe((message:boolean) => {
-      console.log(message);
       if(message){
-        this.measurementReady()
+        this.measurementReady();
       }
     } );
   }
@@ -112,19 +100,9 @@ export class ChartsComponent {
   measurementReady(){
      this.websocketService.getMessageUpdates().subscribe( data => {
       this.samplesPerChannel = [...data];
-      this.cdRef.detectChanges(); // Forzar la detección de cambios
-      console.log(this.samplesPerChannel);    
+      this.cdRef.detectChanges(); // Forzar la detección de cambios    
     });
-    /*
-    this.messageSubscription = this.websocketService
-          .dataForLineChart$.subscribe({
-            next: (data) => {
-              console.log(data);
-              this.samplesPerChannel = data
-            }, error: (err) => {
-              console.log(err);
-            }
-          }); */
+    
   }
 
   ngOnDestroy() {
