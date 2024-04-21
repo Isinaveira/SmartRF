@@ -6,7 +6,7 @@
                 <h2>Add device</h2>
                 <form [formGroup]="deviceForm" (ngSubmit)="onSubmit()">
                     @if(isEditing){
-        
+
                     <div>
                         <label for="station_id">Station Id:</label>
                         <input type="text" id="station_id" formControlName="station_id" required readonly>
@@ -18,7 +18,7 @@
                         <input type="text" id="station_id" formControlName="station_id" required>
                     </div>
                     }
-        
+
                     <div>
                         <label for="coordinate_lat">Latitude:</label>
                         <input type="number" id="coordinate_lat" formControlName="coordinate_lat" required>
@@ -27,7 +27,7 @@
                         <label for="coordinate_lon">Longitude:</label>
                         <input type="number" id="coordinate_lon" formControlName="coordinate_lon" required>
                     </div>
-        
+
                     <!-- Otros campos del formulario según el modelo de datos -->
                     <div class="form-controller">
                         <button type="submit">Submit</button>
@@ -46,12 +46,12 @@
                 </p>
                 <div class="info-data">
                     Estado: <div [ngClass]="isActive(device.state)"></div>
-    
+
                 </div>
                 <p class="info-data">
                     Última lectura: {{device.last_lectureAt}}
                 </p>
-                @if (isAdmin) { 
+                @if (isAdmin) {
                 <div class="controllers">
                     <div>
                         <button class="device-control" (click)="deleteDevice(device.station_id)">
@@ -71,6 +71,6 @@
         </div>
     </div>
     @if(devices.length != 0){
-        <app-map class="map-container" [devices]="this.devices"></app-map>
+        <app-map class="map-container" [devices]="this.devices" [power]="power_list" [channel] = "currentChannel"></app-map>
     }
 </div>
