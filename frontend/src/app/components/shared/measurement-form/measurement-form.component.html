@@ -2,7 +2,7 @@
   <div class="form-title">
     <h2>Measurement Form</h2>
   </div>
-  <form [formGroup]="measurementForm" (ngSubmit)="onSubmit()">
+  <form [formGroup]="measurementForm">
 
 
     <div form-fields>
@@ -129,10 +129,10 @@
       </div>
     </div>
     <div class="form-controllers">
-      <button type="submit" class="init-button">Start</button>
-
+      <button (click)="onSubmit($event)" class="init-button">Start</button>
+      <button (click)="stopMeasurement($event)">Stop</button>
       <button type="reset" class="clear-button">Clear</button>
     </div>
   </form>
-  <div><button (click)="stopMeasurement()">Stop</button></div>
+  
 </div>

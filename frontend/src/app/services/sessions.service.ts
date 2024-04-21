@@ -11,6 +11,4 @@ export class SessionsService {
   getSessionOfDevice(deviceID: string): Observable<any> {
     return this.http.get(this.url + '/' + deviceID);
   }
-
-  
 }

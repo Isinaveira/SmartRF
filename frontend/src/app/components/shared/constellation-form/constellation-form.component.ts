@@ -49,87 +49,88 @@ export class ConstellationFormComponent {
       
     })
 
-    
-   this.constellationsService.getConstellations().subscribe({
-    next: (Constellations) => {
-      this.Constellations = Constellations;
-      this.num_constellations = this.Constellations.length;
-
-    },
-    error: (err) => {
-      console.log(err);
-    }
-   })
-
 
   }
 
   onSubmit(){
 
+    this.constellationsService.getConstellations().subscribe({
+      next: (Constellations) => {
+        this.Constellations = Constellations;
+        this.num_constellations = this.Constellations.length;
+        console.log(this.num_constellations);
 
-   if(this.num_constellations < 6){
 
-    const constellation_id = this.constellationForm.get('constellation_id')?.value;
-    const name = this.constellationForm.get('name')?.value;
-    const stations = this.constellationForm.get('constellation_stations')?.value;
-    if(stations.length == 3){
+        if(this.num_constellations < 6){
 
+          const constellation_id = this.constellationForm.get('constellation_id')?.value;
+          const name = this.constellationForm.get('name')?.value;
+          const stations = this.constellationForm.get('constellation_stations')?.value;
+          if(stations.length == 3){
       
-    
-    const station1 = stations[0];
-    const station2 = stations[1];
-    const station3 = stations[2];
-  
-    if(station1 == station2 || station1 == station3 || station2 == station3){
-      console.log('Do not repeat stations');
-      alert('Do not repeat stations');
-      this.closeForm();
-    }else{
-
-    const CONSTELLATION: Constellation = {
-      constellation_id:  constellation_id,
-      name: name,
-      devices_list:[station1,station2,station3],
-      createdAt: this.formatDateTime(new Date(), 'es-ES'),  
-      isActive: false  
-    };
-
-    this.constellationsService.getConstellation(this.constellationForm.value.constellation_id).subscribe({
-      next: (data) => {
-        // Si encontramos un usuario con el mismo DNI reseteamos el formulario
-        console.log('Constellation already exists:', data);
-        alert('Constellation with the same Id already exists.');
-        this.constellationForm.reset();
-      },
-      error: (error) => {
+            
+          
+          const station1 = stations[0];
+          const station2 = stations[1];
+          const station3 = stations[2];
         
-        // Si no existe en la base de datos lo creamos
-        console.log(CONSTELLATION);
-        this.constellationsService.createConstellations(CONSTELLATION).subscribe({
-          next: (data) => {
-            location.reload();
-          },
-          error: (error) => {
-            console.log(error);
-            this.constellationForm.reset();
-          }
-        });
+          if(station1 == station2 || station1 == station3 || station2 == station3){
+            console.log('Do not repeat stations');
+            alert('Do not repeat stations');
+            this.closeForm();
+          }else{
+      
+          const CONSTELLATION: Constellation = {
+            constellation_id:  constellation_id,
+            name: name,
+            devices_list:[station1,station2,station3],
+            createdAt: this.formatDateTime(new Date(), 'es-ES'),  
+            isActive: false  
+          };
+      
+          this.constellationsService.getConstellation(this.constellationForm.value.constellation_id).subscribe({
+            next: (data) => {
+              // Si encontramos un usuario con el mismo DNI reseteamos el formulario
+              console.log('Constellation already exists:', data);
+              alert('Constellation with the same Id already exists.');
+              this.constellationForm.reset();
+            },
+            error: (error) => {
+              
+              // Si no existe en la base de datos lo creamos
+              console.log(CONSTELLATION);
+              this.constellationsService.createConstellations(CONSTELLATION).subscribe({
+                next: (data) => {
+                  location.reload();
+                },
+                error: (error) => {
+                  console.log(error);
+                  this.constellationForm.reset();
+                }
+              });
+            }
+          });
+        }
       }
-    });
-  }
-}
-else{
-  alert('Select 3 devices');
-  console.log('Select 3 devices');
-  this.closeForm();
-}
-}
-else{
+      else{
+        alert('Select 3 devices');
+        console.log('Select 3 devices');
+        this.closeForm();
+      }
+      }
+      else{
+      
+        alert('Maximum number of constellations is 6');
+        console.log('Maximum number of constellations is 6');
+        this.closeForm();
+      }
+      },
+      error: (err) => {
+        console.log(err);
+      }
+     })
 
-  alert('Maximum number of constellations is 6');
-  console.log('Maximum number of constellations is 6');
-  this.closeForm();
-}
+
   }
 
   getConstellations() {

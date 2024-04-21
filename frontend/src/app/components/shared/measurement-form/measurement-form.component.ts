@@ -120,7 +120,7 @@ export class MeasurementFormComponent {
             this.measurementStopped = true;
           }
         },
-        error: (error) => {},
+        error: (error) => { },
       });
 
       this.measurementsService.getMeasurements().subscribe({
@@ -146,7 +146,9 @@ export class MeasurementFormComponent {
     }
   }
 
-  onSubmit() {
+  onSubmit(event: Event) {
+
+    event.stopPropagation();
     const type = this.measurementForm.value.type;
     const message = {
       name: this.measurementForm.value.name,
@@ -175,16 +177,16 @@ export class MeasurementFormComponent {
       message:
         type === 'basic'
           ? {
-              name: this.measurementForm.value.name,
-              user_dni: this.cookieService.get('dniCookie'),
-              type: {
-                isConstellation: this.isConstellation(),
-                id:
-                  this.isConstellation() === true
-                    ? this.constellation_id()
-                    : this.station_id(),
-              },
-            }
+            name: this.measurementForm.value.name,
+            user_dni: this.cookieService.get('dniCookie'),
+            type: {
+              isConstellation: this.isConstellation(),
+              id:
+                this.isConstellation() === true
+                  ? this.constellation_id()
+                  : this.station_id(),
+            },
+          }
           : message,
     };
 
@@ -210,7 +212,7 @@ export class MeasurementFormComponent {
                     this.device
                   );
                 },
-                error: (error) => {},
+                error: (error) => { },
               });
           }
         }
@@ -249,7 +251,9 @@ export class MeasurementFormComponent {
     });
   }
 
-  stopMeasurement() {
+  stopMeasurement(event: Event) {
+
+    event.stopPropagation();
     if (this.measurementStopped) {
       return; // Evitar ejecución múltiple
     }

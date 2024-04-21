@@ -69,3 +69,20 @@
   margin: 10px 0;
   padding: 10px;
 }
+.myMeasurement-container{
+
+  background-color: white;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  width: auto;
+  height: 70%;
+  padding: 10px;
+}
+
+.form-group{
+
+  display: flex;
+  flex-direction: row;
+
+}

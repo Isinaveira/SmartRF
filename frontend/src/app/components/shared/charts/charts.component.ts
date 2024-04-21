@@ -73,7 +73,7 @@ export class ChartsComponent {
   colorSchemeNC = 'fire';
   viewPie: [number, number] = [1500, 300];
   device_id = input<string>();
-
+  channelOccupation: {name: string, value: number }[] = [];
 
 
 
@@ -112,6 +112,14 @@ export class ChartsComponent {
   measurementReady(){
      this.websocketService.getMessageUpdates().subscribe( data => {
       this.samplesPerChannel = [...data];
+
+
+      this.channelOccupation = this.samplesPerChannel.map(channel => { 
+        return {
+          name: channel.name,
+          value: channel.series[channel.series.length-1].value
+        }
+      });
       this.cdRef.detectChanges(); // Forzar la detección de cambios
       console.log(this.samplesPerChannel);    
     });

@@ -1,17 +1,17 @@
 import { Component } from '@angular/core';
 import { ReportComponent } from './report/report.component';
-import jsPDF from 'jspdf';
 import { NavbarComponent } from '@/components/shared/navbar/navbar.component';
 import { PdfCreatorService } from '@/services/pdf-creator.service';
 import { MeasurementsService } from '@/services/measurements.service';
 import { Measurement } from '@/models/measurement.model';
 import { CookieService } from 'ngx-cookie-service';
+import { CommonModule } from '@angular/common';
 
 
 @Component({
   selector: 'app-workspace',
   standalone: true,
-  imports: [ReportComponent, NavbarComponent],
+  imports: [ReportComponent, NavbarComponent, CommonModule],
   templateUrl: './workspace.component.html',
   styleUrls: ['./workspace.component.css'], // Corrected from styleUrl to styleUrls
 })
@@ -94,8 +94,14 @@ showDetail(myMeasurement: Measurement){
 
 }
 
-object2string(o : Object){
+objectKeys(o : Object): string[] {
 
-  return JSON.stringify(o);
+  return Object.keys(o);
+}
+
+
+getSamples(){
+
+
 }
 }

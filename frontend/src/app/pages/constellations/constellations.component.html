@@ -31,17 +31,24 @@
         </div>
       </div>
       @if(isAdmin){
-      <button class="delete-constellation-button" (click)="deleteConstellation($event,constellation.constellation_id)"><span class="material-icons">delete</span></button>
+      <button class="delete-constellation-button"
+        (click)="deleteConstellation($event,constellation.constellation_id)">
+        <span class="material-icons">delete</span>
+        </button>
       }
     </div>
     }
     @if(isAdmin){
-      <div>
-        <button class="create-constellation-button" (click)="toggleConstellationForm()"><span class="material-icons">add</span></button>
-      </div>
-      <div class="form-container" [class.open]="showForm">
+    <div>
+      <button class="create-constellation-button" (click)="toggleConstellationForm()">
+        <span class="material-icons">add</span>
+      </button>
+    </div>
+    <div class="form-container" [class.open]="showForm">
+      <div class="wrapped">
         <app-constellation-form></app-constellation-form>
       </div>
-      }
+    </div>
+    }
   </div>
 </div>

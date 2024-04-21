@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import moment from 'moment';
 import { MapComponent } from '@/components/shared/map/map.component';
 import { NavbarComponent } from '@/components/shared/navbar/navbar.component';
 import { Device } from '@/models/device.model';
@@ -74,7 +73,6 @@ export class DevicesComponent {
     this.deviceService.getDevices().subscribe({
       next: (devices) => {
         this.devices = devices;
-        console.log(devices);
       },
       error: (err) => {
         console.log(err);
@@ -160,7 +158,8 @@ export class DevicesComponent {
     }
   }
 
-  editDevice(device: Device) {
+  editDevice(evento: Event, device: Device) {
+    evento.stopPropagation();
     this.isEditing = true;
 
     this.deviceForm.patchValue(device);

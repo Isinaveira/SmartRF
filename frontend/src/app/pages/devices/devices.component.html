@@ -49,7 +49,7 @@
 
                 </div>
                 <p class="info-data">
-                    Última lectura: {{device.last_lectureAt| date:"medium"}}
+                    Última lectura: {{device.last_lectureAt}}
                 </p>
                 @if (isAdmin) {
                 <div class="controllers">
@@ -59,7 +59,7 @@
                         </button>
                     </div>
                     <div>
-                        <button class="device-control" (click)="editDevice(device)">
+                        <button class="device-control" (click)="editDevice($event,device)">
                             <span class="material-icons">edit</span>
                         </button>
                     </div>

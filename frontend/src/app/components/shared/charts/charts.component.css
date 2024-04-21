@@ -7,3 +7,7 @@
   box-shadow: 2px 2px 10px rgb(182, 181, 181);
   margin: 10px;
 }
+.channel-occupation-container{
+  display: grid;
+  grid-template-columns: repeat(10,1fr);
+}

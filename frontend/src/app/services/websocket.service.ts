@@ -28,7 +28,6 @@ export class WebsocketService {
   getMessageUpdates(): Observable<any> {
     return new Observable(observer => {
       this.socket.on('mqtt_message', (data: any) => {
-        const message = JSON.parse(data.message);
         this.handleMessage(data);
         observer.next(this.dataForLineChart$.getValue());
       });
@@ -37,13 +36,10 @@ export class WebsocketService {
 
   handleMessage(d: any): void {
     const data = JSON.parse(d.message);
-    const information = data.payload;
-    console.log('Received MQTT message:', data);
+    let information = data.payload;
+    information.results = JSON.parse(information.results);
     this.mqttMessages.push(information);
-    //console.log(this.mqttMessages.length);
-    
     let nChannels = information.results.length;
-    
     const newDataForLineChart = this.dataForLineChart$.getValue(); // Obtenemos una copia actual de los datos
 
     if (newDataForLineChart.length === 0) {
@@ -54,15 +50,14 @@ export class WebsocketService {
         });
       }
     }
-    console.log(this.mqttMessages.length);
+    
     for (let i = 0; i < nChannels; i++) {
+      if(newDataForLineChart[i].series.length > 10){
+        newDataForLineChart[i].series.shift()
+      }
       newDataForLineChart[i].series.push({
-        name: new Date(information.date).toLocaleString('es-ES', {
-          hour: '2-digit',
-          minute: '2-digit',
-          second: '2-digit'
-        }),
-        value: information.results[i], //probar con el spread operator [...this.samplesPerChannel[i].series.value, this.mqttMessages[i].results[i]];
+        name: new Date(information.date),
+        value: information.results[i],
       });
     }
 

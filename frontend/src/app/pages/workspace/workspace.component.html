@@ -45,78 +45,20 @@
             </div>
 
         </div>
-        <div>
-          {{object2string(myMeasurement)}}
+        <div class="myMeasurement-container">
+            <h4>Configuration:</h4>
+          @for(key of myMeasurement|keyvalue ; track key.key){
+            <div class="form-group">
+                <label [for]="key">
+                    {{key.key}}:
+                </label>
+                <span>{{key.value}}</span>
+            </div>
+
+          }
+          @empty {
+            <p>Select one of the list!</p>
+          }
         </div>
     </div>
 </div>
-<!-- 
-<div class="measurements-container">
-    <div class="measusrements-list-container">
-        <h5>List of my Measurements</h5>
-        <div class="measusrements-list">
-            @for(measurement of myMeasurements; track measurement){
-            <div class="measurement-container">
-                <p class="info-data">
-                    Name: {{measurement.name}}
-                </p>
-                <p class="info-data">
-                    Last lecture: {{measurement.startedAt}}
-                </p>
-                @if(measurement.type.isConstellation == true){
-                <p class="info-data">
-                    Constellation Id: {{measurement.type.id}}
-                </p>
-                }
-                <p class="info-data">
-                    Device Id: {{measurement.type.id}}
-                </p>
-
-            </div>
-            }
-        </div>
-    </div>
-</div>
-
-<div class="measurements-container">
-    <div class="measusrements-list-container">
-        <h5>List of Constellations Measurements</h5>
-        <div class="measusrements-list">
-            @for(measurement of constellationsMeasurements; track measurement){
-            <div class="measurement-container">
-                <p class="info-data">
-                    Name: {{measurement.name}}
-                </p>
-                <p class="info-data">
-                    Last lecture: {{measurement.startedAt}}
-                </p>
-                <p class="info-data">
-                    Constellation Id: {{measurement.type.id}}
-                </p>
-            </div>
-            }
-        </div>
-    </div>
-</div>
-
-<div class="measurements-container">
-    <div class="measusrements-list-container">
-        <h5>List of Devices Measurements</h5>
-        <div class="measusrements-list">
-            @for(measurement of devicesMeasurements; track measurement){
-            <div class="measurement-container">
-                <p class="info-data">
-                    Name: {{measurement.name}}
-                </p>
-                <p class="info-data">
-                    Last lecture: {{measurement.startedAt}}
-                </p>
-                <p class="info-data">
-                    Device Id: {{measurement.type.id}}
-                </p>
-
-            </div>
-            }
-        </div>
-    </div>
-</div> -->

@@ -46,6 +46,7 @@ input {
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
+    gap: 5px;
 }
 .init-button{
     background: -webkit-linear-gradient(left,rgb(255, 170, 0), rgb(249, 97, 2));
