@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { ReportComponent } from './report/report.component';
 import jsPDF from 'jspdf';
 import { NavbarComponent } from '@/components/shared/navbar/navbar.component';
-import { ImageService } from '@/services/image-to-base64.service'; // Make sure this path is correct
 import { PdfCreatorService } from '@/services/pdf-creator.service';
 import { MeasurementsService } from '@/services/measurements.service';
 import { Measurement } from '@/models/measurement.model';

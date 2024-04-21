@@ -31,7 +31,7 @@
         </div>
       </div>
       @if(isAdmin){
-      <button class="delete-constellation-button" (click)="deleteConstellation(constellation.constellation_id)"><span class="material-icons">delete</span></button>
+      <button class="delete-constellation-button" (click)="deleteConstellation($event,constellation.constellation_id)"><span class="material-icons">delete</span></button>
       }
     </div>
     }
