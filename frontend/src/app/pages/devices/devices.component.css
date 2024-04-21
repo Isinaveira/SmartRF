@@ -23,12 +23,14 @@
   flex-direction: column;
   background-color: rgb(243, 243, 243);
   height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 .devices-list{
   height: 100%;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 20px;
   overflow-y: scroll;
   margin: 10px 0;
 }

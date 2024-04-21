@@ -2,7 +2,11 @@ import { Component } from '@angular/core';
 import { ReportComponent } from './report/report.component';
 import jsPDF from 'jspdf';
 import { NavbarComponent } from '@/components/shared/navbar/navbar.component';
-import { ImageService } from '@/services/image-to-base64.service'; // Make sure this path is correct
+import { PdfCreatorService } from '@/services/pdf-creator.service';
+import { MeasurementsService } from '@/services/measurements.service';
+import { Measurement } from '@/models/measurement.model';
+import { CookieService } from 'ngx-cookie-service';
+
 
 @Component({
   selector: 'app-workspace',
@@ -12,70 +16,86 @@ import { ImageService } from '@/services/image-to-base64.service'; // Make sure 
   styleUrls: ['./workspace.component.css'], // Corrected from styleUrl to styleUrls
 })
 export class WorkspaceComponent {
-  constructor(private imageService: ImageService) {}
+  constructor(private pdfCreator: PdfCreatorService,private measurementService: MeasurementsService, private cookieService: CookieService) {}
 
+
+  measurements: Measurement[]=[];
+  allMeasurements: Measurement[]=[];
+  myMeasurement = {};
+
+
+  dni!: string;
+  filters = {
+    constellation: (m: any) => (m.type.isConstellation == true),
+    devices: (m: any) => (m.type.isConstellation == false),
+    personal: (m: any) => (m.dni_user == this.dni)    
+  };
+
+
+
+  ngOnInit(){
+
+    this.dni = this.cookieService.get('dniCookie');
+
+    this.measurementService.getMeasurements().subscribe({
+
+      next: (measurements) => {
+        this.allMeasurements = measurements;
+      
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
+
+  }
+
+  getMeasurementsByFilter(filter: any){
+
+    return this.allMeasurements.filter(filter);
+
+  }
+  
   generateReport() {
-    const imageUrl = 'assets/logo_orange.png'; // Make sure the asset path is correct
-
-    this.imageService.getImageBase64(imageUrl).subscribe((base64Image) => {
-      const doc = new jsPDF();
-      const img = new Image();
-      img.src = base64Image;
-
-      img.onload = () => {
-        // Calculate the best fit dimensions while maintaining the aspect ratio
-        const dimensions = this.calculateAspectRatioFit(
-          img.width,
-          img.height,
-          60,
-          30
-        );
-
-        // Add a title page
-        doc.setFontSize(24);
-        doc.text('SmartRF: Area study', 105, 80, { align: 'center' });
-
-        // Calculate center position for the image
-        const pageWidth = doc.internal.pageSize.getWidth();
-        const x = pageWidth / 2 - dimensions.width / 2;
-        const y = 120;
-
-        // Add the image with calculated dimensions
-        doc.addImage(
-          base64Image,
-          'PNG',
-          x,
-          y,
-          dimensions.width,
-          dimensions.height
-        );
-
-        // Add footer
-        doc.setFontSize(12);
-        doc.text('Page 1', 105, 290, { align: 'center' });
-
-        // Copyright disclaimer
-        doc.setFontSize(10);
-        doc.text('Copyright © 2024 SmartRF. All rights reserved.', 105, 295, {
-          align: 'center',
-        });
-
-        // Save the PDF
-        doc.save('example.pdf');
-      };
+    this.pdfCreator.generateReport(() => {
+      console.log('Report generation completed!');
     });
   }
 
-  calculateAspectRatioFit(
-    srcWidth: number,
-    srcHeight: number,
-    maxWidth: number,
-    maxHeight: number
-  ): { width: number; height: number } {
-    const ratio = Math.min(maxWidth / srcWidth, maxHeight / srcHeight);
-    return {
-      width: srcWidth * ratio, // ensure the units are correct, might need conversion to mm if necessary
-      height: srcHeight * ratio, // ensure the units are correct, might need conversion to mm if necessary
-    };
+
+
+toggleFilterMeasurementsLists(option: String){
+  
+  if(Object.keys(this.myMeasurement).length != 0){
+    this.myMeasurement={};
   }
+  if(option == "constellations"){
+    this.measurements = this.getMeasurementsByFilter(this.filters.constellation);
+  } 
+  else if(option == "devices"){
+    this.measurements = this.getMeasurementsByFilter(this.filters.devices);
+  } 
+  else if( option == "personal"){
+    this.measurements = this.getMeasurementsByFilter(this.filters.personal);
+
+  } else{
+    this.measurements = this.allMeasurements;
+  }
+
+
+
+}
+
+
+showDetail(myMeasurement: Measurement){
+
+  this.myMeasurement = {...myMeasurement };
+
+
+}
+
+object2string(o : Object){
+
+  return JSON.stringify(o);
+}
 }

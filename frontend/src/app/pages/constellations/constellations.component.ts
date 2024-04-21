@@ -22,12 +22,17 @@ export class ConstellationsComponent {
 
   constructor(
     private constellationsService: ConstellationsService,
+    private constellationsService: ConstellationsService,
     private router: Router,
+    private authService: AuthService
+  ) {}
     private authService: AuthService
   ) {}
 
   ngOnInit(): void {
     const userData = this.authService.getSessionData();
+    if (userData === 'admin') {
+      this.isAdmin = true;
     if (userData === 'admin') {
       this.isAdmin = true;
     }
@@ -38,9 +43,13 @@ export class ConstellationsComponent {
       error: (err) => {
         console.log(err);
       },
+        console.log(err);
+      },
     });
   }
 
+  goTo(constellation_id: string) {
+    this.router.navigate(['constellations/' + constellation_id]);
   goTo(constellation_id: string) {
     this.router.navigate(['constellations/' + constellation_id]);
   }
@@ -60,13 +69,29 @@ export class ConstellationsComponent {
     this.constellationsService.getConstellations().subscribe({
       next: (constellations) => {
         this.constellations = constellations;
+        this.constellations = constellations;
       },
       error: (err) => {
         console.log(err);
       },
     });
+        console.log(err);
+      },
+    });
   }
 
+  deleteConstellation(event: Event, constellation_id: string) {
+    event.stopPropagation();
+    this.constellationsService.deleteConstellation(constellation_id).subscribe(
+      (data) => {
+        alert('Constellation ' + constellation_id + ' was removed');
+        this.getConstellations();
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }
   deleteConstellation(event: Event, constellation_id: string) {
     event.stopPropagation();
     this.constellationsService.deleteConstellation(constellation_id).subscribe(
