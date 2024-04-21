@@ -40,6 +40,7 @@
     background-size: cover;
     filter: blur(8px); 
     z-index: -1; 
+    overflow: hidden;
 }
 .section-card:hover {
     background-color: black;

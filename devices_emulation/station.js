@@ -1,11 +1,6 @@
 const mqtt = require('mqtt');
 
-
-const stationId = process.argv[2];
-const lat = process.argv[3];
-const lng = process.argv[4];
-
-
+//default variables
 const defaultMeasurementParams =  {
     "freqIni": 758,
     "freqFinal": 768.77,
@@ -16,8 +11,17 @@ const defaultMeasurementParams =  {
     "mode": "avg"
 }
 
-idMeasurement = "";
+let idMeasurement = '';
 let shouldMeasure = false;
+
+
+
+const stationId = process.argv[2];
+const lat = process.argv[3];
+const lng = process.argv[4];
+const time_per_sample = (process.argv.length == 6)? parseInt(process.argv[5]) : 1000;
+
+
 
 //handel params errors 
 if(!stationId){
@@ -68,15 +72,18 @@ function calculateParams(params) {
 let measurementInterval;
 
 client.on('message', function(topic, message) {
-    console.log(`Mensaje recibido en el topic ${topic}: ${message.toString()}`);
+    //console.log(`Mensaje recibido en el topic ${topic}: ${message.toString()}`);
     const msg = JSON.parse(message.toString());
+    const data = JSON.parse(msg.message);
+    console.log('HOLA : ', data);
+    console.log('MEASUREMENT_ID', data.measurement_id);
     const msgType = msg.msg_type;
   
     switch (msgType) {
       case '0':
         // Usar los parámetros predeterminados
         console.log('Usando parámetros predeterminados.');
-        idMeasurement = msg.message.measurement_id;
+        idMeasurement = data.measurement_id;
         const defaultParamsResult = calculateParams(defaultMeasurementParams);
         console.log('Parámetros calculados:', defaultParamsResult);
         shouldMeasure = true;
@@ -85,6 +92,7 @@ client.on('message', function(topic, message) {
       case '1':
         // Calcular los parámetros según el mensaje
         console.log('Calculando parámetros según el mensaje.');
+        idMeasurement = data.measurement_id;
         const customParams = JSON.parse(msg.message);
         const customParamsResult = calculateParams(customParams);
         console.log('Parámetros calculados:', customParamsResult);
@@ -117,10 +125,10 @@ client.on('message', function(topic, message) {
             const message_data = 
             {
                 payload:{
-                    "id_measurement": idMeasurement,
+                    "measurement_id": idMeasurement,
                     "id_device": stationId,
                     "date": Date.now(),
-                    "results": measurements,
+                    "results": JSON.stringify(measurements),
                     "threshold": defaultMeasurementParams.threshold
                 },
                 hash: "231A1214q122",
@@ -135,7 +143,7 @@ client.on('message', function(topic, message) {
                 }
             });
         }
-    }, 1000);
+    }, time_per_sample);
 }
 
 

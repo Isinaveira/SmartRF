@@ -16,6 +16,7 @@ import { Device } from '@/models/device.model';
 import { Measurement } from '@/models/measurement.model';
 import { ConstellationsService } from '@/services/constellations.service';
 import { Constellation } from '@/models/constellation.model';
+import { DataService } from '@/services/data.service';
 
 @Component({
   selector: 'measurement-form',
@@ -50,6 +51,7 @@ export class MeasurementFormComponent {
     private measurementsService: MeasurementsService,
     private predefinedMeasurementService: PredefinedMeasurementsService,
     private usersService: UsersService,
+    private dataService: DataService,
     private cookieService: CookieService,
     private route: ActivatedRoute,
     private deviceService: DevicesService,
@@ -80,6 +82,7 @@ export class MeasurementFormComponent {
     const idC = this.route.snapshot.paramMap.get('id');
     if (idC !== null) {
       this.constellationId = idC;
+    }
     }
   }
 
@@ -153,6 +156,7 @@ export class MeasurementFormComponent {
     const message = {
       name: this.measurementForm.value.name,
       user_dni: this.cookieService.get('dniCookie'),
+      user_dni: this.cookieService.get('dniCookie'),
       type: {
         isConstellation: this.isConstellation(),
         id:
@@ -166,6 +170,7 @@ export class MeasurementFormComponent {
       threshold: this.measurementForm.value.threshold,
       t_capt: this.measurementForm.value.t_capt,
       nfft: this.measurementForm.value.nfft,
+      mode: this.measurementForm.value.mode,
       mode: this.measurementForm.value.mode,
     };
 
@@ -192,8 +197,10 @@ export class MeasurementFormComponent {
 
     console.log(result);
     this.measurementsService.startMeasurement(result).subscribe({
+    this.measurementsService.startMeasurement(result).subscribe({
       next: (response) => {
         console.log('Measurement started successfully:', response);
+        this.dataService.changeMeasurementState(true);
         if (!this.isConstellation) {
           this.measurementStopped = false;
           this.device.state = 'activated';
@@ -268,6 +275,12 @@ export class MeasurementFormComponent {
     this.measurementsService.stopMeasurement(result).subscribe({
       next: (data) => {
         this.measurementStopped = true;
+    const result = {
+      topic: 'station_id_pub_' + this.deviceId,
+    };
+    this.measurementsService.stopMeasurement(result).subscribe({
+      next: (data) => {
+        this.measurementStopped = true;
 
         if (this.device.state !== 'deactivated') {
           this.device.state = 'deactivated';
@@ -303,6 +316,8 @@ export class MeasurementFormComponent {
     const selectedPredefined = event.target.value;
 
     if (selectedPredefined) {
+
+    if (selectedPredefined) {
       this.isPredefined(selectedPredefined);
     }
   }
@@ -320,6 +335,7 @@ export class MeasurementFormComponent {
   onNewChange(event: any) {
     const selectNew = event.target.value;
     this.isSelected = true;
+    if (selectNew == 'yes') {
     if (selectNew == 'yes') {
       this.new = true;
     } else {

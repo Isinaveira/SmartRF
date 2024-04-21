@@ -2,20 +2,20 @@ import { NavbarComponent } from '@/components/shared/navbar/navbar.component';
 import { Constellation } from '@/models/constellation.model';
 import { ConstellationsService } from '@/services/constellations.service';
 import { MapComponent } from '@/components/shared/map/map.component';
-import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '@/services/auth.service';
-import moment from 'moment';
 import { ConstellationFormComponent } from '@/components/shared/constellation-form/constellation-form.component';
 
 @Component({
   selector: 'app-constellations',
   standalone: true,
-  imports: [NavbarComponent, ConstellationFormComponent, MapComponent],
+  imports: [NavbarComponent, ConstellationFormComponent, MapComponent, CommonModule],
   templateUrl: './constellations.component.html',
   styleUrl: './constellations.component.css',
 })
-export class ConstellationsComponent implements OnInit {
+export class ConstellationsComponent {
   constellations: Constellation[] = [];
   isAdmin: boolean = false;
   showForm: boolean = false;
@@ -37,20 +37,15 @@ export class ConstellationsComponent implements OnInit {
       },
       error: (err) => {
         console.log(err);
-      },
+      }
     });
   }
 
   goTo(constellation_id: string) {
     this.router.navigate(['constellations/' + constellation_id]);
+
   }
 
-  // openCreateConstellationFormDialog(): void {
-  //   this.dialog.open(ConstellationFormComponent, {
-  //     backdropClass: 'modal-backdrop',
-  //     panelClass: 'modal-panel'
-  //   });
-  // }
 
   toggleConstellationForm(): void {
     this.showForm = !this.showForm;
@@ -59,6 +54,7 @@ export class ConstellationsComponent implements OnInit {
   getConstellations() {
     this.constellationsService.getConstellations().subscribe({
       next: (constellations) => {
+        this.constellations = constellations;
         this.constellations = constellations;
       },
       error: (err) => {
@@ -79,4 +75,5 @@ export class ConstellationsComponent implements OnInit {
       }
     );
   }
+  
 }

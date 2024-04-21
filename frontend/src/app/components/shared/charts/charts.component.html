@@ -1,36 +1,37 @@
-
-<h2>Charts</h2>
-
-
 <div class="charts-container">
-  <!--
-  <div class="tarjetas">
-    <ngx-charts-number-card 
-     [animations]="animationsNC" [results]="samplesPerChannel"
-      [scheme]="colorSchemeNC">
-    </ngx-charts-number-card>
+  <div class="channel-ocupation-chart">
+    <h2>Channel Occupation</h2>
+    <div class="channel-occupation-container">
+      @for(channel of channelOccupation; track channel){
+        <div class="channel-occupation">
+          <div class="channel-value-container">
+            {{channel.value}}<span>dBm/Hz</span>
+          </div>
+          <div class="channel-name-container">
+            {{channel.name}}
+          </div>
+        </div>
+      }
+    </div>
   </div>
-  <div class="tartas"><ngx-charts-pie-grid
-     [results]="samplesPerChannel"  [animations]="animationsNC"
-      [scheme]="colorSchemeNC">
-    </ngx-charts-pie-grid>
-  </div>
-  -->
-  <div class="barras">
-    <ngx-charts-line-chart 
-    [results]="samplesPerChannel"
-    [animations]="true"
-    [scheme]="colorSchemeNC"
-    [xAxisLabel]="'Channels'"
-    [rotateXAxisTicks]="true"
-    [xAxis]="true"
-    [yAxisLabel]="'Ocupation'"
-    [timeline]="true"
-    [yAxis]="true"
-    [legend]="true"
-    [legendTitle]="'Potencia media canal'"
-    > 
-    </ngx-charts-line-chart>
+  <div class="charts-horizontal">
+    <div class="barras">
+      <h2>Power by channel</h2>
+      <ngx-charts-line-chart 
+      [view]="[700,300]"
+      [results]="samplesPerChannel"
+      [animations]="true"
+      [scheme]="colorSchemeNC"
+      [rotateXAxisTicks]="true"
+      [xAxis]="true"
+      [yAxisLabel]="'Power'"
+      [timeline]="true"
+      [yAxis]="true"
+      [legend]="true"
+      [legendTitle]="'Potencia media canal'"
+      > 
+      </ngx-charts-line-chart>
+    </div>
   </div>
 
 </div>

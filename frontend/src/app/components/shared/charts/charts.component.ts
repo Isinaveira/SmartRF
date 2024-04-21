@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ViewChild, input } from '@angular/core';
+import { ChangeDetectorRef, Component, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { MatSliderModule } from '@angular/material/slider';
@@ -46,30 +46,22 @@ export class ChartsComponent {
   // isRT: boolean = true;
   // chartForm: FormGroup;
   // value ='';
+  
+
+  //Global 
+
+
 
   //Socket
-  mqttMessages: any[] = []; // Array to store all MQTT messages
   messageSubscription: Subscription | undefined;
 
+  totalOfSamples: number = 0;
 
+  //Occupation chart
 
-
-  //Channels
-  channels: number[] = Array(10).fill(0);
-  total: number = 0;
-  testData: number[] = []; // pruebas generar datos
-  k = 0; // pruebas generar datos
+  custom_colors: string[] = [];
+  //Power per channel by time  
   samplesPerChannel: { name: string; series: any[] }[] = [];
-  first = true;
-  configuration!: Measurement;
-  nPointsPerChan!: number;
-  nChannels!: number;
-  realChanBW!: number;
-
-  //Charts
-  dataNC = this.samplesPerChannel;
-  viewNC: [number, number] = [2000, 150];
-  animationsNC = true;
   colorSchemeNC = 'fire';
   viewPie: [number, number] = [1500, 300];
   device_id = input<string>();
@@ -86,31 +78,20 @@ export class ChartsComponent {
     private dataService: DataService,
     private cdRef: ChangeDetectorRef
   ) {
-    // this.chartForm = this.fb.group({
-    //   startDate: ['', Validators.required],
-    //   finishDate: ['', Validators.required],
-    //   channelBW: ['', Validators.required],
-    //   startFreq: ['', Validators.required],
-    //   finishFreq: ['', Validators.required],
-    //   amplitudeTreshold: ['', Validators.required],
-    // });
-    //     // Obtiene la fecha de hoy en formato ISO (YYYY-MM-DD)
-    //     const today = new Date().toISOString().split('T')[0];
-    //     // Establece la fecha máxima como la fecha de hoy
-    //     this.maxDate = today;
+    
   }
 
   ngOnInit(){
     this.dataService.currentMessage.subscribe((message:boolean) => {
-      console.log(message);
       if(message){
-        this.measurementReady()
+        this.measurementReady();
       }
     } );
   }
 
   measurementReady(){
      this.websocketService.getMessageUpdates().subscribe( data => {
+      this.totalOfSamples ++;
       this.samplesPerChannel = [...data];
 
 

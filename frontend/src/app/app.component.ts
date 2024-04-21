@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { NavbarComponent } from '@/components/shared/navbar/navbar.component';
+import { CookieService } from 'ngx-cookie-service';
 
 
 @Component({
@@ -12,4 +13,14 @@ import { NavbarComponent } from '@/components/shared/navbar/navbar.component';
 })
 export class AppComponent {
   title = 'frontend';
+
+  isLogin: boolean = false;
+  constructor(
+    private cookieService: CookieService
+  ){}
+
+  ngOnInit(){
+    const isLoggedIn = this.cookieService.check('myCookie');
+    this.isLogin = isLoggedIn;
+  }
 }
