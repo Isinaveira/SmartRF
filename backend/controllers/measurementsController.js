@@ -186,6 +186,18 @@ exports.getMeasurementByName = async (req, res) => {
   }
 };
 
+// exports.getMyMeasurements = async (req, res) => {
+//   try {
+//     const measurements = await Measurement.find({dni_user: req.params.dni_user});
+//     console.log(measurements);
+//     res.json(measurements);
+//   } catch (error) {
+//     console.log(error);
+//     res.status(500).send("Se ha producido un error en el servidor.");
+//   }
+// };
+
+
 function formatDateTime(date, locale) {
   const options = { 
       day: '2-digit', 

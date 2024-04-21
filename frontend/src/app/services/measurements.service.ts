@@ -31,4 +31,7 @@ export class MeasurementsService {
   getMeasurements(): Observable<any> {
     return this.http.get(this.url);
   }
+  // getMyMeasurements(dni_user: string): Observable<any> {
+  //   return this.http.get(`${this.url}/dni/${dni_user}`);
+  // }
 }
