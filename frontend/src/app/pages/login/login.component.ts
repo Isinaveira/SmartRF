@@ -1,12 +1,15 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { UsersService } from '@/services/users.service';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { CookieService } from 'ngx-cookie-service';
 import { WebsocketService } from '@/services/websocket.service';
-
-
 
 @Component({
   selector: 'app-login',
@@ -17,22 +20,21 @@ import { WebsocketService } from '@/services/websocket.service';
   providers: [CookieService],
 })
 export class LoginComponent {
-
   loginForm: FormGroup;
   usernameUPPER: String = '';
 
-
-  constructor(private websocketService: WebsocketService, private router: Router, public usersService: UsersService, private formBuilder: FormBuilder, private cookieService: CookieService) {
-
-
-
+  constructor(
+    private websocketService: WebsocketService,
+    private router: Router,
+    public usersService: UsersService,
+    private formBuilder: FormBuilder,
+    private cookieService: CookieService
+  ) {
     this.loginForm = this.formBuilder.group({
       username: ['', [Validators.required, Validators.maxLength(9)]],
       password: ['', Validators.required],
     });
-
   }
-
 
   checkLogin() {
     const dni = this.loginForm.get('username')?.value;
@@ -42,16 +44,20 @@ export class LoginComponent {
       this.usersService.checkUser(dni, password).subscribe({
         next: (data: any) => {
           if (data.success === true) {
-
-
             this.usersService.getUser(dni).subscribe({
               next: (userData: any) => {
                 const expirationDate = new Date();
-                expirationDate.setTime(expirationDate.getTime() + (15 * 60 * 1000)); // 15 minutos
-                this.cookieService.set('myCookie', userData.role, expirationDate);
+                expirationDate.setTime(
+                  expirationDate.getTime() + 15 * 60 * 1000
+                ); // 15 minutos
+                this.cookieService.set(
+                  'myCookie',
+                  userData.role,
+                  expirationDate
+                );
                 this.cookieService.set('dniCookie', dni, expirationDate);
                 console.log(this.cookieService.get('dniCookie'));
-                console.log(this.cookieService.get('myCookie'))
+                console.log(this.cookieService.get('myCookie'));
 
                 //Comporbamos si ya hay abierto un socket para no duplicar mensajes
                 if (!this.websocketService.isConnected) {
@@ -59,19 +65,14 @@ export class LoginComponent {
                   console.log('WebSocket open');
                 }
 
-                // alert('Successful Login!');
                 this.router.navigate(['/home']);
-
               },
               error: (error) => {
-
                 console.log(error);
                 alert('An error occurred while fetching user data');
                 this.loginForm.reset();
-
-              }
+              },
             });
-
           } else if (data.success === false) {
             alert('Incorrect password');
             this.loginForm.reset();
@@ -84,7 +85,7 @@ export class LoginComponent {
           console.log(error);
           alert('An error occurred');
           this.loginForm.reset();
-        }
+        },
       });
     } else {
       // Handle the case where username or password is undefined or null
@@ -94,5 +95,4 @@ export class LoginComponent {
   resetForm() {
     this.loginForm.reset();
   }
-
 }

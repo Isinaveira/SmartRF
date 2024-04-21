@@ -57,7 +57,7 @@ export class WebsocketService {
       }
       newDataForLineChart[i].series.push({
         name: new Date(information.date),
-        value: information.results[i], //probar con el spread operator [...this.samplesPerChannel[i].series.value, this.mqttMessages[i].results[i]];
+        value: information.results[i],
       });
     }
 

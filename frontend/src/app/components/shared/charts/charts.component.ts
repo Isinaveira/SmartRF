@@ -46,33 +46,25 @@ export class ChartsComponent {
   // isRT: boolean = true;
   // chartForm: FormGroup;
   // value ='';
+  
+
+  //Global 
+  device_id = input<string>();
+
+
 
   //Socket
-  mqttMessages: any[] = []; // Array to store all MQTT messages
   messageSubscription: Subscription | undefined;
 
+  totalOfSamples: number = 0;
 
-
-
-  //Channels
-  channels: number[] = Array(10).fill(0);
-  total: number = 0;
-  testData: number[] = []; // pruebas generar datos
-  k = 0; // pruebas generar datos
+  //Occupation chart
+  channelOccupation: {name: string, value: number }[] = [];  
+  custom_colors: string[] = [];
+  //Power per channel by time  
   samplesPerChannel: { name: string; series: any[] }[] = [];
-  first = true;
-  configuration!: Measurement;
-  nPointsPerChan!: number;
-  nChannels!: number;
-  realChanBW!: number;
-
-  //Charts
-  dataNC = this.samplesPerChannel;
-  viewNC: [number, number] = [2000, 150];
-  animationsNC = true;
   colorSchemeNC = 'fire';
-  viewPie: [number, number] = [1500, 300];
-  device_id = input<string>();
+
 
 
 
@@ -99,11 +91,27 @@ export class ChartsComponent {
 
   measurementReady(){
      this.websocketService.getMessageUpdates().subscribe( data => {
+      this.totalOfSamples ++;
       this.samplesPerChannel = [...data];
+      this.channelOccupation = this.samplesPerChannel.map(channel => { 
+        return {
+          name: channel.name,
+          value: channel.series[channel.series.length-1].value
+        }
+      });
+      this.custom_colors = this.customColors();
+      console.log(this.channelOccupation);
       this.cdRef.detectChanges(); // Forzar la detección de cambios    
     });
     
   }
+
+  customColors(){
+   let customColors: string[] = [];
+   this.channelOccupation.map(channel =>   {customColors.push((channel.value > 0)? 'FF0000': '00FF00')});
+    return customColors;
+  }
+
 
   ngOnDestroy() {
     if (this.messageSubscription) {

@@ -1,9 +1,15 @@
 
 .charts-container{
-  height: 80vh;
+  height: 100%;
+  width: 100%;
   overflow-y: scroll;
   padding: 10px;
   border-radius: 10px;
   box-shadow: 2px 2px 10px rgb(182, 181, 181);
   margin: 10px;
+}
+
+.channel-occupation-container{
+  display: grid;
+  grid-template-columns: repeat(10,1fr);
 }
