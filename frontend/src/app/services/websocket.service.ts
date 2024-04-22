@@ -9,6 +9,7 @@ export class WebsocketService {
   private socket: any;
   public isConnected: boolean = false;
   public received_messages: any[] = [];
+  // dataForLineChart$: BehaviorSubject<{station_id: string , values:{ name: string, series: any[] }[]}> = new BehaviorSubject<{station_id: string , values:{ name: string, series: any[] }[]>({});
   public dataForLineChart$: BehaviorSubject<{ name: string, series: any[] }[]> = new BehaviorSubject<{ name: string, series: any[] }[]>([]);
   public mqttMessages: any[] = [];
 
@@ -28,6 +29,7 @@ export class WebsocketService {
   getMessageUpdates(): Observable<any> {
     return new Observable(observer => {
       this.socket.on('mqtt_message', (data: any) => {
+        console.log("Llegan los mensajes");
         this.handleMessage(data);
         observer.next(this.dataForLineChart$.getValue());
       });
@@ -41,7 +43,7 @@ export class WebsocketService {
     this.mqttMessages.push(information);
     let nChannels = information.results.length;
     const newDataForLineChart = this.dataForLineChart$.getValue(); // Obtenemos una copia actual de los datos
-
+    
     if (newDataForLineChart.length === 0) {
       for (let i = 0; i < nChannels; i++) {
         newDataForLineChart.push({
@@ -54,13 +56,14 @@ export class WebsocketService {
     for (let i = 0; i < nChannels; i++) {
       if(newDataForLineChart[i].series.length > 10){
         newDataForLineChart[i].series.shift()
+        console.log("No peta");
       }
       newDataForLineChart[i].series.push({
         name: new Date(information.date),
         value: information.results[i],
       });
     }
-
+  
     this.dataForLineChart$.next(newDataForLineChart); // Emitimos los nuevos datos actualizados
   }
 

@@ -201,7 +201,7 @@ export class MeasurementFormComponent {
         console.log('Measurement started successfully:', response);
         console.log(this.isDevice);
         this.measurementStopped = false;
-        //this.dataService.changeMeasurementState(true);
+        this.dataService.changeMeasurementState(true);
         if (this.isDevice) {
 
           this.device.state = 'activated';

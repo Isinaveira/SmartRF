@@ -1,24 +1,25 @@
 <div class="charts-container">
-  <div class="channel-ocupation-chart">
-    <h2>Channel Occupation</h2>
-    <div class="channel-occupation-container">
-      @for(channel of channelOccupation; track channel){
-        <div class="channel-occupation">
+  <div class="chart-horizontal-container">
+    <div class="channel-ocupation-chart">
+      <h2>Actual Channel State</h2>
+      <div class="channel-occupation-container">
+        @for(channel of channelOccupation; track channel){
+        <div class="channel-occupation" [style.background-color]="channel.color">
           <div class="channel-value-container">
-            {{channel.value}}<span>dBm/Hz</span>
+            {{ channel.value }}<span>dBm/Hz</span>
           </div>
           <div class="channel-name-container">
-            {{channel.name}}
+            {{ channel.name }}
           </div>
         </div>
-      }
+        }
+      </div>
     </div>
   </div>
-  <div class="charts-horizontal">
-    <div class="barras">
-      <h2>Power by channel</h2>
-      <ngx-charts-line-chart 
-      [view]="[700,300]"
+  <div class="chart-horizontal-container">
+    <h2>Power by channel</h2>
+    <ngx-charts-line-chart
+      [view]="[700, 300]"
       [results]="samplesPerChannel"
       [animations]="true"
       [scheme]="colorSchemeNC"
@@ -28,10 +29,41 @@
       [timeline]="true"
       [yAxis]="true"
       [legend]="true"
-      [legendTitle]="'Potencia media canal'"
-      > 
-      </ngx-charts-line-chart>
-    </div>
+      [legendTitle]="'Channels'"
+    >
+    </ngx-charts-line-chart>
   </div>
-
+  <div class="chart-horizontal-container">
+    <h2> Average Power by Channel</h2>
+    <ngx-charts-bar-vertical
+      [view]="[700, 300]"
+      [results]="channelAvgOccupation"
+      [xAxis]="true"
+      [yAxis]="true"
+      [scheme]="colorSchemeNC"
+      [rotateXAxisTicks]="true"
+      [yAxisLabel]="'Avg Power'"
+      [xAxisLabel]="'Channels'"
+      [legend]="true"
+      [legendTitle]="'Channels'"
+    >
+    </ngx-charts-bar-vertical>
+  </div>
+  <div class="chart-horizontal-container">
+    <h2>Occupation Percentage by Channel</h2>
+    <ngx-charts-bar-vertical
+      [view]="[700, 300]"
+      [results]="channelOccupationPercentage"
+      [xAxis]="true"
+      [yAxis]="true"
+      [scheme]="colorSchemeNC"
+      [rotateXAxisTicks]="true"
+      [yAxisLabel]="'Percentage of Occupation'"
+      [xAxisLabel]="'Channels'"
+      [legend]="true"
+      [legendTitle]="'Channels'"
+    >
+    </ngx-charts-bar-vertical>
+  </div>
 </div>
+

@@ -58,6 +58,13 @@ export class ChartsComponent {
   totalOfSamples: number = 0;
 
   //Occupation chart
+  channelOccupation: {name: string, value: number , color: string}[] = [];
+
+  //Percentage chart
+  channelOccupationPercentage: {name: string, value: number}[] = [];
+
+  //barChart
+  channelAvgOccupation: {name: string, value: number}[] = [];
 
   custom_colors: string[] = [];
   //Power per channel by time  
@@ -65,8 +72,8 @@ export class ChartsComponent {
   colorSchemeNC = 'fire';
   viewPie: [number, number] = [1500, 300];
   device_id = input<string>();
-  channelOccupation: {name: string, value: number }[] = [];
 
+  //realTime = true
 
 
 
@@ -82,38 +89,70 @@ export class ChartsComponent {
   }
 
   ngOnInit(){
+    //if real-time
     this.dataService.currentMessage.subscribe((message:boolean) => {
       if(message){
         this.measurementReady();
       }
     } );
+
+    //else subscribe to DDBB
   }
 
   measurementReady(){
      this.websocketService.getMessageUpdates().subscribe( data => {
       this.totalOfSamples ++;
+      console.log(data);
       this.samplesPerChannel = [...data];
-
-
       this.channelOccupation = this.samplesPerChannel.map(channel => { 
+        
         return {
           name: channel.name,
-          value: channel.series[channel.series.length-1].value
+          value: channel.series[channel.series.length-1].value,
+          color: channel.series[channel.series.length-1].value < 0 ? '#00FF00': '#FF0000'
         }
       });
+      this.channelAvgOccupation = this.samplesPerChannel.map(channel => {
+        const actual_channel_value = this.channelAvgOccupation.find(c => c.name == channel.name) 
+        if(actual_channel_value != undefined){
+          const avg_value = (actual_channel_value.value * (this.totalOfSamples-1) + channel.series[channel.series.length-1].value) / this.totalOfSamples;
+          return {
+            name: channel.name,
+            value: avg_value  
+          }
+        }else{
+          return {
+            name: channel.name,
+            value: 0
+          }
+        }
+      });
+
+      this.channelOccupationPercentage = this.samplesPerChannel.map( channel => {
+        const actual_channel_state = this.channelOccupationPercentage.find(c => c.name == channel.name)
+        if(actual_channel_state != undefined){
+          const occupated = (channel.series[channel.series.length-1].value > 0)? 1 : 0;
+          const avg_occupation = ((actual_channel_state.value/100) * (this.totalOfSamples-1) + occupated) / this.totalOfSamples;
+          return {
+            name: channel.name,
+            value: avg_occupation  
+          } 
+        }else{
+          return {
+            name: channel.name,
+            value: 0
+          }
+        }
+      })
+
       this.cdRef.detectChanges(); // Forzar la detección de cambios
       console.log(this.samplesPerChannel);    
     });
-    /*
-    this.messageSubscription = this.websocketService
-          .dataForLineChart$.subscribe({
-            next: (data) => {
-              console.log(data);
-              this.samplesPerChannel = data
-            }, error: (err) => {
-              console.log(err);
-            }
-          }); */
+  }
+
+
+  calculateColors(){
+    this.channelOccupation.forEach
   }
 
   ngOnDestroy() {
