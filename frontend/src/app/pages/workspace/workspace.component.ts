@@ -7,7 +7,7 @@ import { Measurement } from '@/models/measurement.model';
 import { CookieService } from 'ngx-cookie-service';
 import { CommonModule } from '@angular/common';
 import { SessionsService } from '@/services/sessions.service';
-
+import { Session } from 'inspector';
 
 @Component({
   selector: 'app-workspace',
@@ -22,93 +22,76 @@ export class WorkspaceComponent {
     private measurementService: MeasurementsService,
     private cookieService: CookieService,
     private sessionsService: SessionsService
-    ) {}
+  ) {}
 
-
-  measurements: Measurement[]=[];
-  allMeasurements: Measurement[]=[];
-  myMeasurement = {};
-
+  measurements: Measurement[] = [];
+  allMeasurements: Measurement[] = [];
+  myMeasurement: Partial<Measurement> = {};
+  sessions: Session[] = [];
 
   dni!: string;
   filters = {
-    constellation: (m: any) => (m.type.isConstellation == true),
-    devices: (m: any) => (m.type.isConstellation == false),
-    personal: (m: any) => (m.dni_user == this.dni)    
+    constellation: (m: any) => m.type.isConstellation == true,
+    devices: (m: any) => m.type.isConstellation == false,
+    personal: (m: any) => m.dni_user == this.dni,
   };
 
-
-
-  ngOnInit(){
-
+  ngOnInit() {
     this.dni = this.cookieService.get('dniCookie');
 
     this.measurementService.getMeasurements().subscribe({
-
       next: (measurements) => {
         this.allMeasurements = measurements;
-      
       },
       error: (err) => {
         console.log(err);
       },
     });
-
   }
 
-  getMeasurementsByFilter(filter: any){
-
+  getMeasurementsByFilter(filter: any) {
     return this.allMeasurements.filter(filter);
-
   }
-  
+
   generateReport() {
     this.pdfCreator.generateReport(() => {
       console.log('Report generation completed!');
     });
   }
 
-
-
-toggleFilterMeasurementsLists(option: String){
-  
-  if(Object.keys(this.myMeasurement).length != 0){
-    this.myMeasurement={};
-  }
-  if(option == "constellations"){
-    this.measurements = this.getMeasurementsByFilter(this.filters.constellation);
-  } 
-  else if(option == "devices"){
-    this.measurements = this.getMeasurementsByFilter(this.filters.devices);
-  } 
-  else if( option == "personal"){
-    this.measurements = this.getMeasurementsByFilter(this.filters.personal);
-
-  } else{
-    this.measurements = this.allMeasurements;
+  toggleFilterMeasurementsLists(option: String) {
+    if (Object.keys(this.myMeasurement).length != 0) {
+      this.myMeasurement = {};
+    }
+    if (option == 'constellations') {
+      this.measurements = this.getMeasurementsByFilter(
+        this.filters.constellation
+      );
+    } else if (option == 'devices') {
+      this.measurements = this.getMeasurementsByFilter(this.filters.devices);
+    } else if (option == 'personal') {
+      this.measurements = this.getMeasurementsByFilter(this.filters.personal);
+    } else {
+      this.measurements = this.allMeasurements;
+    }
   }
 
+  showDetail(myMeasurement: Measurement) {
+    this.myMeasurement = { ...myMeasurement };
+    this.sessionsService
+      .getSamplesMeasurement(this.myMeasurement?._id)
+      .subscribe({
+        next: (sessions) => {
+          this.sessions = sessions;
+          console.log(this.sessions);
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
+  }
 
-
-}
-
-
-showDetail(myMeasurement: Measurement){
-
-  this.myMeasurement = {...myMeasurement };
-  //this.sessionsService.getSamplesMeasurement(this.myMeasurement._id);
-
-
-}
-
-objectKeys(o : Object): string[] {
-
-  return Object.keys(o);
-}
-
-
-
-  
-
-
+  objectKeys(o: Object): string[] {
+    return Object.keys(o);
+  }
 }

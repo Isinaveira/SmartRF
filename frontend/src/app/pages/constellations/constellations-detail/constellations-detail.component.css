@@ -75,6 +75,9 @@
   border-radius: 5px; /* Optional: rounded corners for the button */
   cursor: pointer;   /* Change cursor to pointer to indicate it's clickable */
   transition: background-color 0.3s; /* Smooth transition for hover effect */
+  padding-top: 10px;
+  justify-content: space-evenly;
+  overflow-x: scroll;
 }
 
 .map-refresh-button button:hover {
