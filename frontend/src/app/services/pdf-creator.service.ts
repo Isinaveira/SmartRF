@@ -1,12 +1,17 @@
 import { Injectable } from '@angular/core';
 import jsPDF from 'jspdf';
 import { ImageService } from '@/services/image-to-base64.service';
-
+import { UsersService } from '@/services/users.service';
+import { CookieService } from 'ngx-cookie-service';
 @Injectable({
   providedIn: 'root',
 })
 export class PdfCreatorService {
-  constructor(private imageService: ImageService) {}
+  constructor(
+    private imageService: ImageService,
+    private userService: UsersService,
+    private cookieService: CookieService
+  ) {}
 
   public generateReport(callback: () => void) {
     const imageUrl = 'assets/logo_pdf.png'; // Path to the image
