@@ -6,6 +6,7 @@ import { MeasurementsService } from '@/services/measurements.service';
 import { Measurement } from '@/models/measurement.model';
 import { CookieService } from 'ngx-cookie-service';
 import { CommonModule } from '@angular/common';
+import { SessionsService } from '@/services/sessions.service';
 
 
 @Component({
@@ -16,7 +17,12 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./workspace.component.css'], // Corrected from styleUrl to styleUrls
 })
 export class WorkspaceComponent {
-  constructor(private pdfCreator: PdfCreatorService,private measurementService: MeasurementsService, private cookieService: CookieService) {}
+  constructor(
+    private pdfCreator: PdfCreatorService,
+    private measurementService: MeasurementsService,
+    private cookieService: CookieService,
+    private sessionsService: SessionsService
+    ) {}
 
 
   measurements: Measurement[]=[];
@@ -90,6 +96,7 @@ toggleFilterMeasurementsLists(option: String){
 showDetail(myMeasurement: Measurement){
 
   this.myMeasurement = {...myMeasurement };
+  //this.sessionsService.getSamplesMeasurement(this.myMeasurement._id);
 
 
 }
@@ -100,8 +107,8 @@ objectKeys(o : Object): string[] {
 }
 
 
-getSamples(){
+
+  
 
 
-}
 }

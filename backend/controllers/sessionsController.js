@@ -1,7 +1,7 @@
 const Session = require("../models/session"); // Adjust the path as necessary
 
-const sessionsController = {
-  getLastSession: async (req, res) => {
+
+  exports.getLastSession= async (req, res) => {
     try {
       // Extract the device ID from the request parameters
       const deviceId = req.params.id;
@@ -25,6 +25,20 @@ const sessionsController = {
       res.status(500).send(error.message);
     }
   },
-};
 
-module.exports = sessionsController;
+
+  exports.getSamplesMeasurement = async (req, res) => {
+    try {
+      const samples = await Session.find({measurement_id: req.params.measurement_id});
+      console.log(samples);
+      res.json(samples);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  }
+
+
+
+
+
+

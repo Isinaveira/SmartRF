@@ -21,6 +21,6 @@ export const routes: Routes = [
     { path: 'constellations', pathMatch: 'full', component: ConstellationsComponent, canActivate: [authGuard] },
     { path: 'constellations/:id', pathMatch: 'full', component: ConstellationsDetailComponent, canActivate: [authGuard] },
     { path: 'documentation', pathMatch: 'full', component: DocumentationComponent, canActivate: [authGuard]},
-    { path: 'workspace', pathMatch: 'full', component: WorkspaceComponent},
+    { path: 'workspace', pathMatch: 'full', component: WorkspaceComponent, canActivate: [authGuard]},
     { path: '**', redirectTo: '/login', pathMatch: 'full' }
 ];
