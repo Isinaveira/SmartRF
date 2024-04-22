@@ -12,16 +12,37 @@ export class PdfCreatorService {
     private userService: UsersService,
     private cookieService: CookieService
   ) {}
+  currentDate!: string;
+  name!: string;
+  dni!: string;
 
   public generateReport(callback: () => void) {
-    const imageUrl = 'assets/logo_pdf.png'; // Path to the image
-    this.imageService.getImageBase64(imageUrl).subscribe((base64Image) => {
-      const doc = new jsPDF();
-      this.addFirstPage(doc, base64Image, () => {
-        this.addAdditionalPages(doc);
-        doc.save('detailed_report.pdf');
-        callback();
-      });
+    this.dni = this.cookieService.get('dniCookie');
+
+    const fechaActual = new Date();
+
+    this.currentDate = fechaActual.toLocaleString('es-Es', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: false, // Usar formato de 24 horas
+    });
+    this.userService.getUser(this.dni).subscribe({
+      next: (data) => {
+        this.name = data.name;
+        const imageUrl = 'assets/logo_pdf.png'; // Path to the image
+        this.imageService.getImageBase64(imageUrl).subscribe((base64Image) => {
+          const doc = new jsPDF();
+          this.addFirstPage(doc, base64Image, () => {
+            this.addAdditionalPages(doc);
+            doc.save('detailed_report.pdf');
+            callback();
+          });
+        });
+      },
     });
   }
 
@@ -62,22 +83,25 @@ export class PdfCreatorService {
   private addAdditionalPages(doc: jsPDF) {
     const pagesData = [
       {
-        title: 'Project Overview',
-        text: 'Here is the project overview...',
+        title: 'User Data',
+        text: 'Here we will have the user data',
         contentType: 'text',
       },
       {
-        title: 'Graphs and Analysis',
-        text: '',
-        contentType: 'graphs',
+        title: 'Measurement information',
+        text: 'Here we will have the general measurement information',
+        contentType: 'text',
         data: [
           /* some graph data */
         ],
       },
       {
-        title: 'Conclusion',
-        text: 'Final thoughts and conclusions on the findings.',
+        title: 'Samples information',
+        text: 'Here we will have the general samples information',
         contentType: 'text',
+        data: [
+          /* some graph data */
+        ],
       },
     ];
 
