@@ -45,6 +45,7 @@ export class MeasurementFormComponent {
   constellation!: Constellation;
   constellationDevices: string[] = [];
   constellationId!: string;
+  isDevice!: boolean;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -97,6 +98,7 @@ export class MeasurementFormComponent {
 
     if (window.location.href.includes('/constellations/')) {
       console.log('Constelation');
+      this.isDevice = false;
 
       this.constellationService
         .getConstellation(this.constellationId)
@@ -113,9 +115,11 @@ export class MeasurementFormComponent {
         });
     } else {
       console.log('Devices');
+      this.isDevice = true;
       this.deviceService.getDevice(this.deviceId).subscribe({
         next: (data) => {
           this.device = data;
+          console.log(this.device.state);
           if (this.device.state == 'activated') {
             this.measurementStopped = false;
           } else {
@@ -195,14 +199,18 @@ export class MeasurementFormComponent {
     this.measurementsService.startMeasurement(results).subscribe({
       next: (response) => {
         console.log('Measurement started successfully:', response);
-        this.dataService.changeMeasurementState(true);
-        if (!this.isConstellation) {
-          this.measurementStopped = false;
+        console.log(this.isDevice);
+        this.measurementStopped = false;
+        //this.dataService.changeMeasurementState(true);
+        if (this.isDevice) {
+
           this.device.state = 'activated';
           this.edit(this.device);
+
         } else {
-          this.measurementStopped = false;
+         
           for (let j = 0; j < this.constellationDevices.length; j++) {
+
             this.deviceService
               .getDevice(this.constellationDevices[j])
               .subscribe({
@@ -230,6 +238,7 @@ export class MeasurementFormComponent {
   }
 
   edit(DEVICE: Device) {
+    console.log('hola');
     this.deviceService.editDevice(this.deviceId, DEVICE).subscribe({
       next: (data) => {
         console.log(data);
@@ -259,41 +268,53 @@ export class MeasurementFormComponent {
       return; // Evitar ejecución múltiple
     }
 
-    // this.deviceService.getDevice(this.deviceId).subscribe({
-    // next: (data) => {
-    // this.device = data;
-
-    const result = {
-      topic: 'station_id_pub_' + this.deviceId,
-    };
-    this.measurementsService.stopMeasurement(result).subscribe({
-      next: (data) => {
-        this.measurementStopped = true;
-        const result = {
-          topic: 'station_id_pub_' + this.deviceId,
-        };
-      },
-    });
+   
+      const result = {
+        topic: this.isConstellation()
+          ? `constellation_id_pub_${this.constellation_id()}`
+          : `station_id_pub_${this.station_id()}`
+        }
     this.measurementsService.stopMeasurement(result).subscribe({
       next: (data) => {
         this.measurementStopped = true;
 
+        if(this.isDevice){
         if (this.device.state !== 'deactivated') {
           this.device.state = 'deactivated';
           this.device.last_lectureAt = this.formatDateTime(new Date(), 'es-ES');
           this.edit(this.device);
+        }}
+        else {
+
+          
+          for (let j = 0; j < this.constellationDevices.length; j++) {
+            
+            this.deviceService
+              .getDevice(this.constellationDevices[j])
+              .subscribe({
+                next: (data) => {
+                  this.device = data;
+                  if (this.device.state !== 'deactivated') {
+                  this.device.state = 'deactivated';
+                  this.device.last_lectureAt = this.formatDateTime(new Date(), 'es-ES');
+                  this.editDevicesConstellation(
+                    this.constellationDevices[j],
+                    this.device
+                  );
+                }},
+                error: (error) => {},
+              });
+          }
+
+
         }
       },
       error: (error) => {
         console.error('Error stopping measurement:', error);
       },
     });
-    // },
-    //   error: (error) => {
-    //     console.error('Error getting device:', error);
-    //   }
-    // });
-  }
+   
+}
 
   formatDateTime(date: Date, locale: string): string {
     const options: Intl.DateTimeFormatOptions = {
