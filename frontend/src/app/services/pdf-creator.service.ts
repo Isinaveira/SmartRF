@@ -1,10 +1,13 @@
 import { Injectable } from '@angular/core';
 import { jsPDF } from 'jspdf';
 import autoTable from 'jspdf-autotable';
+import { MeasurementsService } from '@/services/measurements.service';
 
 import { ImageService } from '@/services/image-to-base64.service';
 import { UsersService } from '@/services/users.service';
 import { CookieService } from 'ngx-cookie-service';
+import { Measurement } from '@/models/measurement.model';
+import { Session } from '@/models/session.model';
 
 @Injectable({
   providedIn: 'root',
@@ -23,11 +26,15 @@ export class PdfCreatorService {
   department!: string;
   email!: string;
   doc = new jsPDF();
-  public generateReport(callback: () => void) {
+  measurement!: Measurement;
+  sample!: Session[];
+  public generateReport(m: Measurement, s: Session[], callback: () => void) {
+    this.doc = new jsPDF();
+    this.measurement = m;
     this.dni = this.cookieService.get('dniCookie');
     this.numPage = 1;
     const fechaActual = new Date();
-
+    this.sample = s;
     this.currentDate = fechaActual.toLocaleString('es-Es', {
       day: '2-digit',
       month: '2-digit',
@@ -92,20 +99,28 @@ export class PdfCreatorService {
   private addAdditionalPages(doc: jsPDF) {
     const pagesData = [
       {
-        title: 'User Data',
-        text: 'Here we will have the user data',
+        title: 'Informacion Usuario',
+        text: '',
         contentType: 'text',
       },
       {
-        title: 'Measurement information',
-        text: 'Here we will have the general measurement information',
+        title: 'Informacion Medición',
+        text: '',
         contentType: 'text',
         data: [
           /* some graph data */
         ],
       },
       {
-        title: 'Samples information',
+        title: 'Muestras',
+        text: 'Here we will have the general samples information',
+        contentType: 'text',
+        data: [
+          /* some graph data */
+        ],
+      },
+      {
+        title: 'Conclusion',
         text: 'Here we will have the general samples information',
         contentType: 'text',
         data: [
@@ -126,15 +141,26 @@ export class PdfCreatorService {
     doc.text(pageData.title, 105, 20, { align: 'center' });
 
     if (pageData.contentType === 'text') {
-      // Basic user data page formatting
-      if (pageData.title === 'User Data') {
-        this.formatUserDataPage(doc, pageData);
-      } else {
-        doc.setFontSize(12);
-        doc.text(pageData.text, 20, 40);
+      switch (pageData.title) {
+        case 'Informacion Usuario':
+          this.formatUserDataPage(doc, pageData);
+          break;
+        case 'Informacion Medición':
+          this.formatMeasurementDataPage(doc, pageData);
+          break;
+        case 'Muestras':
+          this.formatSamplesDataPage(doc, pageData); // Assuming data is needed here
+          break;
+        case 'Conclusion':
+          doc.setFontSize(12);
+          doc.text(pageData.text, 20, 40);
+          break;
+        default:
+          console.warn('Unhandled page title:', pageData.title);
+          doc.setFontSize(12);
+          doc.text('Content not available', 20, 40);
+          break;
       }
-    } else if (pageData.contentType === 'graphs') {
-      // Add graph drawing logic here
     }
 
     doc.setFontSize(12);
@@ -146,14 +172,15 @@ export class PdfCreatorService {
   }
 
   private formatUserDataPage(doc: jsPDF, pageData: any) {
-    const tableColumn = ['Field', 'Data'];
+    const tableColumn = ['Campos', 'Datos'];
     const tableRows = [];
 
     // Push each user data into the table rows array
-    tableRows.push(['Name', this.name]);
-    tableRows.push(['Role', this.role]);
+    tableRows.push(['Nombre', this.name]);
+    tableRows.push(['Rol', this.role]);
     tableRows.push(['Email', this.email]);
-    tableRows.push(['Department', this.department]);
+    tableRows.push(['Departamento', this.department]);
+    tableRows.push(['Fecha expeditado', this.currentDate]);
 
     // Draw table
     autoTable(doc, {
@@ -162,11 +189,107 @@ export class PdfCreatorService {
       startY: 40, // specify the Y position to start the table
       theme: 'striped',
       styles: { font: 'helvetica', fontSize: 10 },
-      headStyles: { fillColor: [41, 128, 185] }, // choose a color theme
+      headStyles: { fillColor: [41, 128, 185], fontStyle: 'bold' }, // choose a color theme
       columnStyles: {
-        0: { cellWidth: 50 },
-        1: { cellWidth: 'auto' },
+        0: { cellWidth: 50, fontStyle: 'bold' },
+        1: { cellWidth: 'auto', fontStyle: 'italic' },
       },
+      alternateRowStyles: { fillColor: [220, 220, 220] },
+      didDrawPage: function (data) {
+        doc.text(pageData.title, 105, 20, { align: 'center' });
+      },
+    });
+  }
+  private formatMeasurementDataPage(doc: jsPDF, pageData: any) {
+    const tableColumn = ['Campo', 'Dato'];
+    const tableRows = [];
+    const formatValue = (value: any) =>
+      typeof value === 'undefined' ? 'N/A' : value;
+    // Push each measurement data into the table rows array
+    tableRows.push(['Nombre (name)', this.measurement.name]);
+    tableRows.push(['ID', this.measurement._id]);
+    tableRows.push([
+      'Ancho de banda del canal (chanBW)',
+      `${this.measurement.chanBW} MHz`,
+    ]);
+    tableRows.push([
+      'Frecuencia inicial (freqIni)',
+      `${this.measurement.freqIni} MHz`,
+    ]);
+    tableRows.push([
+      'Frecuencia final (freqFinal)',
+      `${this.measurement.freqFinal} MHz`,
+    ]);
+
+    tableRows.push(['Modo (mode)', this.measurement.mode]);
+
+    tableRows.push(['FFT Points (nfft)', this.measurement.nfft]);
+    tableRows.push(['Inicio (startedAt)', this.measurement.startedAt]);
+    tableRows.push(['Final (finishedAt)', this.currentDate]);
+    tableRows.push([
+      'Tiempo de captura (t_capt)',
+      `${this.measurement.t_capt} s`,
+    ]);
+    tableRows.push([
+      'Umbral (threshold)',
+      formatValue(this.measurement.threshold),
+    ]);
+
+    // Draw table
+    autoTable(doc, {
+      head: [tableColumn],
+      body: tableRows,
+      startY: 40, // specify the Y position to start the table
+      theme: 'striped',
+      styles: { font: 'helvetica', fontSize: 10 },
+      headStyles: { fillColor: [41, 128, 185], fontStyle: 'bold' }, // choose a color theme
+      columnStyles: {
+        0: { cellWidth: 50, fontStyle: 'bold' },
+        1: { cellWidth: 'auto', fontStyle: 'italic' },
+      },
+      alternateRowStyles: { fillColor: [220, 220, 220] },
+      didDrawPage: function (data) {
+        doc.text(pageData.title, 105, 20, { align: 'center' });
+      },
+    });
+  }
+  private formatSamplesDataPage(doc: jsPDF, pageData: any) {
+    const tableColumn = [
+      'Measurement ID',
+      'Device ID',
+      'Date',
+      'Results',
+      'Threshold',
+    ];
+    const tableRows: string[][] = []; // Explicitly defining the type of the tableRows as an array of arrays of strings.
+
+    // Populate table rows with session data
+    this.sample.forEach((session: Session) => {
+      tableRows.push([
+        session.measurement_id,
+        session.id_device,
+        session.date,
+        session.results,
+        session.threshold,
+      ]);
+    });
+
+    // Draw table
+    autoTable(doc, {
+      head: [tableColumn],
+      body: tableRows,
+      startY: 40, // specify the Y position to start the table
+      theme: 'striped',
+      styles: { font: 'helvetica', fontSize: 10 },
+      headStyles: { fillColor: [41, 128, 185], fontStyle: 'bold' }, // choose a color theme
+      columnStyles: {
+        0: { cellWidth: 'auto', fontStyle: 'bold' },
+        1: { cellWidth: 'auto', fontStyle: 'bold' },
+        2: { cellWidth: 'auto', fontStyle: 'bold' },
+        3: { cellWidth: 'auto', fontStyle: 'italic' },
+        4: { cellWidth: 'auto', fontStyle: 'italic' },
+      },
+      alternateRowStyles: { fillColor: [220, 220, 220] },
       didDrawPage: function (data) {
         doc.text(pageData.title, 105, 20, { align: 'center' });
       },

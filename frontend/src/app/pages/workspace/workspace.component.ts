@@ -7,8 +7,7 @@ import { Measurement } from '@/models/measurement.model';
 import { CookieService } from 'ngx-cookie-service';
 import { CommonModule } from '@angular/common';
 import { SessionsService } from '@/services/sessions.service';
-import { Session } from 'inspector';
-
+import { Session } from '@/models/session.model';
 @Component({
   selector: 'app-workspace',
   standalone: true,
@@ -54,9 +53,13 @@ export class WorkspaceComponent {
   }
 
   generateReport() {
-    this.pdfCreator.generateReport(() => {
-      console.log('Report generation completed!');
-    });
+    this.pdfCreator.generateReport(
+      this.myMeasurement as Measurement,
+      this.sessions,
+      () => {
+        console.log('Report generation completed!');
+      }
+    );
   }
 
   toggleFilterMeasurementsLists(option: String) {
