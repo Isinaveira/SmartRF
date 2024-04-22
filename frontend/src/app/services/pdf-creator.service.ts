@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
-import jsPDF from 'jspdf';
+import { jsPDF } from 'jspdf';
+import autoTable from 'jspdf-autotable';
+
 import { ImageService } from '@/services/image-to-base64.service';
 import { UsersService } from '@/services/users.service';
 import { CookieService } from 'ngx-cookie-service';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -15,10 +18,14 @@ export class PdfCreatorService {
   currentDate!: string;
   name!: string;
   dni!: string;
-
+  numPage: number = 1;
+  role!: string;
+  department!: string;
+  email!: string;
+  doc = new jsPDF();
   public generateReport(callback: () => void) {
     this.dni = this.cookieService.get('dniCookie');
-
+    this.numPage = 1;
     const fechaActual = new Date();
 
     this.currentDate = fechaActual.toLocaleString('es-Es', {
@@ -33,12 +40,14 @@ export class PdfCreatorService {
     this.userService.getUser(this.dni).subscribe({
       next: (data) => {
         this.name = data.name;
+        this.role = data.role;
+        this.email = data.email;
+        this.department = data.department;
         const imageUrl = 'assets/logo_pdf.png'; // Path to the image
         this.imageService.getImageBase64(imageUrl).subscribe((base64Image) => {
-          const doc = new jsPDF();
-          this.addFirstPage(doc, base64Image, () => {
-            this.addAdditionalPages(doc);
-            doc.save('detailed_report.pdf');
+          this.addFirstPage(this.doc, base64Image, () => {
+            this.addAdditionalPages(this.doc);
+            this.doc.save('detailed_report.pdf');
             callback();
           });
         });
@@ -70,7 +79,7 @@ export class PdfCreatorService {
       doc.setFontSize(24);
       doc.text('SmartRF: Area study', 105, 40, { align: 'center' });
       doc.setFontSize(12);
-      doc.text('Page 1', 105, 290, { align: 'center' });
+      doc.text('Page ' + this.numPage, 105, 290, { align: 'center' });
       doc.setFontSize(10);
       doc.text('Copyright © 2024 SmartRF. All rights reserved.', 105, 295, {
         align: 'center',
@@ -106,6 +115,7 @@ export class PdfCreatorService {
     ];
 
     pagesData.forEach((page) => {
+      this.numPage++;
       doc.addPage();
       this.addDynamicPage(doc, page);
     });
@@ -116,11 +126,51 @@ export class PdfCreatorService {
     doc.text(pageData.title, 105, 20, { align: 'center' });
 
     if (pageData.contentType === 'text') {
-      doc.setFontSize(12);
-      doc.text(pageData.text, 20, 40);
+      // Basic user data page formatting
+      if (pageData.title === 'User Data') {
+        this.formatUserDataPage(doc, pageData);
+      } else {
+        doc.setFontSize(12);
+        doc.text(pageData.text, 20, 40);
+      }
     } else if (pageData.contentType === 'graphs') {
       // Add graph drawing logic here
     }
+
+    doc.setFontSize(12);
+    doc.text('Page ' + this.numPage, 105, 290, { align: 'center' });
+    doc.setFontSize(10);
+    doc.text('Copyright © 2024 SmartRF. All rights reserved.', 105, 295, {
+      align: 'center',
+    });
+  }
+
+  private formatUserDataPage(doc: jsPDF, pageData: any) {
+    const tableColumn = ['Field', 'Data'];
+    const tableRows = [];
+
+    // Push each user data into the table rows array
+    tableRows.push(['Name', this.name]);
+    tableRows.push(['Role', this.role]);
+    tableRows.push(['Email', this.email]);
+    tableRows.push(['Department', this.department]);
+
+    // Draw table
+    autoTable(doc, {
+      head: [tableColumn],
+      body: tableRows,
+      startY: 40, // specify the Y position to start the table
+      theme: 'striped',
+      styles: { font: 'helvetica', fontSize: 10 },
+      headStyles: { fillColor: [41, 128, 185] }, // choose a color theme
+      columnStyles: {
+        0: { cellWidth: 50 },
+        1: { cellWidth: 'auto' },
+      },
+      didDrawPage: function (data) {
+        doc.text(pageData.title, 105, 20, { align: 'center' });
+      },
+    });
   }
 
   private calculateAspectRatioFit(
