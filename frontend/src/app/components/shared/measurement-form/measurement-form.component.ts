@@ -83,7 +83,6 @@ export class MeasurementFormComponent {
     if (idC !== null) {
       this.constellationId = idC;
     }
-    }
   }
 
   ngOnInit() {
@@ -123,7 +122,7 @@ export class MeasurementFormComponent {
             this.measurementStopped = true;
           }
         },
-        error: (error) => { },
+        error: (error) => {},
       });
 
       this.measurementsService.getMeasurements().subscribe({
@@ -150,12 +149,10 @@ export class MeasurementFormComponent {
   }
 
   onSubmit(event: Event) {
-
     event.stopPropagation();
     const type = this.measurementForm.value.type;
     const message = {
       name: this.measurementForm.value.name,
-      user_dni: this.cookieService.get('dniCookie'),
       user_dni: this.cookieService.get('dniCookie'),
       type: {
         isConstellation: this.isConstellation(),
@@ -171,33 +168,31 @@ export class MeasurementFormComponent {
       t_capt: this.measurementForm.value.t_capt,
       nfft: this.measurementForm.value.nfft,
       mode: this.measurementForm.value.mode,
-      mode: this.measurementForm.value.mode,
     };
 
     console.log(type);
-    const result = {
+    const results = {
       topic: this.isConstellation()
         ? `constellation_id_pub_${this.constellation_id()}`
         : `station_id_pub_${this.station_id()}`,
       message:
         type === 'basic'
           ? {
-            name: this.measurementForm.value.name,
-            user_dni: this.cookieService.get('dniCookie'),
-            type: {
-              isConstellation: this.isConstellation(),
-              id:
-                this.isConstellation() === true
-                  ? this.constellation_id()
-                  : this.station_id(),
-            },
-          }
+              name: this.measurementForm.value.name,
+              user_dni: this.cookieService.get('dniCookie'),
+              type: {
+                isConstellation: this.isConstellation(),
+                id:
+                  this.isConstellation() === true
+                    ? this.constellation_id()
+                    : this.station_id(),
+              },
+            }
           : message,
     };
 
-    console.log(result);
-    this.measurementsService.startMeasurement(result).subscribe({
-    this.measurementsService.startMeasurement(result).subscribe({
+    console.log(results);
+    this.measurementsService.startMeasurement(results).subscribe({
       next: (response) => {
         console.log('Measurement started successfully:', response);
         this.dataService.changeMeasurementState(true);
@@ -219,7 +214,7 @@ export class MeasurementFormComponent {
                     this.device
                   );
                 },
-                error: (error) => { },
+                error: (error) => {},
               });
           }
         }
@@ -259,7 +254,6 @@ export class MeasurementFormComponent {
   }
 
   stopMeasurement(event: Event) {
-
     event.stopPropagation();
     if (this.measurementStopped) {
       return; // Evitar ejecución múltiple
@@ -275,9 +269,11 @@ export class MeasurementFormComponent {
     this.measurementsService.stopMeasurement(result).subscribe({
       next: (data) => {
         this.measurementStopped = true;
-    const result = {
-      topic: 'station_id_pub_' + this.deviceId,
-    };
+        const result = {
+          topic: 'station_id_pub_' + this.deviceId,
+        };
+      },
+    });
     this.measurementsService.stopMeasurement(result).subscribe({
       next: (data) => {
         this.measurementStopped = true;
@@ -311,17 +307,27 @@ export class MeasurementFormComponent {
     };
     return date.toLocaleString(locale, options);
   }
-
+  isPredefined(name: string) {
+    this.predefinedMeasurementService
+      .getPredefineMeasurement(name)
+      .subscribe((data) => {
+        this.measurementForm.patchValue({
+          type: 'predefined',
+          freqIni: data.freqIni,
+          freqFinal: data.freqFinal,
+          // name: data.name
+        });
+      });
+  }
   onPredefinedChange(event: any) {
     const selectedPredefined = event.target.value;
 
     if (selectedPredefined) {
-
-    if (selectedPredefined) {
-      this.isPredefined(selectedPredefined);
+      if (selectedPredefined) {
+        this.isPredefined(selectedPredefined);
+      }
     }
   }
-
   onNameChange(event: any) {
     const selectedName = event.target.value;
 
@@ -336,23 +342,11 @@ export class MeasurementFormComponent {
     const selectNew = event.target.value;
     this.isSelected = true;
     if (selectNew == 'yes') {
-    if (selectNew == 'yes') {
-      this.new = true;
-    } else {
-      this.new = false;
+      if (selectNew == 'yes') {
+        this.new = true;
+      } else {
+        this.new = false;
+      }
     }
-  }
-
-  isPredefined(name: string) {
-    this.predefinedMeasurementService
-      .getPredefineMeasurement(name)
-      .subscribe((data) => {
-        this.measurementForm.patchValue({
-          type: 'predefined',
-          freqIni: data.freqIni,
-          freqFinal: data.freqFinal,
-          // name: data.name
-        });
-      });
   }
 }
