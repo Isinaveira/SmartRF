@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import moment from 'moment';
 import { CommonModule } from '@angular/common';
 import { MapComponent } from '@/components/shared/map/map.component';
+
 @Component({
   selector: 'app-constellations-detail',
   standalone: true,
@@ -24,12 +25,15 @@ import { MapComponent } from '@/components/shared/map/map.component';
   styleUrl: './constellations-detail.component.css',
 })
 export class ConstellationsDetailComponent implements OnInit {
-  numberOfButtons: number = 5;
+  numberOfButtons!: number;
   constellation_id!: string;
   devices_list: any[] = [];
   power_list: any[] = [];
   loadingDevices: boolean = false;
   currentChannel: number = 1;
+  first: boolean = true;
+
+  
   constructor(
     private route: ActivatedRoute,
     private constellationService: ConstellationsService,
@@ -43,7 +47,6 @@ export class ConstellationsDetailComponent implements OnInit {
     if (id !== null) {
       this.constellation_id = id;
       this.getDevices();
-      this.getPowers();
     }
   }
 
@@ -73,6 +76,9 @@ export class ConstellationsDetailComponent implements OnInit {
                     reject(error); // Reject the promise in case of an error
                   },
                 });
+              }).then(() =>{
+                this.getPowers();
+                
               });
             }
           );
@@ -108,6 +114,11 @@ export class ConstellationsDetailComponent implements OnInit {
               results: session.results, //Take into account that this is an array of undefined length
               date: session.date,
             };
+            if(this.first){
+              this.first=false;
+              this.numberOfButtons=(session.results).length;
+              console.log(this.numberOfButtons);
+            }
             this.power_list.push(powerData);
             resolve();
           },
