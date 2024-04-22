@@ -11,8 +11,12 @@ export class SessionsService {
   getSessionOfDevice(deviceID: string): Observable<any> {
     return this.http.get(this.url + '/' + deviceID);
   }
-  getSamplesMeasurement(measurement_id: string): Observable<any>{
+  getSamplesMeasurement(measurement_id: string | undefined): Observable<any> {
+    if (!measurement_id) {
+      // Handle undefined ID appropriately
+      throw new Error('Measurement ID is required');
+      // Or return an empty Observable, etc.
+    }
     return this.http.get(this.url + '/samples/' + measurement_id);
-
   }
 }
