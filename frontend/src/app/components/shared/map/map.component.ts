@@ -4,7 +4,10 @@ import { environment } from '@/environment';
 import { Device } from '@/models/device.model';
 import * as GeoJSON from 'geojson';
 import { random } from '@turf/turf';
-
+import html2canvas from 'html2canvas';
+import { HttpClient } from '@angular/common/http';
+import { ImageServiceService } from '@/services/image-service.service';
+import { blob } from 'stream/consumers';
 @Component({
   selector: 'app-map',
   standalone: true,
@@ -17,11 +20,28 @@ export class MapComponent implements OnInit {
   @Input() power!: any[];
   @Input() channel: number = 1;
   map!: mapboxgl.Map;
-
+  constructor(private imageService: ImageServiceService) {}
   ngOnInit() {
     this.initializeMap();
   }
 
+  captureMapScreenshot() {
+    const mapElement = document.getElementById('map') as HTMLElement; // Ensure it is HTMLElement
+    if (mapElement) {
+      html2canvas(mapElement).then((canvas: HTMLCanvasElement) => {
+        const dataUrl = canvas.toDataURL('image/png'); // Correctly capture the data URL
+        const filename = `map-screenshot-${new Date().toISOString()}.png`;
+        console.log(dataUrl);
+        console.log(filename);
+        this.imageService.uploadImage(dataUrl, filename).subscribe({
+          next: (response) => console.log('Image saved successfully', response),
+          error: (error) => console.error('Failed to save image', error),
+        });
+      });
+    } else {
+      console.error('Map element not found');
+    }
+  }
   initializeMap() {
     mapboxgl.accessToken = environment.mapbox.accessToken;
 
@@ -30,6 +50,7 @@ export class MapComponent implements OnInit {
       style: 'mapbox://styles/mapbox/streets-v11',
       center: [-8.687971522957469, 42.16972099256685],
       zoom: 17,
+      preserveDrawingBuffer: true, // Enable capturing the map canvas
     });
 
     this.map.on('load', () => {
@@ -167,5 +188,6 @@ export class MapComponent implements OnInit {
       });
     }
     this.map.resize(); // Resize map to fit container dimensions
+    // this.captureMapScreenshot();
   }
 }
