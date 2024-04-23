@@ -26,12 +26,17 @@ export class WebsocketService {
     }
   }
 
-  getMessageUpdates(): Observable<any> {
+  getMessageUpdates(option: string): Observable<any> {
+    console.log(option);
     return new Observable(observer => {
       this.socket.on('mqtt_message', (data: any) => {
         console.log("Llegan los mensajes");
+        if(option == 'charts') {
         this.handleMessage(data);
         observer.next(this.dataForLineChart$.getValue());
+        } else {
+          observer.next(data);
+        }
       });
     });
   }

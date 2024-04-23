@@ -100,7 +100,7 @@ export class ChartsComponent {
   }
 
   measurementReady(){
-     this.websocketService.getMessageUpdates().subscribe( data => {
+     this.websocketService.getMessageUpdates('charts').subscribe( data => {
       this.totalOfSamples ++;
       console.log(data);
       this.samplesPerChannel = [...data];

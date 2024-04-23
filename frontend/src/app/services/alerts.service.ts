@@ -57,36 +57,39 @@ export class AlertsService {
         }
       })
       console.log(this.alerts);
-      this.messageSubscription=this.websocketService.getMessageUpdates().subscribe(data => {
+      this.messageSubscription=this.websocketService.getMessageUpdates('alerts').subscribe(data => {
         console.log('Received MQTT message:', data);
         // Add the received message to the array
         //this.mqttMessages.push(data);
         this.websocketService.received_messages.push(data);
         //Manejo de alertas
-        const dataSample = JSON.parse(data.message);
+        const d = JSON.parse(data.message);
+        let information = d.payload;
+        information.results = JSON.parse(information.results);
+        
         if (this.alerts.length > 0) {
     
           for (const alerta of this.alerts) {
   
-            if (dataSample.id_device === alerta.station_id) {
+            if (information.id_device === alerta.station_id) {
   
               if (alerta.type_alert === 'busy') {
               
   
                 const channelNumber = alerta.channel_number;
-                const sampleValue = dataSample.results[channelNumber];
+                const sampleValue = information.results[channelNumber];
   
                 if (sampleValue > 0) {
-                  this.toastS.warning(`Message: ${JSON.stringify(dataSample)}`, 'Busy',{ "positionClass" : "toast-bottom-left"});
+                  this.toastS.warning(`Message: ${JSON.stringify(information)}`, 'Busy',{ "positionClass" : "toast-bottom-left"});
                 }
               } else if(alerta.type_alert === 'free'){
   
                   const channelNumber = alerta.channel_number;
-                  const sampleValue = dataSample.sample[channelNumber];
+                  const sampleValue = information.sample[channelNumber];
     
                   if (sampleValue < 0) {
   
-                    this.toastS.success(`Message: ${JSON.stringify(dataSample)}`, 'Free',{ "positionClass" : "toast-bottom-right"});
+                    this.toastS.success(`Message: ${JSON.stringify(information)}`, 'Free',{ "positionClass" : "toast-bottom-right"});
                   }      
               }
             }

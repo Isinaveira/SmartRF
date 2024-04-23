@@ -122,8 +122,10 @@ export class MeasurementFormComponent {
           console.log(this.device.state);
           if (this.device.state == 'activated') {
             this.measurementStopped = false;
+            console.log(this.measurementStopped);
           } else {
             this.measurementStopped = true;
+            console.log(this.measurementStopped);
           }
         },
         error: (error) => {},
@@ -238,7 +240,7 @@ export class MeasurementFormComponent {
   }
 
   edit(DEVICE: Device) {
-    console.log('hola');
+  
     this.deviceService.editDevice(this.deviceId, DEVICE).subscribe({
       next: (data) => {
         console.log(data);
