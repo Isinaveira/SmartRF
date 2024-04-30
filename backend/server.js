@@ -13,6 +13,7 @@ const predefinedMeasurementRoutes = require("./routes/predefinedMeasurementsRout
 const alertRoutes = require("./routes/alertRoutes");
 const documentationRoutes = require("./routes/documentationRoutes");
 const sessionRoutes = require("./routes/sessionRoutes");
+const imageRoutes = require("./routes/imageRoutes");
 const {
   setupSocketIO,
   clientSubscriber,
@@ -21,6 +22,8 @@ const {
 
 // Middleware
 app.use(cors());
+// app.use(express.json({ limit: "5000mb" }));
+// app.use(express.urlencoded({ limit: "5000mb", extended: true }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -44,10 +47,11 @@ app.use("/users", userRoutes);
 app.use("/devices", deviceRoutes);
 app.use("/constellations", constellationRoutes);
 app.use("/measurements", measurementRoutes);
-app.use("/alerts", alertRoutes)
+app.use("/alerts", alertRoutes);
 app.use("/predefinedMeasurements", predefinedMeasurementRoutes);
 app.use("/documentations", documentationRoutes);
 app.use("/sessions", sessionRoutes);
+app.use("/image", imageRoutes);
 
 app.listen(PORT, () => {
   console.log("Successful server initialization!");

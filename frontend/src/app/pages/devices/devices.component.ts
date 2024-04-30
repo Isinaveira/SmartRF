@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { DevicesService } from '@/services/devices.service';
 import { ChartsComponent } from '@/components/shared/charts/charts.component';
 import { SessionsService } from '@/services/sessions.service';
+import html2canvas from 'html2canvas';
 import {
   Validators,
   ReactiveFormsModule,
@@ -15,6 +16,17 @@ import {
 } from '@angular/forms';
 import { AuthService } from '@/services/auth.service';
 
+import { HttpClient } from '@angular/common/http';
+export class ImageService {
+  constructor(private http: HttpClient) {}
+
+  uploadImage(imageData: string, filename: string) {
+    return this.http.post('http://localhost:3000/image', {
+      imageData,
+      filename,
+    });
+  }
+}
 @Component({
   selector: 'app-devices',
   standalone: true,
