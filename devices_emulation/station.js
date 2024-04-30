@@ -81,7 +81,6 @@ client.on('message', function(topic, message) {
     //console.log(`Mensaje recibido en el topic ${topic}: ${message.toString()}`);
     const msg = JSON.parse(message.toString());
     const data = JSON.parse(msg.message);
-    console.log('HOLA : ', data);
     if( "measurement_id" in Object.keys(data)){
         console.log('MEASUREMENT_ID', data.measurement_id);
     }
@@ -134,8 +133,6 @@ client.on('message', function(topic, message) {
             console.log('Realizando mediciones...');
             const nChannels = params.nChannels;
             const measurements = Array.from({ length: nChannels }, () => Math.floor(Math.random() * 41) - 20);
-            console.log(measurements);
-
             const message_data = 
             {
                 payload:{

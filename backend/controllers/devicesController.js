@@ -45,7 +45,7 @@ exports.getDevice = async (req, res) => {
 exports.getDevices = async (req, res) => {
   try {
     const devices = await Device.find();
-    console.log(devices);
+    
     res.json(devices);
   } catch (error) {
     res.status(500).json({ error: error.message });

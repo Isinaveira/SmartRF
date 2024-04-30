@@ -70,7 +70,7 @@ export class ChartsComponent {
   samplesPerChannel: { name: string; series: any[] }[] = [];
   colorSchemeNC = 'fire';
   viewPie: [number, number] = [1500, 300];
-  device_id = input<string>();
+  device_id = input.required<string>();
 
   realTime = input.required<boolean>();
 
@@ -104,8 +104,8 @@ export class ChartsComponent {
   measurementReady(){
      this.websocketService.getMessageUpdates('charts').subscribe( data => {
       this.totalOfSamples ++;
-      console.log(data);
-      this.samplesPerChannel = [...data];
+
+      this.samplesPerChannel = [...data[this.device_id()]];
       this.channelOccupation = this.samplesPerChannel.map(channel => { 
         
         return {

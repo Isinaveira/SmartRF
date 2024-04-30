@@ -63,6 +63,7 @@ export class LoginComponent {
                 if (!this.websocketService.isConnected) {
                   this.websocketService.connect(); // Conectar al WebSocket si no está conectado
                   console.log('WebSocket open');
+                  this.websocketService.getMessageUpdates('charts')
                 }
 
                 this.router.navigate(['/home']);

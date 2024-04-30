@@ -114,18 +114,18 @@ export class MeasurementFormComponent {
           },
         });
     } else {
-      console.log('Devices');
+      
       this.isDevice = true;
       this.deviceService.getDevice(this.deviceId).subscribe({
         next: (data) => {
           this.device = data;
-          console.log(this.device.state);
+          
           if (this.device.state == 'activated') {
             this.measurementStopped = false;
-            console.log(this.measurementStopped);
+            
           } else {
             this.measurementStopped = true;
-            console.log(this.measurementStopped);
+            
           }
         },
         error: (error) => {},

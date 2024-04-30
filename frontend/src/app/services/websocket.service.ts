@@ -9,9 +9,12 @@ export class WebsocketService {
   private socket: any;
   public isConnected: boolean = false;
   public received_messages: any[] = [];
-  // dataForLineChart$: BehaviorSubject<{station_id: string , values:{ name: string, series: any[] }[]}> = new BehaviorSubject<{station_id: string , values:{ name: string, series: any[] }[]>({});
-  public dataForLineChart$: BehaviorSubject<{ name: string, series: any[] }[]> = new BehaviorSubject<{ name: string, series: any[] }[]>([]);
+  public dataForLineChart$: BehaviorSubject<{[id: string]:{ name: string, series: any[] }[]}> = new BehaviorSubject<{[id: string]:{ name: string, series: any[] }[]}>({});
+  public data: { [id: string]: { name: string, series: any[] }[] } = {};
   public mqttMessages: any[] = [];
+  private MAX_SAMPLES_REAL_TIME = 20;
+
+
 
   constructor() {
     // // Replace 'http://localhost:3000' with your backend server URL
@@ -27,10 +30,8 @@ export class WebsocketService {
   }
 
   getMessageUpdates(option: string): Observable<any> {
-    console.log(option);
     return new Observable(observer => {
       this.socket.on('mqtt_message', (data: any) => {
-        console.log("Llegan los mensajes");
         if(option == 'charts') {
         this.handleMessage(data);
         observer.next(this.dataForLineChart$.getValue());
@@ -41,36 +42,42 @@ export class WebsocketService {
     });
   }
 
+  getData(): Observable<any>{
+    return new Observable(observer => {
+      observer.next(this.dataForLineChart$.getValue());
+    })
+  }
+
   handleMessage(d: any): void {
-    const data = JSON.parse(d.message);
-    let information = data.payload;
-    console.log(information);
+    const message = JSON.parse(d.message);
+    const information = message.payload;
+    const deviceId = information.id_device;
     information.results = JSON.parse(information.results);
-    this.mqttMessages.push(information);
-    let nChannels = information.results.length;
-    const newDataForLineChart = this.dataForLineChart$.getValue(); // Obtenemos una copia actual de los datos
-    
-    if (newDataForLineChart.length === 0) {
-      for (let i = 0; i < nChannels; i++) {
-        newDataForLineChart.push({
-          name: `channel ${i + 1}`,
-          series: [],
-        });
-      }
+    const nChannels = information.results.length;
+    // Verifica si ya hay datos para este dispositivo, si no, inicializa un array vacío
+    if (!this.data[deviceId]) {
+      this.data[deviceId] = Array.from({ length: nChannels }, (_, index) => ({
+        name: `channel ${index + 1}`,
+        series: []
+      }));
     }
-    
-    for (let i = 0; i < nChannels; i++) {
-      if(newDataForLineChart[i].series.length > 10){
-        newDataForLineChart[i].series.shift()
-        console.log("No peta");
-      }
-      newDataForLineChart[i].series.push({
+
+    // Maneja los datos para este dispositivo
+    const results = information.results;
+    results.forEach((result: any, index: number) => {
+      const newDataPoint = {
         name: new Date(information.date),
-        value: information.results[i],
-      });
-    }
-  
-    this.dataForLineChart$.next(newDataForLineChart); // Emitimos los nuevos datos actualizados
+        value: result
+      };
+
+      
+      if(this.data[deviceId][index].series.length == this.MAX_SAMPLES_REAL_TIME){
+        this.data[deviceId][index].series.shift();
+      }
+      this.data[deviceId][index].series.push(newDataPoint);
+    });
+
+    this.dataForLineChart$.next(this.data);
   }
 
   public disconnect(): void {

@@ -36,7 +36,7 @@ exports.getConstellation = async (req, res) => {
 exports.getConstellations = async (req, res) => {
   try {
     const constellations = await Constellation.find();
-    console.log(constellations);
+    
     res.json(constellations);
   } catch (error) {
     res.status(500).json({ error: error.message });

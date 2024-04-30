@@ -1,5 +1,6 @@
 const Measurement = require("../models/measurement"); // Assuming the Measurement model is imported correctly
 const client = require("../mqttClient"); // Assuming the MQTT client is imported correctly
+const Constellation = require("../models/constellation"); 
 const {
   setupSocketIO,
   clientSubscriber,
@@ -77,9 +78,20 @@ exports.startMeasurement = async (req, res) => {
 
     if ((message['freqIni']) == "") {
       clientPublisher("0", JSON.stringify(msg.measurement_id), topic);
+     
     } else {
       clientPublisher("1", JSON.stringify(msg), topic);
     }
+
+    if(message.type.isConstellation){
+      const constellation = await Constellation.findOne({ constellation_id: message.type.id });
+      console.log(constellation);
+      clientSubscriber(constellation.devices_list.map( device => `station_id_sub_${device}`));
+    }else{
+      clientSubscriber([`station_id_sub_${message.type.id}`]);
+    }
+
+
     // Send a JSON response with the newly created measurement
     res.status(201).json(savedMeasurement); // 201 status code for resource created
   } catch (error) {
