@@ -1,62 +1,32 @@
 <app-navbar></app-navbar>
-<div class="button-container">
-    <button (click)="generateReport()">Generate</button>
-</div> 
+<div class="workspaces-container">
+  <div class="section-description">
+    <h1 class="section-title">workspaces</h1>
+    <p>
+      The "Workspaces" section provides users with a centralized environment to
+      access and manage radio frequency measurement sessions. From there, they
+      can consult both their own sessions and those shared by others, review
+      detailed results, and export documents for further analysis. This
+      functionality facilitates collaboration and efficient project tracking
+      related to RF measurement.
+    </p>
+  </div>
 
-
-
-<div class="controllers">
-    <div><button class="buttonAll" (click)="toggleFilterMeasurementsLists('all')">All</button></div>
-    <div><button class="buttonAll" (click)="toggleFilterMeasurementsLists('personal')">Personal</button></div>
-    <div><button class="buttonAll" (click)="toggleFilterMeasurementsLists('constellations')">Constellations</button></div>
-    <div><button class="buttonAll" (click)="toggleFilterMeasurementsLists('devices')">Devices</button></div>
-</div>
-
-<div class="measurements-container">
-    <div class="measurements-list-container">
-        <div class="container-title-lists">
-            <div>
-                <h4>List of Measurements:</h4>
-            </div>
-            <div class="measurements-list">
-                @for(measurement of measurements; track measurement){
-                <div class="measurement-container" (click)="showDetail(measurement)">
-                    <p class="info-data">
-                        Name: {{measurement.name}}
-                    </p>
-                    <p class="info-data">
-                        Last lecture: {{measurement.startedAt}}
-                    </p>
-                    @if(measurement.type.isConstellation == true){
-                    <p class="info-data">
-                        Constellation Id: {{measurement.type.id}}
-                    </p>
-                    } @else {
-                    <p class="info-data">
-                        Device Id: {{measurement.type.id}}
-                    </p>
-
-                    }
-
-                </div>
-                }
-            </div>
-
+  <div class="workspaces-list">
+    @for(workspace of workspaces; track workspace){
+    <div class="workspace-card" (click)="goTo(workspace.id)">
+      <div class="workspace-info">
+        <div class="workspace-data">
+          <h1>{{ $index + 1 }}</h1>
         </div>
-        <div class="myMeasurement-container">
-            <h4>Configuration:</h4>
-          @for(key of myMeasurement|keyvalue ; track key.key){
-            <div class="form-group">
-                <label [for]="key">
-                    {{key.key}}:
-                </label>
-                <span>{{key.value}}</span>
-            </div>
-
-          }
-          @empty {
-            <p>Select one of the list!</p>
-          }
+        <div class="workspace-data">
+          <h3>{{ workspace.name }}</h3>
         </div>
+        <div class="workspace-data">
+          <p>{{ workspace.description }}</p>
+        </div>
+      </div>
     </div>
+    }
+  </div>
 </div>

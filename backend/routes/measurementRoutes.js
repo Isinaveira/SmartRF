@@ -4,7 +4,7 @@ const measurementsController = require("../controllers/measurementsController");
 
 router.get("",measurementsController.getMeasurements);
 router.post("/start", measurementsController.startMeasurement);
-// router.post("/join", measurementsController.joinConstellation);
+ router.post("/join", measurementsController.joinConstellation);
 // router.post("/changeDefo", measurementsController.changeDefoParameters);
 router.post("/stop", measurementsController.stopMeasurement); // Iniciar medición y guardarla
 // router.get(":/id", measurementsController.getMeasurement);

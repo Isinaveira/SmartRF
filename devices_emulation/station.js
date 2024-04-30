@@ -17,9 +17,10 @@ let shouldMeasure = false;
 
 
 const stationId = process.argv[2];
-const lat = process.argv[3];
-const lng = process.argv[4];
-const time_per_sample = (process.argv.length == 6)? parseInt(process.argv[5]) : 1000;
+let constellationId = process.argv[3];
+const lat = process.argv[4];
+const lng = process.argv[5];
+const time_per_sample = (process.argv.length == 7)? parseInt(process.argv[6]) : 1000;
 
 
 
@@ -40,7 +41,7 @@ if(!lng){
 
 //important variables
 const client = mqtt.connect('mqtt://127.0.0.1:1883');
-const topic_sub = `station_id_pub_${stationId}`;
+const topic_sub = [`station_id_pub_${stationId}`, `constellation_id_pub_${constellationId}`];
 const topic_pub = `station_id_sub_${stationId}`;
 const coordinates = {
     lat : lat,
@@ -51,7 +52,12 @@ client.subscribe(topic_sub, function(err){
     if(err){
         console.error('Error al subscribirse al topic: ', err);
     }else{
-        console.log(`Suscripción exitosa al topic: ${topic_sub}`);
+        if(topic_sub.length == 1){
+            console.log(`Suscripción exitosa al topic: ${topic_sub}`);
+
+        }else{
+            console.log(`Suscripción exitosa a los topics: ${topic_sub}`);
+        }
     }
 });
 
@@ -76,7 +82,9 @@ client.on('message', function(topic, message) {
     const msg = JSON.parse(message.toString());
     const data = JSON.parse(msg.message);
     console.log('HOLA : ', data);
-    console.log('MEASUREMENT_ID', data.measurement_id);
+    if( "measurement_id" in Object.keys(data)){
+        console.log('MEASUREMENT_ID', data.measurement_id);
+    }
     const msgType = msg.msg_type;
   
     switch (msgType) {
@@ -105,13 +113,19 @@ client.on('message', function(topic, message) {
         clearInterval(measurementInterval);
         break;
       case '3':
-        console.log('Iniciar emisión de mediciones.');
-        shouldMeasure = true;
+        console.log('Unirse a constelación');
+        shouldMeasure = false;
+        changeConstellation(data);
         break;
       default:
         console.log('Tipo de mensaje desconocido.');
     }
   });
+  function changeConstellation(params) {
+    console.log(constellationId);
+    constellationId = params.constellation_id;
+    console.log(constellationId);
+  }
 
   function setupMeasurementInterval(params) {
     clearInterval(measurementInterval); // Limpiar intervalo anterior si existe
@@ -129,7 +143,8 @@ client.on('message', function(topic, message) {
                     "id_device": stationId,
                     "date": Date.now(),
                     "results": JSON.stringify(measurements),
-                    "threshold": defaultMeasurementParams.threshold
+                    "threshold": defaultMeasurementParams.threshold,
+                    "coordinates": JSON.stringify(coordinates)
                 },
                 hash: "231A1214q122",
                 signature: "235901"

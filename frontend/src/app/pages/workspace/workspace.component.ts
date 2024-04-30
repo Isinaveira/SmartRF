@@ -8,6 +8,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { CommonModule } from '@angular/common';
 import { SessionsService } from '@/services/sessions.service';
 import { Session } from '@/models/session.model';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-workspace',
   standalone: true,
@@ -20,9 +21,14 @@ export class WorkspaceComponent {
     private pdfCreator: PdfCreatorService,
     private measurementService: MeasurementsService,
     private cookieService: CookieService,
-    private sessionsService: SessionsService
+    private sessionsService: SessionsService,
+    private router: Router
   ) {}
 
+  workspaces = [
+    { id: "1", name: "All sessions", description: "See all sessions of all users"},
+    { id: "2", name: "my sessions", description:"See your own sessions"},
+  ]
   measurements: Measurement[] = [];
   allMeasurements: Measurement[] = [];
   myMeasurement: Partial<Measurement> = {};
@@ -96,5 +102,9 @@ export class WorkspaceComponent {
 
   objectKeys(o: Object): string[] {
     return Object.keys(o);
+  }
+
+  goTo(id: string) {
+    this.router.navigate(['workspaces/' + id]);
   }
 }

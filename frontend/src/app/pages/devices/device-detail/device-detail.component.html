@@ -7,15 +7,26 @@
     <div class="info-container">
         <div class="device-info-container">
             <div>
-                Id: {{ device?.station_id }}
-                State: {{ device?.state }}
-                Coordinates: {{ device?.coordinates?.lat }},{{device?.coordinates?.lng}}
-                Last lecture: {{ device?.last_lectureAt }}
+                <h2>Device Information</h2>
+                <div class="device-info">
+                    <div class="device-info-field">
+                        <span class="material-symbols-outlined">motion_sensor_active</span>Id: {{ device?.station_id }}
+                    </div>
+                    <div class="device-info-field">
+                        <span class="material-symbols-outlined">monitoring</span>State: {{ device?.state }}
+                    </div>
+                    <div class="device-info-field">
+                        <span class="material-symbols-outlined">pin_drop</span>Coordinates: {{ device?.coordinates?.lat }},{{device?.coordinates?.lng}}
+                    </div>
+                    <div class="device-info-field">
+                        <span class="material-symbols-outlined">history</span>Last lecture: {{ device?.last_lectureAt }}
+                    </div>
+                </div>
             </div>
         </div>
 
         <div class="charts-container">
-            <charts [device_id]="this.station_id"></charts>
+            <charts [device_id]="this.station_id" [realTime]="true"></charts>
         </div>
     </div>
 </div>

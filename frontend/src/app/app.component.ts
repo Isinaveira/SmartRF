@@ -12,7 +12,7 @@ import { CookieService } from 'ngx-cookie-service';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  title = 'frontend';
+  title = 'SmartRF';
 
   isLogin: boolean = false;
   constructor(

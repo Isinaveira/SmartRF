@@ -121,12 +121,20 @@ exports.stopMeasurement = async (req, res) => {
 */
 exports.joinConstellation = async (req, res) => {
   try {
-    const { topic, message } = req.body;
-    console.log("Sending join constellation to: ", topic);
-    console.log("The constellation is: ", message.constellation);
-    console.log("Directed to: ", message.stations);
-    clientPublisher("3", JSON.stringify(message), topic);
-    res.status(201).json(message);
+    const  constellation  = req.body;
+    //console.log("Sending join constellation to: ", constellation.devices_list);
+    //console.log("The constellation is: ", constellation.constellation_id);
+    
+    JSON.parse(constellation.devices_list).forEach( device => {
+      const topic = `station_id_pub_${device}`;
+      const message = {
+        constellation_id: constellation.constellation_id
+      }
+      clientPublisher("3", JSON.stringify(message), topic);
+    });
+
+    
+    res.status(201).json("Measurement OK");
   } catch (error) {
     // Log the error to the console
     console.error("Error sending join constellation:", error);

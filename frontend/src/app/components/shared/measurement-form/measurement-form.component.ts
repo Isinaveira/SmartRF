@@ -205,29 +205,21 @@ export class MeasurementFormComponent {
         this.measurementStopped = false;
         this.dataService.changeMeasurementState(true);
         if (this.isDevice) {
-
           this.device.state = 'activated';
           this.edit(this.device);
-
         } else {
-         
-          for (let j = 0; j < this.constellationDevices.length; j++) {
-
-            this.deviceService
-              .getDevice(this.constellationDevices[j])
-              .subscribe({
-                next: (data) => {
-                  this.device = data;
-                  this.device.state = 'activated';
-                  this.editDevicesConstellation(
-                    this.constellationDevices[j],
-                    this.device
-                  );
-                },
-                error: (error) => {},
-              });
+          for (const device of this.constellationDevices) {
+            this.deviceService.getDevice(device).subscribe({
+              next: (data) => {
+                this.device = data;
+                this.device.state = 'activated';
+                this.editDevicesConstellation(device, this.device);
+              },
+              error: (error) => {},
+            });
           }
         }
+        alert("Measurement Started");
       },
       error: (err) => {
         console.error('Error starting measurement:', err);
@@ -240,7 +232,6 @@ export class MeasurementFormComponent {
   }
 
   edit(DEVICE: Device) {
-  
     this.deviceService.editDevice(this.deviceId, DEVICE).subscribe({
       next: (data) => {
         console.log(data);
@@ -270,53 +261,49 @@ export class MeasurementFormComponent {
       return; // Evitar ejecución múltiple
     }
 
-   
-      const result = {
-        topic: this.isConstellation()
-          ? `constellation_id_pub_${this.constellation_id()}`
-          : `station_id_pub_${this.station_id()}`
-        }
+    const result = {
+      topic: this.isConstellation()
+        ? `constellation_id_pub_${this.constellation_id()}`
+        : `station_id_pub_${this.station_id()}`,
+    };
     this.measurementsService.stopMeasurement(result).subscribe({
       next: (data) => {
         this.measurementStopped = true;
 
-        if(this.isDevice){
-        if (this.device.state !== 'deactivated') {
-          this.device.state = 'deactivated';
-          this.device.last_lectureAt = this.formatDateTime(new Date(), 'es-ES');
-          this.edit(this.device);
-        }}
-        else {
-
-          
-          for (let j = 0; j < this.constellationDevices.length; j++) {
-            
-            this.deviceService
-              .getDevice(this.constellationDevices[j])
-              .subscribe({
-                next: (data) => {
-                  this.device = data;
-                  if (this.device.state !== 'deactivated') {
-                  this.device.state = 'deactivated';
-                  this.device.last_lectureAt = this.formatDateTime(new Date(), 'es-ES');
-                  this.editDevicesConstellation(
-                    this.constellationDevices[j],
-                    this.device
-                  );
-                }},
-                error: (error) => {},
-              });
+        if (this.isDevice) {
+          if (this.device.state !== 'deactivated') {
+            this.device.state = 'deactivated';
+            this.device.last_lectureAt = this.formatDateTime(
+              new Date(),
+              'es-ES'
+            );
+            this.edit(this.device);
           }
-
-
+        } else {
+          for (const device of this.constellationDevices) {
+            this.deviceService.getDevice(device).subscribe({
+              next: (data) => {
+                this.device = data;
+                if (this.device.state !== 'deactivated') {
+                  this.device.state = 'deactivated';
+                  this.device.last_lectureAt = this.formatDateTime(
+                    new Date(),
+                    'es-ES'
+                  );
+                  this.editDevicesConstellation(device, this.device);
+                }
+              },
+              error: (error) => {},
+            });
+          }
         }
+        alert('Measurement Stopped');
       },
       error: (error) => {
         console.error('Error stopping measurement:', error);
       },
     });
-   
-}
+  }
 
   formatDateTime(date: Date, locale: string): string {
     const options: Intl.DateTimeFormatOptions = {

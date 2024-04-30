@@ -44,6 +44,7 @@ export class WebsocketService {
   handleMessage(d: any): void {
     const data = JSON.parse(d.message);
     let information = data.payload;
+    console.log(information);
     information.results = JSON.parse(information.results);
     this.mqttMessages.push(information);
     let nChannels = information.results.length;

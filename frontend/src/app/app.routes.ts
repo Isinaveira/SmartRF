@@ -11,6 +11,7 @@ import { authGuard } from './guards/auth.guard';
 import { adminGuard } from './guards/admin.guard';
 import { DocumentationComponent } from './pages/documentation/documentation.component';
 import { WorkspaceComponent } from './pages/workspace/workspace.component';
+import { WorkspaceDetailComponent } from './pages/workspace/workspace-detail/workspace-detail.component';
 export const routes: Routes = [
     { path: 'login', pathMatch: 'full', component: LoginComponent },
     { path: 'home', pathMatch: 'full', component: HomeComponent, canActivate: [authGuard] },
@@ -21,6 +22,7 @@ export const routes: Routes = [
     { path: 'constellations', pathMatch: 'full', component: ConstellationsComponent, canActivate: [authGuard] },
     { path: 'constellations/:id', pathMatch: 'full', component: ConstellationsDetailComponent, canActivate: [authGuard] },
     { path: 'documentation', pathMatch: 'full', component: DocumentationComponent, canActivate: [authGuard]},
-    { path: 'workspace', pathMatch: 'full', component: WorkspaceComponent, canActivate: [authGuard]},
+    { path: 'workspaces', pathMatch: 'full', component: WorkspaceComponent, canActivate: [authGuard]},
+    { path: 'workspaces/:id', pathMatch: 'full', component: WorkspaceDetailComponent, canActivate: [authGuard]},
     { path: '**', redirectTo: '/login', pathMatch: 'full' }
 ];

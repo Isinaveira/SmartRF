@@ -15,7 +15,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
 import { WebsocketService } from '@/services/websocket.service';
 import { ChartsService } from '@/services/charts.service';
-import { Measurement } from '@/models/measurement.model';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { DataService } from '@/services/data.service';
@@ -73,7 +72,7 @@ export class ChartsComponent {
   viewPie: [number, number] = [1500, 300];
   device_id = input<string>();
 
-  //realTime = true
+  realTime = input.required<boolean>();
 
 
 
@@ -89,14 +88,17 @@ export class ChartsComponent {
   }
 
   ngOnInit(){
-    //if real-time
-    this.dataService.currentMessage.subscribe((message:boolean) => {
-      if(message){
-        this.measurementReady();
-      }
-    } );
+    if(this.realTime()){
+      this.dataService.currentMessage.subscribe((message:boolean) => {
+        if(message){
+          this.measurementReady();
+        }
+      } );
+    }else{
+      //else subscribe to DDBB
+      console.log("DDBB");
+    }
 
-    //else subscribe to DDBB
   }
 
   measurementReady(){
@@ -145,8 +147,8 @@ export class ChartsComponent {
         }
       })
 
-      this.cdRef.detectChanges(); // Forzar la detección de cambios
-      console.log(this.samplesPerChannel);    
+      //this.cdRef.detectChanges(); // Forzar la detección de cambios
+          
     });
   }
 
