@@ -42,14 +42,14 @@
             @for(device of devices; track device.station_id){
             <div class="device-container" (click)="openDeviceDetail(device.station_id)">
                 <p class="info-data">
-                    Id dispositivo: {{device.station_id}}
+                    Station id: {{device.station_id}}
                 </p>
                 <div class="info-data">
-                    Estado: <div [ngClass]="isActive(device.state)"></div>
+                    State: <div [ngClass]="isActive(device.state)"></div>
 
                 </div>
                 <p class="info-data">
-                    Última lectura: {{device.last_lectureAt}}
+                    Last measure: {{device.last_lectureAt}}
                 </p>
                 @if (isAdmin) {
                 <div class="controllers">
