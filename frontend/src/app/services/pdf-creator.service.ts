@@ -119,14 +119,6 @@ export class PdfCreatorService {
           /* some graph data */
         ],
       },
-      {
-        title: 'Conclusion',
-        text: 'Here we will have the general samples information',
-        contentType: 'text',
-        data: [
-          /* some graph data */
-        ],
-      },
     ];
 
     pagesData.forEach((page) => {
@@ -150,10 +142,6 @@ export class PdfCreatorService {
           break;
         case 'Muestras':
           this.formatSamplesDataPage(doc, pageData); // Assuming data is needed here
-          break;
-        case 'Conclusion':
-          doc.setFontSize(12);
-          doc.text(pageData.text, 20, 40);
           break;
         default:
           console.warn('Unhandled page title:', pageData.title);
@@ -278,10 +266,10 @@ export class PdfCreatorService {
     autoTable(doc, {
       head: [tableColumn],
       body: tableRows,
-      startY: 40, // specify the Y position to start the table
+      startY: 40,
       theme: 'striped',
       styles: { font: 'helvetica', fontSize: 10 },
-      headStyles: { fillColor: [41, 128, 185], fontStyle: 'bold' }, // choose a color theme
+      headStyles: { fillColor: [41, 128, 185], fontStyle: 'bold' },
       columnStyles: {
         0: { cellWidth: 'auto', fontStyle: 'bold' },
         1: { cellWidth: 'auto', fontStyle: 'bold' },
@@ -290,8 +278,17 @@ export class PdfCreatorService {
         4: { cellWidth: 'auto', fontStyle: 'italic' },
       },
       alternateRowStyles: { fillColor: [220, 220, 220] },
-      didDrawPage: function (data) {
+      didDrawPage: (data) => {
+        // Center-align title at the top of every page
         doc.text(pageData.title, 105, 20, { align: 'center' });
+
+        // Add footer at the bottom of every page
+        const pageCount = doc.internal.pages.length; // Correct way to get page count
+        doc.setFontSize(10);
+        doc.text('Page ' + pageCount, 105, 290, { align: 'center' });
+        doc.text('Copyright © 2024 SmartRF. All rights reserved.', 105, 295, {
+          align: 'center',
+        });
       },
     });
   }
