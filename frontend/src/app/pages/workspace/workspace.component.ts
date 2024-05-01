@@ -25,9 +25,13 @@ export class WorkspaceComponent {
   ) {}
 
   workspaces = [
-    { id: "1", name: "All sessions", description: "See all sessions of all users"},
-    { id: "2", name: "my sessions", description:"See your own sessions"},
-  ]
+    {
+      id: '1',
+      name: 'All sessions',
+      description: 'See all sessions of all users',
+    },
+    { id: '2', name: 'my sessions', description: 'See your own sessions' },
+  ];
   measurements: Measurement[] = [];
   allMeasurements: Measurement[] = [];
   myMeasurement: Partial<Measurement> = {};

@@ -48,7 +48,7 @@ export class MapComponent implements OnInit {
 
     this.map = new mapboxgl.Map({
       container: 'map',
-      style: 'mapbox://styles/mapbox/streets-v11',
+      style: 'mapbox://styles/mapbox/satellite-v9',
       center: [-8.687971522957469, 42.16972099256685],
       zoom: 17,
       preserveDrawingBuffer: true, // Enable capturing the map canvas
@@ -93,17 +93,23 @@ export class MapComponent implements OnInit {
               ['linear'],
               ['heatmap-density'],
               0,
-              'rgba(33,102,172,0)',
-              0.2,
-              'rgb(103,169,207)',
-              0.4,
-              'rgb(209,229,240)',
-              0.6,
-              'rgb(253,219,199)',
-              0.8,
-              'rgb(239,138,98)',
+              'rgba(57,70,121,0)',
+              0.125,
+              'rgb(55,114,226)',
+              0.25,
+              'rgb(1,249,238)',
+              0.375,
+              'rgb(62,254,0)',
+              0.5,
+              'rgb(255,247,6)',
+              0.625,
+              'rgb(254,172,0)',
+              0.75,
+              'rgb(253,114,4)',
+              0.875,
+              'rgb(255,76,0)',
               1,
-              'rgb(178,24,43)',
+              'rgb(255,3,1)',
             ],
             'heatmap-opacity': [
               'interpolate',
@@ -124,7 +130,7 @@ export class MapComponent implements OnInit {
               0,
               2, // At the lowest zoom level, radius is small
               17,
-              25, // Increase radius up to zoom level 17
+              150, // Increase radius up to zoom level 17
               25,
               10, // Optionally, reduce radius at higher zoom levels if needed
             ],
@@ -175,7 +181,7 @@ export class MapComponent implements OnInit {
           // Get the current zoom level.
           const zoomLevel = this.map.getZoom();
           // Show or hide markers based on zoom level.
-          if (zoomLevel > 17) {
+          if (zoomLevel > 15) {
             // Show markers
             marker.getElement().style.display = 'block';
           } else {
