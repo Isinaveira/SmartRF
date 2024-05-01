@@ -5,7 +5,7 @@
     width: 100vw;
 }
 .data-container{
-    width: 100%;
+    width: 75%;
     display: flex;
     flex-direction: column;
     height: 90%;
@@ -66,18 +66,20 @@
 }
 
 .map-refresh-button button {
-  font-size: 16px;    /* Set the font size */
+  font-size: 14px;    /* Set the font size */
   font-weight: bold;  /* Make the font bold */
   color: #ffffff;    /* Set the text color to white */
   background-color: #007bff; /* Set background color to a shade of blue */
   border: none;      /* Remove border */
-  padding: 10px 20px; /* Add padding to increase the size and improve spacing */
+  padding: 5px; /* Add padding to increase the size and improve spacing */
   border-radius: 5px; /* Optional: rounded corners for the button */
   cursor: pointer;   /* Change cursor to pointer to indicate it's clickable */
   transition: background-color 0.3s; /* Smooth transition for hover effect */
   padding-top: 10px;
   justify-content: space-evenly;
   overflow-x: scroll;
+  height: 50px;
+  margin: 20px 10px;
 }
 
 .map-refresh-button button:hover {
@@ -86,11 +88,9 @@
 .map-refresh-buttons {
   display: flex;
   flex-direction: row;
+  overflow-x: scroll;
   gap: 10px;
-  flex-wrap: wrap; /* Allow buttons to wrap in smaller screens */
   align-items: center; /* Align buttons vertically in the center */
 }
 
-.map-refresh-button {
-  flex: none; /* Do not allow the button containers to grow or shrink */
-}
+
