@@ -33,7 +33,6 @@ export class ConstellationsDetailComponent implements OnInit {
   currentChannel: number = 1;
   first: boolean = true;
 
-  
   constructor(
     private route: ActivatedRoute,
     private constellationService: ConstellationsService,
@@ -51,7 +50,8 @@ export class ConstellationsDetailComponent implements OnInit {
   }
 
   getDevices() {
-    this.loadingDevices = true; // Set the loading indicator to true
+    this.devices_list = [];
+    this.loadingDevices = true;
     this.constellationService
       .getConstellation(this.constellation_id)
       .subscribe({
@@ -61,7 +61,6 @@ export class ConstellationsDetailComponent implements OnInit {
               return new Promise<void>((resolve, reject) => {
                 this.devicesService.getDevice(device_id).subscribe({
                   next: (device) => {
-                    // Check if the device is already in the list before adding it
                     if (
                       !this.devices_list.some(
                         (d) => d.station_id === device.station_id
@@ -69,54 +68,60 @@ export class ConstellationsDetailComponent implements OnInit {
                     ) {
                       this.devices_list.push(device);
                     }
-                    resolve(); // Resolve the promise once the device has been processed
+                    resolve();
                   },
                   error: (error) => {
                     console.error(error);
-                    reject(error); // Reject the promise in case of an error
+                    reject(error);
                   },
                 });
-              }).then(() =>{
-                this.getPowers();
-                
               });
             }
           );
 
-          // Wait for all the promises to complete before updating the UI
-          Promise.all(devicePromises).then(() => {
-            this.loadingDevices = false; // Set the loading indicator to false once all devices are fetched
-            console.log(this.devices_list);
-          });
+          // Wait for all the device promises to resolve before proceeding to fetch power data
+          Promise.all(devicePromises)
+            .then(() => {
+              this.loadingDevices = false;
+              console.log('All devices fetched:', this.devices_list);
+              this.getPower(); // Call getPower only once here after all devices are loaded
+            })
+            .catch((error) => {
+              this.loadingDevices = false;
+              console.error('Failed to fetch all devices:', error);
+            });
         },
         error: (err) => {
           console.error(err);
-          this.loadingDevices = false; // Set the loading indicator to false in case of an error
+          this.loadingDevices = false;
         },
       });
   }
-  getPowers() {
+
+  getPower() {
+    let times = 0;
     this.power_list = [];
     if (this.devices_list.length === 0) {
       console.log('No devices loaded yet.');
       return;
     }
 
-    this.loadingDevices = true; // Set the loading indicator to true
-
+    this.loadingDevices = true;
     const sessionPromises = this.devices_list.map((device) => {
       return new Promise<void>((resolve, reject) => {
         this.sessionsService.getSessionOfDevice(device.station_id).subscribe({
           next: (session) => {
-            // Assume 'power' is a field in session data that we want to collect
+            const resultsArray = JSON.parse(session.results);
+            times += 1;
+            console.log('ITERATION' + times);
             const powerData = {
               device_id: device.station_id,
-              results: session.results, //Take into account that this is an array of undefined length
+              results: resultsArray,
               date: session.date,
             };
-            if(this.first){
-              this.first=false;
-              this.numberOfButtons=(session.results).length;
+            if (this.first) {
+              this.first = false;
+              this.numberOfButtons = resultsArray.length;
               console.log(this.numberOfButtons);
             }
             this.power_list.push(powerData);
@@ -133,15 +138,15 @@ export class ConstellationsDetailComponent implements OnInit {
       });
     });
 
-    // Wait for all the promises to complete before updating the UI
+    // Wait for all the session promises to complete
     Promise.all(sessionPromises)
       .then(() => {
         console.log('All power data fetched:', this.power_list);
-        this.loadingDevices = false; // Set the loading indicator to false once all sessions are fetched
+        this.loadingDevices = false;
       })
       .catch((error) => {
         console.error('Failed to fetch all power data:', error);
-        this.loadingDevices = false; // Set the loading indicator to false in case of errors
+        this.loadingDevices = false;
       });
   }
 
@@ -155,7 +160,6 @@ export class ConstellationsDetailComponent implements OnInit {
 
   reloadMap(i: number): void {
     this.getDevices(); // This method fetches the devices and updates devices_list
-    this.getPowers();
     this.currentChannel = i;
   }
 }
