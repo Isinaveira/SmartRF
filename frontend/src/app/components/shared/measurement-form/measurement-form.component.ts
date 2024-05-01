@@ -71,7 +71,7 @@ export class MeasurementFormComponent {
         '',
         [Validators.required, Validators.min(25), Validators.max(1750)],
       ],
-      bandwidth: ['', [Validators.required, Validators.min(0)]],
+      chanBW: ['', [Validators.required, Validators.min(0)]],
       threshold: [''],
       t_capt: [''],
       nfft: [''],
@@ -200,7 +200,7 @@ export class MeasurementFormComponent {
       },
       freqIni: this.measurementForm.value.freqIni,
       freqFinal: this.measurementForm.value.freqFinal,
-      bandwidth: this.measurementForm.value.bandwidth,
+      chanBW: this.measurementForm.value.chanBW,
       threshold: this.measurementForm.value.threshold,
       t_capt: this.measurementForm.value.t_capt,
       nfft: this.measurementForm.value.nfft,
@@ -330,6 +330,8 @@ export class MeasurementFormComponent {
           }
         }
         alert('Measurement Stopped');
+  
+
       },
       error: (error) => {
         console.error('Error stopping measurement:', error);
@@ -382,7 +384,7 @@ export class MeasurementFormComponent {
           mode: data.mode,
           freqIni: data.freqIni,
           freqFinal: data.freqFinal,
-          bandwidth: data.chanBW,
+          chanBW: data.chanBW,
           threshold: data.threshold,
           t_capt: data.t_capt,
           nfft: data.nfft,

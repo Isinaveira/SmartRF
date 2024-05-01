@@ -74,6 +74,7 @@ export class ChartsComponent {
 
   realTime = input.required<boolean>();
 
+  threshold!: string;
 
 
   constructor(
@@ -104,7 +105,6 @@ export class ChartsComponent {
   measurementReady(){
      this.websocketService.getMessageUpdates('charts').subscribe( data => {
       this.totalOfSamples ++;
-
       this.samplesPerChannel = [...data[this.device_id()]];
       this.channelOccupation = this.samplesPerChannel.map(channel => { 
         
@@ -117,7 +117,7 @@ export class ChartsComponent {
       this.channelAvgOccupation = this.samplesPerChannel.map(channel => {
         const actual_channel_value = this.channelAvgOccupation.find(c => c.name == channel.name) 
         if(actual_channel_value != undefined){
-          const avg_value = (actual_channel_value.value * (this.totalOfSamples-1) + channel.series[channel.series.length-1].value) / this.totalOfSamples;
+          const avg_value = (actual_channel_value.value * (this.totalOfSamples-2) + channel.series[channel.series.length-1].value) / (this.totalOfSamples-1);
           return {
             name: channel.name,
             value: avg_value  
@@ -134,10 +134,10 @@ export class ChartsComponent {
         const actual_channel_state = this.channelOccupationPercentage.find(c => c.name == channel.name)
         if(actual_channel_state != undefined){
           const occupated = (channel.series[channel.series.length-1].value > 0)? 1 : 0;
-          const avg_occupation = ((actual_channel_state.value/100) * (this.totalOfSamples-1) + occupated) / this.totalOfSamples;
+          const avg_occupation = ((actual_channel_state.value/100) * (this.totalOfSamples-2) + occupated) / (this.totalOfSamples-1);
           return {
             name: channel.name,
-            value: avg_occupation  
+            value: avg_occupation*100  
           } 
         }else{
           return {
