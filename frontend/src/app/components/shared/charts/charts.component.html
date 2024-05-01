@@ -1,12 +1,12 @@
 <div class="charts-container">
   <div class="chart-horizontal-container">
     <div class="channel-ocupation-chart">
-      <h2>Actual Channel State</h2>
+      <h2>Actual Channel State ({{threshold}})</h2>
       <div class="channel-occupation-container">
         @for(channel of channelOccupation; track channel){
         <div class="channel-occupation" [style.background-color]="channel.color">
           <div class="channel-value-container">
-            {{ channel.value }}<span>dBm/Hz</span>
+            {{ channel.value }}<span>dB</span>
           </div>
           <div class="channel-name-container">
             {{ channel.name }}
@@ -17,7 +17,7 @@
     </div>
   </div>
   <div class="chart-horizontal-container">
-    <h2>Power by channel</h2>
+    <h2>Normalized Power by Channel</h2>
     <ngx-charts-line-chart
       [view]="[700, 300]"
       [results]="samplesPerChannel"
@@ -34,7 +34,7 @@
     </ngx-charts-line-chart>
   </div>
   <div class="chart-horizontal-container">
-    <h2> Average Power by Channel</h2>
+    <h2>Average Normalized Power by Channel</h2>
     <ngx-charts-bar-vertical
       [view]="[700, 300]"
       [results]="channelAvgOccupation"
