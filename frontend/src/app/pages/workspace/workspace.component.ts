@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { ReportComponent } from './report/report.component';
 import { NavbarComponent } from '@/components/shared/navbar/navbar.component';
 import { PdfCreatorService } from '@/services/pdf-creator.service';
 import { MeasurementsService } from '@/services/measurements.service';
@@ -12,7 +11,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-workspace',
   standalone: true,
-  imports: [ReportComponent, NavbarComponent, CommonModule],
+  imports: [NavbarComponent, CommonModule],
   templateUrl: './workspace.component.html',
   styleUrls: ['./workspace.component.css'], // Corrected from styleUrl to styleUrls
 })

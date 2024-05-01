@@ -9,7 +9,7 @@ router.post("/start", measurementsController.startMeasurement);
 router.post("/stop", measurementsController.stopMeasurement); // Iniciar medición y guardarla
 // router.get(":/id", measurementsController.getMeasurement);
 router.get("/:name",measurementsController.getMeasurementByName);
-// router.get("/dni/:dni_user", measurementsController.getMyMeasurements);
+router.get("/dni/:dni_user", measurementsController.getMyMeasurements);
 // Listar todas los usuarios de la BD
 /*
 router.delete('/:name', measurementsController.deleteConstellation);             // Metodo para borrar un usuario de la BD

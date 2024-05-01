@@ -34,15 +34,18 @@
       }
       </div>
 
+      @if(new){
 
-      <div class="form-group">
-        <label for="type">Type of measurement:</label>
-        <select id="type" formControlName="type" (change)="onChangeTypeOfMeasurement($event)" required>
-          <option value="basic">Basic</option>
-          <option value="advanced">Advanced</option>
-          <option value="predefined">Predefined</option>
-        </select>
-      </div>
+        <div class="form-group">
+          <label for="type">Type of measurement:</label>
+          <select [disabled]="readonly" id="type" formControlName="type" (change)="onChangeTypeOfMeasurement($event)" required>
+            <option value="basic">Basic</option>
+            <option value="advanced">Advanced</option>
+            <option value="predefined">Predefined</option>
+          </select>
+        </div>
+
+      }  
 
 
 
@@ -53,7 +56,7 @@
 
       <div class="form-group">
         <label for="predefined">Predefined Measurements:</label>
-        <select id="predefined" (change)="onPredefinedChange($event)">
+        <select id="predefined" (change)="onPredefinedChange($event)" required="">
           <option disabled selected>Select one option below</option>
           @for (predefinedMeasurement of predefinedMeasurements; track predefinedMeasurement){
           <option value="{{predefinedMeasurement.name}}">{{predefinedMeasurement.name}}</option>
@@ -80,12 +83,12 @@
 
       <div class="form-group">
         <label for="freqIni">Initial Frequency (MHz):</label>
-        <input formControlName="freqIni" type="number" id="freqIni" name="freqIni" min="25" max="1750" step="any"
+        <input [readonly]="readonly" formControlName="freqIni" type="number" id="freqIni" name="freqIni" min="25" max="1750" step="any"
           required />
       </div>
       <div class="form-group">
         <label for="freqFinal">Final Frequency (MHz):</label>
-        <input formControlName="freqFinal" type="number" id="freqFinal" name="freqFinal" min="25" max="1750" step="any"
+        <input [readonly]="readonly" formControlName="freqFinal" type="number" id="freqFinal" name="freqFinal" min="25" max="1750" step="any"
           required />
       </div>
 
@@ -101,7 +104,7 @@
 
       <div class="form-group">
         <label for="bandwidth">Bandwidth (kHz):</label>
-        <input formControlName="bandwidth" type="number" id="bandwidth" name="bandwidth" min="0" step="any" required />
+        <input  [readonly]="readonly" formControlName="bandwidth" type="number" id="bandwidth" name="bandwidth" min="0" step="any" required />
       </div>
       <div id="advancedOptions" style="display: none">
         <br>

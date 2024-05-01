@@ -1,6 +1,6 @@
 const Measurement = require("../models/measurement"); // Assuming the Measurement model is imported correctly
 const client = require("../mqttClient"); // Assuming the MQTT client is imported correctly
-const Constellation = require("../models/constellation"); 
+const Constellation = require("../models/constellation");
 const {
   setupSocketIO,
   clientSubscriber,
@@ -30,41 +30,37 @@ exports.startMeasurement = async (req, res) => {
 
   try {
     const { topic, message } = req.body;
-    console.log(topic);
-  
     let m = {};
     Object.keys(default_message).forEach((key) => {
 
-      if (!(key in message) || message[key]=="") {
+      if (!(key in message) || message[key] == "") {
         m[key] = default_message[key];
         console.log(m[key]);
       } else {
-       
-          m[key] = message[key];
-          
-       
+        m[key] = message[key];
       }
     })
 
+    m['type.id'] = message.type.id;
+    m['type.isConstellation'] = message.type.isConstellation;
+    m['dni_user'] = message.user_dni;
+    m['startedAt'] = formatDateTime(new Date(), 'es-ES');
 
-    m['type.id']=message.type.id;
-    m['type.isConstellation']=message.type.isConstellation;
-    m['dni_user']= message.user_dni;
-    m['startedAt']= formatDateTime(new Date(), 'es-ES');
-
-    if(message.name == ""){
-      m['name']="Default";
-    }else{
-      m['name']=message.name;
+    if (message.name == "") {
+      m['name'] = "Default";
+    } else {
+      m['name'] = message.name;
     }
-    // Save the measurement to the database
-    console.log(m);
+  
     const measurement = new Measurement({ ...m })
+    let conf = await Measurement.findOne({ name: message.name });
 
-    const savedMeasurement = await measurement.save(); // saving before starting measurement. 
-    console.log(savedMeasurement);
-    
-    let msg = {
+    console.log(conf);
+
+    let msg;
+
+    if (conf) {
+      msg = {
         freqIni: m.freqIni,
         freqFinal: m.freqFinal,
         t_capt: m.t_capt,
@@ -72,28 +68,44 @@ exports.startMeasurement = async (req, res) => {
         nfft: m.nfft,
         mode: m.mode,
         chanBW: m.chanBW,
-        measurement_id: savedMeasurement._id
-    };
- 
+        measurement_id: conf._id,
+      };
+    }
+    else {
+      conf = await measurement.save(); // saving before starting measurement. 
+
+      msg = {
+        freqIni: m.freqIni,
+        freqFinal: m.freqFinal,
+        t_capt: m.t_capt,
+        threshold: m.threshold,
+        nfft: m.nfft,
+        mode: m.mode,
+        chanBW: m.chanBW,
+        measurement_id: conf._id
+      };
+    }
 
     if ((message['freqIni']) == "") {
       clientPublisher("0", JSON.stringify(msg.measurement_id), topic);
-     
+
     } else {
       clientPublisher("1", JSON.stringify(msg), topic);
     }
 
-    if(message.type.isConstellation){
+    if (message.type.isConstellation) {
       const constellation = await Constellation.findOne({ constellation_id: message.type.id });
       console.log(constellation);
-      clientSubscriber(constellation.devices_list.map( device => `station_id_sub_${device}`));
-    }else{
+      clientSubscriber(constellation.devices_list.map(device => `station_id_sub_${device}`));
+    } else {
       clientSubscriber([`station_id_sub_${message.type.id}`]);
     }
 
 
     // Send a JSON response with the newly created measurement
-    res.status(201).json(savedMeasurement); // 201 status code for resource created
+    res.status(201).json(conf);
+    
+    
   } catch (error) {
     // Log the error to the console
     console.error("Error starting measurement:", error);
@@ -133,11 +145,11 @@ exports.stopMeasurement = async (req, res) => {
 */
 exports.joinConstellation = async (req, res) => {
   try {
-    const  constellation  = req.body;
+    const constellation = req.body;
     //console.log("Sending join constellation to: ", constellation.devices_list);
     //console.log("The constellation is: ", constellation.constellation_id);
-    
-    JSON.parse(constellation.devices_list).forEach( device => {
+
+    JSON.parse(constellation.devices_list).forEach(device => {
       const topic = `station_id_pub_${device}`;
       const message = {
         constellation_id: constellation.constellation_id
@@ -145,7 +157,7 @@ exports.joinConstellation = async (req, res) => {
       clientPublisher("3", JSON.stringify(message), topic);
     });
 
-    
+
     res.status(201).json("Measurement OK");
   } catch (error) {
     // Log the error to the console
@@ -191,7 +203,7 @@ exports.getMeasurements = async (req, res) => {
 
 exports.getMeasurementByName = async (req, res) => {
   try {
-    let measureConf = await Measurement.findOne({ name: req.params.name});
+    let measureConf = await Measurement.findOne({ name: req.params.name });
 
     if (!measureConf) {
       res.status(404).json({
@@ -206,27 +218,26 @@ exports.getMeasurementByName = async (req, res) => {
   }
 };
 
-// exports.getMyMeasurements = async (req, res) => {
-//   try {
-//     const measurements = await Measurement.find({dni_user: req.params.dni_user});
-//     console.log(measurements);
-//     res.json(measurements);
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).send("Se ha producido un error en el servidor.");
-//   }
-// };
 
+exports.getMyMeasurements = async (req, res) => {
+  try {
+    const measurements = await Measurement.find({dni_user: req.params.dni_user});
+    console.log(measurements);
+    res.json(measurements);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 
 function formatDateTime(date, locale) {
-  const options = { 
-      day: '2-digit', 
-      month: '2-digit', 
-      year: 'numeric', 
-      hour: '2-digit', 
-      minute: '2-digit', 
-      second: '2-digit',
-      hour12: false // Usar formato de 24 horas
+  const options = {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false // Usar formato de 24 horas
   };
 
   return date.toLocaleString(locale, options);

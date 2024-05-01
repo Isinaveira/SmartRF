@@ -71,6 +71,6 @@
         </div>
     </div>
     @if(devices.length != 0){
-        <app-map class="map-container" [devices]="this.devices" [power]="power_list" [channel] = "currentChannel"></app-map>
+        <app-map class="map-container" [devices]="this.devices" [power]="power_list" [channel] = "currentChannel" [heatmap]="false"></app-map>
     }
 </div>

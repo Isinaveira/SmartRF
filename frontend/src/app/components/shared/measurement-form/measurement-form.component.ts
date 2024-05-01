@@ -46,6 +46,7 @@ export class MeasurementFormComponent {
   constellationDevices: string[] = [];
   constellationId!: string;
   isDevice!: boolean;
+  readonly: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -114,24 +115,24 @@ export class MeasurementFormComponent {
           },
         });
     } else {
-      
+
       this.isDevice = true;
       this.deviceService.getDevice(this.deviceId).subscribe({
         next: (data) => {
           this.device = data;
-          
+
           if (this.device.state == 'activated') {
             this.measurementStopped = false;
-            
+
           } else {
             this.measurementStopped = true;
-            
+
           }
         },
-        error: (error) => {},
+        error: (error) => { },
       });
 
-      this.measurementsService.getMeasurements().subscribe({
+      this.measurementsService.getMyMeasurements(this.cookieService.get('dniCookie')).subscribe({
         next: (data) => {
           this.measurements = data;
         },
@@ -156,6 +157,36 @@ export class MeasurementFormComponent {
 
   onSubmit(event: Event) {
     event.stopPropagation();
+
+
+    if (this.new) {
+      this.measurementsService.getMeasurementByName(this.measurementForm.value.name).subscribe({
+        next: (data) => {
+         
+
+            alert('A configuration with the name ' +data.name+ ' already exists');
+            this.onReset();
+        },
+        error: () =>{
+
+          this.startMeasurement();
+        }
+      });
+
+    }
+    else {
+
+      this.startMeasurement();
+
+    }
+    
+
+  }
+
+
+  startMeasurement(){
+
+
     const type = this.measurementForm.value.type;
     const message = {
       name: this.measurementForm.value.name,
@@ -184,16 +215,16 @@ export class MeasurementFormComponent {
       message:
         type === 'basic'
           ? {
-              name: this.measurementForm.value.name,
-              user_dni: this.cookieService.get('dniCookie'),
-              type: {
-                isConstellation: this.isConstellation(),
-                id:
-                  this.isConstellation() === true
-                    ? this.constellation_id()
-                    : this.station_id(),
-              },
-            }
+            name: this.measurementForm.value.name,
+            user_dni: this.cookieService.get('dniCookie'),
+            type: {
+              isConstellation: this.isConstellation(),
+              id:
+                this.isConstellation() === true
+                  ? this.constellation_id()
+                  : this.station_id(),
+            },
+          }
           : message,
     };
 
@@ -215,7 +246,7 @@ export class MeasurementFormComponent {
                 this.device.state = 'activated';
                 this.editDevicesConstellation(device, this.device);
               },
-              error: (error) => {},
+              error: (error) => { },
             });
           }
         }
@@ -225,6 +256,7 @@ export class MeasurementFormComponent {
         console.error('Error starting measurement:', err);
       },
     });
+  
   }
 
   onReset() {
@@ -293,7 +325,7 @@ export class MeasurementFormComponent {
                   this.editDevicesConstellation(device, this.device);
                 }
               },
-              error: (error) => {},
+              error: (error) => { },
             });
           }
         }
@@ -344,19 +376,34 @@ export class MeasurementFormComponent {
     this.measurementsService
       .getMeasurementByName(selectedName)
       .subscribe((data) => {
-        this.measurementForm.patchValue({ data });
+        this.measurementForm.patchValue({
+          name: data.name,
+          type: data.type,
+          mode: data.mode,
+          freqIni: data.freqIni,
+          freqFinal: data.freqFinal,
+          bandwidth: data.chanBW,
+          threshold: data.threshold,
+          t_capt: data.t_capt,
+          nfft: data.nfft,
+        });
       });
   }
 
   onNewChange(event: any) {
     const selectNew = event.target.value;
     this.isSelected = true;
+
+
     if (selectNew == 'yes') {
-      if (selectNew == 'yes') {
-        this.new = true;
-      } else {
-        this.new = false;
-      }
+      this.new = true;
+      this.readonly = false;
+    } else {
+      this.new = false;
+      this.readonly = true;
+
+
     }
+
   }
 }

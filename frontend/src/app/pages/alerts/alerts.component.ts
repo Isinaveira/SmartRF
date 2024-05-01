@@ -70,15 +70,17 @@ export class AlertsComponent implements OnInit {
       const d = JSON.parse(data.message);
       let information = d.payload;
       information.results = JSON.parse(information.results);
+     
       // this.mqttMessages.push(information);
      
-
+      console.log(information.results[2]);
       if (this.alerts.length > 0) {
         console.log(this.alerts.length)
         for (const alerta of this.alerts) {
-
-          if (information.id_device === alerta.station_id) {
-
+          console.log(information);
+          console.log(information.id_device);
+          if (information.id_device == alerta.station_id) {
+           
             if (alerta.type_alert === 'busy') {
             
 
@@ -91,7 +93,7 @@ export class AlertsComponent implements OnInit {
             } else if(alerta.type_alert === 'free'){
 
                 const channelNumber = alerta.channel_number;
-                const sampleValue = information.sample[channelNumber];
+                const sampleValue = information.results[channelNumber];
   
                 if (sampleValue < 0) {
 

@@ -1,1 +1,9 @@
-<p>workspace-detail works!</p>
+<div class="workspace-container">
+    <button (click)="onConstellationClick($event)"><span class="material-icons">search</span>Constellation</button>
+    <button (click)="onDeviceClick($event)"><span class="material-icons">search</span>Device</button>
+    @for(measurement_config of measurements_configs; track measurement_config){
+        <div class="measurement-config-container">
+            {{jsonToString(measurement_config)}}
+        </div>
+    }
+</div>

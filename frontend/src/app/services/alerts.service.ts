@@ -71,7 +71,7 @@ export class AlertsService {
     
           for (const alerta of this.alerts) {
   
-            if (information.id_device === alerta.station_id) {
+            if (information.id_device == alerta.station_id) {
   
               if (alerta.type_alert === 'busy') {
               
@@ -85,7 +85,7 @@ export class AlertsService {
               } else if(alerta.type_alert === 'free'){
   
                   const channelNumber = alerta.channel_number;
-                  const sampleValue = information.sample[channelNumber];
+                  const sampleValue = information.results[channelNumber];
     
                   if (sampleValue < 0) {
   

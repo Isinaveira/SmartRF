@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, input } from '@angular/core';
 import mapboxgl from 'mapbox-gl';
 import { environment } from '@/environment';
 import { Device } from '@/models/device.model';
@@ -19,8 +19,9 @@ export class MapComponent implements OnInit {
   @Input() devices!: Device[]; // Ensure devices are passed as an array of Device
   @Input() power!: any[];
   @Input() channel: number = 1;
+  heatmap = input.required<boolean>();
   map!: mapboxgl.Map;
-  constructor(private imageService: ImageServiceService) {}
+  constructor(private imageService: ImageServiceService) { }
   ngOnInit() {
     this.initializeMap();
   }
@@ -54,78 +55,82 @@ export class MapComponent implements OnInit {
     });
 
     this.map.on('load', () => {
-      this.map.addSource('heatmapSource', {
-        type: 'geojson',
-        data: this.mergeDataAndPrepareHeatmapSource(),
-      });
+      
+      if (this.heatmap()) {
 
-      this.map.addLayer({
-        id: 'heatmap',
-        type: 'heatmap',
-        source: 'heatmapSource',
-        maxzoom: 18,
-        paint: {
-          'heatmap-weight': [
-            'interpolate',
-            ['linear'],
-            ['get', 'power'],
-            0,
-            0,
-            100,
-            1,
-          ],
-          'heatmap-intensity': [
-            'interpolate',
-            ['linear'],
-            ['zoom'],
-            0,
-            1,
-            18,
-            3,
-          ],
-          // Customize the colors based on your preference
-          'heatmap-color': [
-            'interpolate',
-            ['linear'],
-            ['heatmap-density'],
-            0,
-            'rgba(33,102,172,0)',
-            0.2,
-            'rgb(103,169,207)',
-            0.4,
-            'rgb(209,229,240)',
-            0.6,
-            'rgb(253,219,199)',
-            0.8,
-            'rgb(239,138,98)',
-            1,
-            'rgb(178,24,43)',
-          ],
-          'heatmap-opacity': [
-            'interpolate',
-            ['linear'],
-            ['zoom'],
-            0,
-            0.8, // At the lowest zoom level, opacity is set at 0.8
-            17,
-            0.8, // Maintain the opacity at 0.8 up to zoom level 17
-            20,
-            0.1, // You might want to gradually reduce opacity after zoom level 17
-          ],
+        this.map.addSource('heatmapSource', {
+          type: 'geojson',
+          data: this.mergeDataAndPrepareHeatmapSource(),
+        });
 
-          'heatmap-radius': [
-            'interpolate',
-            ['linear'],
-            ['zoom'],
-            0,
-            2, // At the lowest zoom level, radius is small
-            17,
-            25, // Increase radius up to zoom level 17
-            25,
-            10, // Optionally, reduce radius at higher zoom levels if needed
-          ],
-        },
-      });
+        this.map.addLayer({
+          id: 'heatmap',
+          type: 'heatmap',
+          source: 'heatmapSource',
+          maxzoom: 18,
+          paint: {
+            'heatmap-weight': [
+              'interpolate',
+              ['linear'],
+              ['get', 'power'],
+              0,
+              0,
+              100,
+              1,
+            ],
+            'heatmap-intensity': [
+              'interpolate',
+              ['linear'],
+              ['zoom'],
+              0,
+              1,
+              18,
+              3,
+            ],
+            // Customize the colors based on your preference
+            'heatmap-color': [
+              'interpolate',
+              ['linear'],
+              ['heatmap-density'],
+              0,
+              'rgba(33,102,172,0)',
+              0.2,
+              'rgb(103,169,207)',
+              0.4,
+              'rgb(209,229,240)',
+              0.6,
+              'rgb(253,219,199)',
+              0.8,
+              'rgb(239,138,98)',
+              1,
+              'rgb(178,24,43)',
+            ],
+            'heatmap-opacity': [
+              'interpolate',
+              ['linear'],
+              ['zoom'],
+              0,
+              0.8, // At the lowest zoom level, opacity is set at 0.8
+              17,
+              0.8, // Maintain the opacity at 0.8 up to zoom level 17
+              20,
+              0.1, // You might want to gradually reduce opacity after zoom level 17
+            ],
+
+            'heatmap-radius': [
+              'interpolate',
+              ['linear'],
+              ['zoom'],
+              0,
+              2, // At the lowest zoom level, radius is small
+              17,
+              25, // Increase radius up to zoom level 17
+              25,
+              10, // Optionally, reduce radius at higher zoom levels if needed
+            ],
+          },
+        });
+      }
 
       this.addMarkers();
     });
