@@ -11,7 +11,7 @@ export class WebsocketService {
   public received_messages: any[] = [];
   public dataForLineChart$: BehaviorSubject<{[id: string]:{ name: string, series: any[] }[]}> = new BehaviorSubject<{[id: string]:{ name: string, series: any[] }[]}>({});
   public data: { [id: string]: { name: string, series: any[] }[] } = {};
-  public mqttMessages: any[] = [];
+  public threshold : BehaviorSubject<number> = new BehaviorSubject<number>(0);
   private MAX_SAMPLES_REAL_TIME = 20;
 
 
@@ -51,6 +51,7 @@ export class WebsocketService {
   handleMessage(d: any): void {
     const message = JSON.parse(d.message);
     const information = message.payload;
+    this.threshold.next(information.threshold);
     const deviceId = information.id_device;
     information.results = JSON.parse(information.results);
     const nChannels = information.results.length;
