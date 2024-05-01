@@ -120,6 +120,8 @@ client.on('message', function(topic, message) {
         console.log('Tipo de mensaje desconocido.');
     }
   });
+
+  
   function changeConstellation(params) {
     console.log(constellationId);
     constellationId = params.constellation_id;

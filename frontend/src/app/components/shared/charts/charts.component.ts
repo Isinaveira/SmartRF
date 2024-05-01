@@ -74,7 +74,7 @@ export class ChartsComponent {
 
   realTime = input.required<boolean>();
 
-  threshold!: string;
+  threshold!: number;
 
 
   constructor(
@@ -150,6 +150,9 @@ export class ChartsComponent {
       //this.cdRef.detectChanges(); // Forzar la detección de cambios
           
     });
+    this.websocketService.threshold.subscribe( t => {
+      this.threshold = t;
+    })
   }
 
 

@@ -1,7 +1,17 @@
 <div class="charts-container">
+  <div class="measurement-info-container">
+    <div class="data-info-container">
+      <h2>Threshold</h2>
+      <div class="data-text">{{threshold}}</div>
+    </div>
+    <div class="data-info-container">
+      <h2>Number of Samples</h2>
+      <div class="data-text">{{totalOfSamples}} samples</div>
+    </div>
+  </div>
   <div class="chart-horizontal-container">
     <div class="channel-ocupation-chart">
-      <h2>Actual Channel State ({{threshold}})</h2>
+      <h2>Current Channel State</h2>
       <div class="channel-occupation-container">
         @for(channel of channelOccupation; track channel){
         <div class="channel-occupation" [style.background-color]="channel.color">
