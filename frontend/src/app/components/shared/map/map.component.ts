@@ -21,7 +21,7 @@ export class MapComponent implements OnInit {
   @Input() channel: number = 1;
   heatmap = input.required<boolean>();
   map!: mapboxgl.Map;
-  constructor(private imageService: ImageServiceService) { }
+  constructor(private imageService: ImageServiceService) {}
   ngOnInit() {
     this.initializeMap();
   }
@@ -55,9 +55,7 @@ export class MapComponent implements OnInit {
     });
 
     this.map.on('load', () => {
-      
       if (this.heatmap()) {
-
         this.map.addSource('heatmapSource', {
           type: 'geojson',
           data: this.mergeDataAndPrepareHeatmapSource(),
@@ -71,12 +69,14 @@ export class MapComponent implements OnInit {
           paint: {
             'heatmap-weight': [
               'interpolate',
-              ['linear'],
+              ['exponential', 1.5], // A moderate exponential base for scaling
               ['get', 'power'],
+              -40,
+              0.1,
               0,
-              0,
-              100,
-              1,
+              0.5,
+              40,
+              1.5, // Increased maximum weight for stronger emphasisªª
             ],
             'heatmap-intensity': [
               'interpolate',
