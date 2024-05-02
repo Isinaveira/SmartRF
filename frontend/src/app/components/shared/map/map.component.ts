@@ -48,7 +48,7 @@ export class MapComponent implements OnInit {
 
     this.map = new mapboxgl.Map({
       container: 'map',
-      style: 'mapbox://styles/mapbox/satellite-v9',
+      style: 'mapbox://styles/mapbox/satellite-streets-v12',
       center: [-8.687971522957469, 42.16972099256685],
       zoom: 17,
       preserveDrawingBuffer: true, // Enable capturing the map canvas

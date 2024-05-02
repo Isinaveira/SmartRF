@@ -1,0 +1,54 @@
+<app-navbar></app-navbar>
+<div class="measurement-detail-contanier">
+  <div class="information-container">
+    <div class="measurement-config-container">
+      <h2>Measurement Info</h2>
+      <div class="data-info-field">Measurement ID: {{ measurement._id }}</div>
+      @if(measurement.type.isConstellation){
+      <div class="data-info-field">Type: Constellation</div>
+      <div class="data-info-field">
+        Constellation ID: {{ measurement.type.id }}
+      </div>
+      }@else{
+      <div class="data-info-field">Type: Device</div>
+      <div class="data-info-field">Device ID: {{ measurement.type.id }}</div>
+      }
+      <div class="data-info-field">Name: {{ measurement.name }}</div>
+      <div class="data-info-field">User: {{ measurement.dni_user }}</div>
+      <div class="data-info-field">
+        Initial Frequency:{{ measurement.freqIni }}
+      </div>
+      <div class="data-info-field">
+        Final Frequency: {{ measurement.freqFinal }}
+      </div>
+      <div class="data-info-field">Threshold: {{ measurement.threshold }}</div>
+      <div class="data-info-field">Capture time: {{ measurement.t_capt }}</div>
+      <div class="data-info-field">
+        Channel Bandwidth{{ measurement.chanBW }}
+      </div>
+      <div class="data-info-field">Nfft: {{ measurement.nfft }}</div>
+      <div class="data-info-field">Mode: {{ measurement.mode }}</div>
+      <div class="data-info-field">Started At: {{ measurement.startedAt }}</div>
+    </div>
+    <div class="">
+      <button class="report-button" (click)="generateReport()">
+        <span class="material-symbols-outlined"> export_notes </span>Generate Report
+      </button>
+    </div>
+  </div>
+  <div class="chart-info-contanier">
+    <div class="data-info-container">
+      <h2>Number of Samples</h2>
+      <div class="data-text">{{ totalOfSamples }} samples</div>
+    </div>
+    <charts
+      [device_id]="device_id"
+      [realTime]="false"
+      [avgNormalizedPwrbyChannel]="true"
+      [occPercentageByChannel]="true"
+      [measurementInfo]="false"
+      [currentChannelState]="false"
+      [normalizedPowerByChannel]="false"
+    ></charts>
+  </div>
+</div>

@@ -10,6 +10,7 @@ router.post("/stop", measurementsController.stopMeasurement); // Iniciar medici√
 // router.get(":/id", measurementsController.getMeasurement);
 router.get("/:name",measurementsController.getMeasurementByName);
 router.get("/dni/:dni_user", measurementsController.getMyMeasurements);
+router.get("/measurement/:id", measurementsController.getMeasurementById);
 // Listar todas los usuarios de la BD
 /*
 router.delete('/:name', measurementsController.deleteConstellation);             // Metodo para borrar un usuario de la BD

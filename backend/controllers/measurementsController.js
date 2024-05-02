@@ -6,6 +6,7 @@ const {
   clientSubscriber,
   clientPublisher,
 } = require("../mqttActions");
+const Session = require("../models/session");
 
 //This function modifies the current parameter of the stations measurements
 let default_message = {
@@ -228,6 +229,15 @@ exports.getMyMeasurements = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+exports.getMeasurementById = async (req, res) => {
+  try{
+    const measurement = await Measurement.findById({_id: req.params.id});
+    res.status(201).json(measurement);
+  }catch (error) {
+    res.status(500).json({error: error.message});
+  }
+}
 
 function formatDateTime(date, locale) {
   const options = {

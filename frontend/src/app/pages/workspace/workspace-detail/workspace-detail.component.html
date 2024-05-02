@@ -1,9 +1,35 @@
+<app-navbar></app-navbar>
 <div class="workspace-container">
-    <button (click)="onConstellationClick($event)"><span class="material-icons">search</span>Constellation</button>
-    <button (click)="onDeviceClick($event)"><span class="material-icons">search</span>Device</button>
-    @for(measurement_config of measurements_configs; track measurement_config){
-        <div class="measurement-config-container">
-            {{jsonToString(measurement_config)}}
+    <div class="workspace-filters-container">
+        <button class="search-button" (click)="onConstellationClick($event)"><span class="material-icons">search</span>Constellation</button>
+        <button class="search-button" (click)="onDeviceClick($event)"><span class="material-icons">search</span>Device</button>
+        <div class="name-filter-container">
+            <input type="text" name="filter-name" id="filter-name" [(ngModel)]="filterName" value="" placeholder="Filter by name...">
+            <button (click)="filterByName()"><span class="material-icons">search</span></button>
         </div>
-    }
+    </div>
+    <div class="measurements-configs-container">
+        @for(measurement_config of measurements_configs; track measurement_config){
+            <div class="measurement-config-container" (click)="goTo(measurement_config._id)">
+                <div class="data-info-field">Measurement ID: {{measurement_config._id}}</div>
+                @if(measurement_config.type.isConstellation){
+                    <div class="data-info-field">Type: Constellation</div>
+                    <div class="data-info-field">Constellation ID: {{measurement_config.type.id}}</div>
+                }@else{
+                    <div class="data-info-field">Type: Device</div>
+                    <div class="data-info-field">Device ID: {{measurement_config.type.id}}</div>
+                }
+                <div class="data-info-field">Name: {{measurement_config.name}}</div>
+                <div class="data-info-field">User: {{measurement_config.dni_user}}</div>
+                <div class="data-info-field">Initial Frequency:{{measurement_config.freqIni}}</div>
+                <div class="data-info-field">Final Frequency: {{measurement_config.freqFinal}}</div>
+                <div class="data-info-field">Threshold: {{measurement_config.threshold}}</div>
+                <div class="data-info-field">Capture time: {{measurement_config.t_cap}}</div>
+                <div class="data-info-field">Channel Bandwidth{{measurement_config.chanBW}}</div>
+                <div class="data-info-field">Nfft: {{measurement_config.nfft}}</div>
+                <div class="data-info-field">Mode: {{measurement_config.mode}}</div>
+                <div class="data-info-field">Started At: {{measurement_config.startedAt}}</div>
+            </div>
+        }
+    </div>
 </div>

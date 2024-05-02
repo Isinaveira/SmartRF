@@ -12,6 +12,7 @@ import { adminGuard } from './guards/admin.guard';
 import { DocumentationComponent } from './pages/documentation/documentation.component';
 import { WorkspaceComponent } from './pages/workspace/workspace.component';
 import { WorkspaceDetailComponent } from './pages/workspace/workspace-detail/workspace-detail.component';
+import { MeasurementDetailComponent } from './pages/workspace/workspace-detail/measurement-detail/measurement-detail.component';
 export const routes: Routes = [
     { path: 'login', pathMatch: 'full', component: LoginComponent },
     { path: 'home', pathMatch: 'full', component: HomeComponent, canActivate: [authGuard] },
@@ -24,5 +25,6 @@ export const routes: Routes = [
     { path: 'documentation', pathMatch: 'full', component: DocumentationComponent, canActivate: [authGuard]},
     { path: 'workspaces', pathMatch: 'full', component: WorkspaceComponent, canActivate: [authGuard]},
     { path: 'workspaces/:id', pathMatch: 'full', component: WorkspaceDetailComponent, canActivate: [authGuard]},
+    { path: 'workspaces/measurement/:id', pathMatch: 'full', component: MeasurementDetailComponent, canActivate: [authGuard]},
     { path: '**', redirectTo: '/login', pathMatch: 'full' }
 ];

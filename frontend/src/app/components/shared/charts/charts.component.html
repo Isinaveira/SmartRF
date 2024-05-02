@@ -1,79 +1,89 @@
 <div class="charts-container">
-  <div class="measurement-info-container">
-    <div class="data-info-container">
-      <h2>Threshold</h2>
-      <div class="data-text">{{threshold}}</div>
-    </div>
-    <div class="data-info-container">
-      <h2>Number of Samples</h2>
-      <div class="data-text">{{totalOfSamples}} samples</div>
-    </div>
-  </div>
-  <div class="chart-horizontal-container">
-    <div class="channel-ocupation-chart">
-      <h2>Current Channel State</h2>
-      <div class="channel-occupation-container">
-        @for(channel of channelOccupation; track channel){
-        <div class="channel-occupation" [style.background-color]="channel.color">
-          <div class="channel-value-container">
-            {{ channel.value }}<span>dB</span>
-          </div>
-          <div class="channel-name-container">
-            {{ channel.name }}
-          </div>
-        </div>
-        }
+  @if(measurementInfo()){
+    <div class="measurement-info-container">
+      <div class="data-info-container">
+        <h2>Threshold</h2>
+        <div class="data-text">{{threshold}}</div>
+      </div>
+      <div class="data-info-container">
+        <h2>Number of Samples</h2>
+        <div class="data-text">{{totalOfSamples}} samples</div>
       </div>
     </div>
-  </div>
-  <div class="chart-horizontal-container">
-    <h2>Normalized Power by Channel</h2>
-    <ngx-charts-line-chart
-      [view]="[700, 300]"
-      [results]="samplesPerChannel"
-      [animations]="true"
-      [scheme]="colorSchemeNC"
-      [rotateXAxisTicks]="true"
-      [xAxis]="true"
-      [yAxisLabel]="'Power'"
-      [timeline]="true"
-      [yAxis]="true"
-      [legend]="true"
-      [legendTitle]="'Channels'"
-    >
-    </ngx-charts-line-chart>
-  </div>
-  <div class="chart-horizontal-container">
-    <h2>Average Normalized Power by Channel</h2>
-    <ngx-charts-bar-vertical
-      [view]="[700, 300]"
-      [results]="channelAvgOccupation"
-      [xAxis]="true"
-      [yAxis]="true"
-      [scheme]="colorSchemeNC"
-      [rotateXAxisTicks]="true"
-      [yAxisLabel]="'Avg Power'"
-      [xAxisLabel]="'Channels'"
-      [legend]="true"
-      [legendTitle]="'Channels'"
-    >
-    </ngx-charts-bar-vertical>
-  </div>
-  <div class="chart-horizontal-container">
-    <h2>Occupation Percentage by Channel</h2>
-    <ngx-charts-bar-vertical
-      [view]="[700, 300]"
-      [results]="channelOccupationPercentage"
-      [xAxis]="true"
-      [yAxis]="true"
-      [scheme]="colorSchemeNC"
-      [rotateXAxisTicks]="true"
-      [yAxisLabel]="'Percentage of Occupation'"
-      [xAxisLabel]="'Channels'"
-      [legend]="true"
-      [legendTitle]="'Channels'"
-    >
-    </ngx-charts-bar-vertical>
-  </div>
+  }
+  @if(currentChannelState()){
+    <div class="chart-horizontal-container">
+      <div class="channel-ocupation-chart">
+        <h2>Current Channel State</h2>
+        <div class="channel-occupation-container">
+          @for(channel of channelOccupation; track channel){
+          <div class="channel-occupation" [style.background-color]="channel.color">
+            <div class="channel-value-container">
+              {{ channel.value }}<span>dB</span>
+            </div>
+            <div class="channel-name-container">
+              {{ channel.name }}
+            </div>
+          </div>
+          }
+        </div>
+      </div>
+    </div>
+  }
+  @if(normalizedPowerByChannel()){
+    <div class="chart-horizontal-container">
+      <h2>Normalized Power by Channel</h2>
+      <ngx-charts-line-chart
+        [view]="[700, 300]"
+        [results]="samplesPerChannel"
+        [animations]="true"
+        [scheme]="colorSchemeNC"
+        [rotateXAxisTicks]="true"
+        [xAxis]="true"
+        [yAxisLabel]="'Power'"
+        [timeline]="true"
+        [yAxis]="true"
+        [legend]="true"
+        [legendTitle]="'Channels'"
+      >
+      </ngx-charts-line-chart>
+    </div>
+  }
+  @if(avgNormalizedPwrbyChannel()){
+    <div class="chart-horizontal-container">
+      <h2>Average Normalized Power by Channel</h2>
+      <ngx-charts-bar-vertical
+        [view]="[700, 300]"
+        [results]="channelAvgOccupation"
+        [xAxis]="true"
+        [yAxis]="true"
+        [scheme]="colorSchemeNC"
+        [rotateXAxisTicks]="true"
+        [yAxisLabel]="'Avg Power'"
+        [xAxisLabel]="'Channels'"
+        [legend]="true"
+        [legendTitle]="'Channels'"
+      >
+      </ngx-charts-bar-vertical>
+    </div>
+  }
+  @if(occPercentageByChannel()){
+    <div class="chart-horizontal-container">
+      <h2>Occupation Percentage by Channel</h2>
+      <ngx-charts-bar-vertical
+        [view]="[700, 300]"
+        [results]="channelOccupationPercentage"
+        [xAxis]="true"
+        [yAxis]="true"
+        [scheme]="colorSchemeNC"
+        [rotateXAxisTicks]="true"
+        [yAxisLabel]="'Percentage of Occupation'"
+        [xAxisLabel]="'Channels'"
+        [legend]="true"
+        [legendTitle]="'Channels'"
+      >
+      </ngx-charts-bar-vertical>
+    </div>
+  }
 </div>
 

@@ -35,6 +35,10 @@ export class MeasurementsService {
   getMyMeasurements(dni_user: string): Observable<any> {
     return this.http.get(this.url + "/dni/"+ dni_user);
   }
+
+  getMeasurementById(measurement_id: string): Observable<any>{
+    return this.http.get(this.url + "/measurement/" + measurement_id);
+  }
   // getMyMeasurements(dni_user: string): Observable<any> {
   //   return this.http.get(`${this.url}/dni/${dni_user}`);
   // }

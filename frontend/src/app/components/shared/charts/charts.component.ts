@@ -37,19 +37,21 @@ import { DataService } from '@/services/data.service';
   styleUrl: './charts.component.css',
 })
 export class ChartsComponent {
-  // //Form
-  // max = -60;
-  // min = -120;
-  // step = 1;
-  // maxDate: string;
-  // isRT: boolean = true;
-  // chartForm: FormGroup;
-  // value ='';
-  
+  //changes the behavior of subscribe.
+  realTime = input.required<boolean>();
+  nChannels!: number;
 
-  //Global 
+  //Charts to display
+  avgNormalizedPwrbyChannel = input<boolean>(true);
+  occPercentageByChannel = input<boolean>(true);
+  normalizedPowerByChannel = input<boolean>(true);
+  currentChannelState = input<boolean>(true);
+  measurementInfo = input<boolean>(true);
 
+  //data to receive
+  samplesDataInput = input<any[]>([]);
 
+  samplesData: any[] | undefined = [];
 
   //Socket
   messageSubscription: Subscription | undefined;
@@ -57,25 +59,22 @@ export class ChartsComponent {
   totalOfSamples: number = 0;
 
   //Occupation chart
-  channelOccupation: {name: string, value: number , color: string}[] = [];
+  channelOccupation: { name: string; value: number; color: string }[] = [];
 
   //Percentage chart
-  channelOccupationPercentage: {name: string, value: number}[] = [];
+  channelOccupationPercentage: { name: string; value: number }[] = [];
 
   //barChart
-  channelAvgOccupation: {name: string, value: number}[] = [];
+  channelAvgOccupation: { name: string; value: number }[] = [];
 
   custom_colors: string[] = [];
-  //Power per channel by time  
+  //Power per channel by time
   samplesPerChannel: { name: string; series: any[] }[] = [];
   colorSchemeNC = 'fire';
   viewPie: [number, number] = [1500, 300];
   device_id = input.required<string>();
 
-  realTime = input.required<boolean>();
-
   threshold!: number;
-
 
   constructor(
     private fb: FormBuilder,
@@ -84,80 +83,170 @@ export class ChartsComponent {
     private route: ActivatedRoute,
     private dataService: DataService,
     private cdRef: ChangeDetectorRef
-  ) {
-    
-  }
+  ) {}
 
-  ngOnInit(){
-    if(this.realTime()){
-      this.dataService.currentMessage.subscribe((message:boolean) => {
-        if(message){
+  ngOnInit() {
+    if (this.realTime()) {
+      this.dataService.currentMessage.subscribe((message: boolean) => {
+        if (message) {
           this.measurementReady();
         }
-      } );
-    }else{
-      //else subscribe to DDBB
-      console.log("DDBB");
+      });
+    } else {
+      this.dataService.samplesData.subscribe((samples: any[]) => {
+        if (samples.length!= 0) {
+          
+          this.processData(samples);
+        }
+      });
     }
-
   }
 
-  measurementReady(){
-     this.websocketService.getMessageUpdates('charts').subscribe( data => {
-      this.totalOfSamples ++;
+  processData(samples: any[]) {
+  
+    samples = samples.map((s) => {
+      return {
+        ...s, 
+        results: JSON.parse(s.results) // Parsea el campo results y lo reemplaza
+      };
+    });
+      if (samples) {
+        this.channelAvgOccupation = this.calcularPromedio(samples).map(
+          (channel, index) => {
+            return {
+              name: `channel ${index + 1}`,
+              value: channel,
+            };
+          }
+        );
+        this.channelOccupationPercentage = this.calcularPorcentaje(samples).map((channel, index) => {
+          return {
+            name: `channel ${index + 1}`,
+            value: channel,
+          };
+        });
+      }
+    
+  }
+  calcularPromedio(samples: any[]): number[] {
+    if(samples != undefined){
+      const resultadoFinal: number[] = samples.reduce(
+        (acumulador: number[], elemento: any) => {
+          elemento.results.forEach((valor: number, indice: number) => {
+            acumulador[indice] = (acumulador[indice] || 0) + valor;
+          });
+          return acumulador;
+        },
+        []
+      );
+  
+      const longitud: number = samples.length;
+  
+      const resultadoFinalPromedio: number[] = resultadoFinal.map(
+        (valor: number) => valor / longitud
+      );
+  
+      return resultadoFinalPromedio;
+
+    }else{
+      return []
+    }
+  }
+
+  calcularPorcentaje(samples: any[]): number[] {
+    if(samples != undefined){
+      const conteo: number[] = Array(samples[0].results.length).fill(0);
+  
+      samples.forEach((elemento: any) => {
+        elemento.results.forEach((valor: number, indice: number) => {
+          if (valor > 0) {
+            conteo[indice]++;
+          }
+        });
+      });
+  
+      const longitud: number = samples.length;
+  
+      const porcentaje: number[] = conteo.map(
+        (valor: number) => (valor / longitud) * 100
+      );
+  
+      return porcentaje;
+
+    }else{
+      return []
+    }
+  }
+
+  measurementReady() {
+    this.websocketService.getMessageUpdates('charts').subscribe((data) => {
+      this.totalOfSamples++;
       this.samplesPerChannel = [...data[this.device_id()]];
-      this.channelOccupation = this.samplesPerChannel.map(channel => { 
-        
+      this.channelOccupation = this.samplesPerChannel.map((channel) => {
         return {
           name: channel.name,
-          value: channel.series[channel.series.length-1].value,
-          color: channel.series[channel.series.length-1].value < 0 ? '#00FF00': '#FF0000'
-        }
+          value: channel.series[channel.series.length - 1].value,
+          color:
+            channel.series[channel.series.length - 1].value < 0
+              ? '#00FF00'
+              : '#FF0000',
+        };
       });
-      this.channelAvgOccupation = this.samplesPerChannel.map(channel => {
-        const actual_channel_value = this.channelAvgOccupation.find(c => c.name == channel.name) 
-        if(actual_channel_value != undefined){
-          const avg_value = (actual_channel_value.value * (this.totalOfSamples-2) + channel.series[channel.series.length-1].value) / (this.totalOfSamples-1);
+      this.channelAvgOccupation = this.samplesPerChannel.map((channel) => {
+        const actual_channel_value = this.channelAvgOccupation.find(
+          (c) => c.name == channel.name
+        );
+        if (actual_channel_value != undefined) {
+          const avg_value =
+            (actual_channel_value.value * (this.totalOfSamples - 2) +
+              channel.series[channel.series.length - 1].value) /
+            (this.totalOfSamples - 1);
           return {
             name: channel.name,
-            value: avg_value  
-          }
-        }else{
+            value: avg_value,
+          };
+        } else {
           return {
             name: channel.name,
-            value: 0
-          }
+            value: 0,
+          };
         }
       });
 
-      this.channelOccupationPercentage = this.samplesPerChannel.map( channel => {
-        const actual_channel_state = this.channelOccupationPercentage.find(c => c.name == channel.name)
-        if(actual_channel_state != undefined){
-          const occupated = (channel.series[channel.series.length-1].value > 0)? 1 : 0;
-          const avg_occupation = ((actual_channel_state.value/100) * (this.totalOfSamples-2) + occupated) / (this.totalOfSamples-1);
-          return {
-            name: channel.name,
-            value: avg_occupation*100  
-          } 
-        }else{
-          return {
-            name: channel.name,
-            value: 0
+      this.channelOccupationPercentage = this.samplesPerChannel.map(
+        (channel) => {
+          const actual_channel_state = this.channelOccupationPercentage.find(
+            (c) => c.name == channel.name
+          );
+          if (actual_channel_state != undefined) {
+            const occupated =
+              channel.series[channel.series.length - 1].value > 0 ? 1 : 0;
+            const avg_occupation =
+              ((actual_channel_state.value / 100) * (this.totalOfSamples - 2) +
+                occupated) /
+              (this.totalOfSamples - 1);
+            return {
+              name: channel.name,
+              value: avg_occupation * 100,
+            };
+          } else {
+            return {
+              name: channel.name,
+              value: 0,
+            };
           }
         }
-      })
+      );
 
       //this.cdRef.detectChanges(); // Forzar la detección de cambios
-          
     });
-    this.websocketService.threshold.subscribe( t => {
+    this.websocketService.threshold.subscribe((t) => {
       this.threshold = t;
-    })
+    });
   }
 
-
-  calculateColors(){
-    this.channelOccupation.forEach
+  calculateColors() {
+    this.channelOccupation.forEach;
   }
 
   ngOnDestroy() {
@@ -165,5 +254,4 @@ export class ChartsComponent {
       this.messageSubscription.unsubscribe();
     }
   }
-
 }
