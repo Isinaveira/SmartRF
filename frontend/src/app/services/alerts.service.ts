@@ -77,7 +77,7 @@ export class AlertsService {
               
   
                 const channelNumber = alerta.channel_number;
-                const sampleValue = information.results[channelNumber];
+                const sampleValue = information.results[channelNumber-1];
   
                 if (sampleValue > 0) {
                   this.toastS.warning(`Message: ${JSON.stringify(information)}`, 'Busy',{ "positionClass" : "toast-bottom-left"});
@@ -85,7 +85,7 @@ export class AlertsService {
               } else if(alerta.type_alert === 'free'){
   
                   const channelNumber = alerta.channel_number;
-                  const sampleValue = information.results[channelNumber];
+                  const sampleValue = information.results[channelNumber-1];
     
                   if (sampleValue < 0) {
   
