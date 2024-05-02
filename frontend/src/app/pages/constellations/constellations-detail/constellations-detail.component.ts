@@ -113,7 +113,6 @@ export class ConstellationsDetailComponent implements OnInit {
           next: (session) => {
             const resultsArray = JSON.parse(session.results);
             times += 1;
-            console.log('ITERATION' + times);
             const powerData = {
               device_id: device.station_id,
               results: resultsArray,
@@ -122,7 +121,6 @@ export class ConstellationsDetailComponent implements OnInit {
             if (this.first) {
               this.first = false;
               this.numberOfButtons = resultsArray.length;
-              console.log(this.numberOfButtons);
             }
             this.power_list.push(powerData);
             resolve();
