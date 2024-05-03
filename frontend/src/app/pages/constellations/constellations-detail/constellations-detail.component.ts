@@ -121,6 +121,7 @@ export class ConstellationsDetailComponent implements OnInit {
             if (this.first) {
               this.first = false;
               this.numberOfButtons = resultsArray.length;
+              console.log(this.numberOfButtons);
             }
             this.power_list.push(powerData);
             resolve();
